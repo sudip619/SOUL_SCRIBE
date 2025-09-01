@@ -1,0 +1,8 @@
+Flask 
+Flask-CORS 
+python-dotenv
+ Werkzeug
+SQLAlchemy
+Flask-SQLAlchemy
+pymysql
+cryptography

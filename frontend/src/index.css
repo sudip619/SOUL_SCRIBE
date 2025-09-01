@@ -1,0 +1,619 @@
+/* src/index.css */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* --- THEME DEFINITIONS --- */
+/* This is the new default theme for the login page */
+:root {
+  --bg-primary: #041021;      /* Solid dark blue */
+  --bg-secondary: #0B1A31;    /* Slightly lighter for cards */
+  --text-primary: #b9ecfd;     /* Light blue text */
+  --text-secondary: #829AB1;   /* Muted secondary text */
+  --accent-primary: #38b6ff;   /* Bright blue accent */
+  --accent-secondary: #3194cc; /* Deeper blue highlight */
+  --border-color: rgba(56, 182, 255, 0.2);
+}
+
+.theme-bright {
+  --bg-primary: #2A3B49;
+  --bg-secondary: #3E5A6F;
+  --text-primary: #F0F5F9;
+  --text-secondary: #A9B4C2;
+  --accent-primary: #F39C12;
+  --accent-secondary: #E67E22;
+  --border-color: rgba(243, 156, 18, 0.2);
+}
+
+.theme-calm {
+  --bg-primary: #34495E;
+  --bg-secondary: #4A6572;
+  --text-primary: #ECF0F1;
+  --text-secondary: #B0BEC5;
+  --accent-primary: #5D9CEC;
+  --accent-secondary: #9B59B6;
+  --border-color: rgba(93, 156, 236, 0.2);
+}
+
+.theme-muted {
+  --bg-primary: #2C3E50;
+  --bg-secondary: #34495E;
+  --text-primary: #BDC3C7;
+  --text-secondary: #7F8C8D;
+  --accent-primary: #8E44AD;
+  --accent-secondary: #2980B9;
+  --border-color: rgba(142, 68, 173, 0.2);
+}
+
+.theme-grounding {
+  --bg-primary: #2F4F4F;
+  --bg-secondary: #3E606F;
+  --text-primary: #CED4DA;
+  --text-secondary: #868E96;
+  --accent-primary: #D9534F;
+  --accent-secondary: #B8860B;
+  --border-color: rgba(217, 83, 79, 0.2);
+}
+
+
+/* --- BASE STYLES --- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  /* MODIFIED: The default background is now the solid dark blue for the login page */
+  body {
+    color: var(--text-primary);
+    background-color: #041021; 
+    @apply font-sans;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+  }
+  a {
+    color: var(--accent-primary);
+    @apply hover:opacity-80 transition-colors duration-300;
+  }
+}
+
+/* --- NEW STYLES for post-login background and auth page layout --- */
+
+/* This class will be toggled on the body AFTER login to activate the gradient */
+body.animated-gradient-bg {
+  background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
+  background-size: 400% 400%;
+  animation: gradientBG 25s ease infinite;
+}
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Styles for the new two-column auth page layout */
+.auth-page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 17rem;
+  width: 100%;
+}
+
+/* Animated Logo Placeholder Card */
+.logo-card {
+  width: 480px;
+  height: 480px;
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 20px;
+  transition: all .3s;
+}
+.logo-card-inner {
+  width: 100%;
+  height: 100%;
+  background-color: #0B1A31;
+  border-radius: 20px;
+  transition: all .2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  padding: 2rem;
+}
+.logo-card-inner:hover { transform: scale(0.98); }
+.logo-card:hover { box-shadow: 0px 0px 30px 1px var(--accent-primary); }
+
+
+/* --- ALL YOUR EXISTING ANIMATION STYLES --- */
+/* (All of your other custom classes for buttons, inputs, etc., are kept below) */
+.nav-button {
+  font-size: smaller;
+  border: none;
+  font-weight: bold;
+  letter-spacing: 3px;  
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 500ms;
+  color: var(--accent-primary);
+  outline: 2px solid var(--accent-primary);
+}
+.nav-button:hover {
+  color: white;
+  outline-color: var(--accent-secondary);
+  box-shadow: 4px 5px 17px -4px var(--accent-primary);
+  transform: scale(1.1);
+}
+.nav-button::before {
+  content: "";
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 0;
+  height: 100%;
+  transform: skewX(45deg);
+  z-index: -1;
+  transition: width 1000ms;
+  background-color: var(--accent-primary);
+}
+.nav-button:hover::before {
+  width: 250%;
+}
+.logout-btn {
+  font-size: smaller;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: .3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: rgb(255, 65, 65);
+}
+.logout-btn .sign {
+  width: 100%;
+  transition-duration: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logout-btn .sign svg {
+  width: 17px;
+}
+.logout-btn .sign svg path {
+  fill: white;
+}
+.logout-btn .text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: .3s;
+}
+.logout-btn:hover {
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: .3s;
+}
+.logout-btn:hover .sign {
+  width: 30%;
+  transition-duration: .3s;
+  padding-left: 20px;
+}
+.logout-btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: .3s;
+  padding-right: 10px;
+}
+.logout-btn:active {
+  transform: translate(2px ,2px);
+}
+.animated-check {
+  cursor: pointer;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  -webkit-tap-highlight-color: transparent;
+}
+.animated-check svg {
+  position: relative;
+  z-index: 1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: var(--text-secondary);
+  stroke-width: 2;
+  transition: all 0.2s ease;
+}
+.animated-check svg path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
+}
+.animated-check svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66;
+}
+.animated-check:hover svg {
+  stroke: var(--accent-secondary);
+}
+input[type="checkbox"]:checked + label .animated-check svg {
+  stroke: var(--accent-primary);
+}
+input[type="checkbox"]:checked + label .animated-check svg path {
+  stroke-dashoffset: 60;
+  transition: all 0.3s linear;
+}
+input[type="checkbox"]:checked + label .animated-check svg polyline {
+  stroke-dashoffset: 42;
+  transition: all 0.2s linear;
+  transition-delay: 0.15s;
+}
+.send-fly-button {
+  font-family: inherit;
+  font-size: 18px;
+  background: var(--accent-primary);
+  color: white;
+  padding: 0.7em 1em;
+  padding-left: 0.9em;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.send-fly-button span {
+  display: block;
+  margin-left: 0.3em;
+  transition: all 0.3s ease-in-out;
+}
+.send-fly-button svg {
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.3s ease-in-out;
+}
+.send-fly-button:hover .svg-wrapper {
+  animation: fly-1 0.6s ease-in-out infinite alternate;
+}
+.send-fly-button:hover svg {
+  transform: translateX(1.2em) rotate(45deg) scale(1.1);
+}
+.send-fly-button:hover span {
+  transform: translateX(5em);
+}
+.send-fly-button:active {
+  transform: scale(0.95);
+}
+@keyframes fly-1 {
+  from { transform: translateY(0.1em); }
+  to { transform: translateY(-0.1em); }
+}
+.chat-input-card {
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-radius: 1rem;
+  transition: all .4s;
+  flex-grow: 1;
+}
+.chat-input-card:hover {}
+.chat-input-card2 {
+  background-color: var(--bg-secondary);
+  border-radius: 1rem;
+  transition: all .2s;
+  padding: 3px;
+}
+.chat-input-card2:hover {
+  transform: scale(0.98);
+}
+.chat-input-group {
+  position: relative;
+}
+.chat-input-field {
+  border: solid 1.5px var(--text-secondary);
+  border-radius: 0.8rem;
+  background: none;
+  padding: 1rem;
+  width: 100%;
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: border 150ms cubic-bezier(0.4,0,0.2,1);
+}
+.chat-input-label {
+  position: absolute;
+  left: 15px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  transform: translateY(1rem);
+  transition: 150ms cubic-bezier(0.4,0,0.2,1);
+}
+.chat-input-field:focus,
+.chat-input-field:not(:placeholder-shown) {
+  outline: none;
+  border: 1.5px solid var(--accent-primary);
+}
+.chat-input-field:focus ~ .chat-input-label,
+.chat-input-field:not(:placeholder-shown) ~ .chat-input-label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: var(--bg-secondary);
+  padding: 0 .2em;
+  color: var(--accent-primary);
+}
+.auth-form-container {
+  width: 350px;
+  border-radius: 0.75rem;
+  background-color: #0B1A31;
+  padding: 2rem;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+.auth-title {
+  text-align: center;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+.auth-form {
+  margin-top: 1.5rem;
+}
+.auth-input-card {
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  
+  border-radius: 1rem;
+  transition: all .3s;
+  margin-top: 1rem;
+}
+.auth-input-card:hover {
+  box-shadow: 0px 0px 30px 1px var(--accent-primary);
+}
+.auth-input-card2 {
+  background-color: #0B1A31;
+  border-radius: 1rem;
+  transition: all .2s;
+  padding: 3px;
+}
+.auth-input-card2:hover {
+  transform: scale(0.98);
+}
+.auth-input-group {
+  position: relative;
+}
+.auth-input-field {
+  width: 100%;
+  border: solid 1.5px var(--text-secondary);
+  border-radius: 0.8rem;
+  background: none;
+  padding: 1rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  transition: border 150ms cubic-bezier(0.4,0,0.2,1), box-shadow .4s;
+}
+.auth-input-label {
+  position: absolute;
+  left: 15px;
+  color: var(--text-secondary);
+  pointer-events: none;
+  transform: translateY(1rem);
+  transition: 150ms cubic-bezier(0.4,0,0.2,1);
+}
+.auth-input-field:focus,
+.auth-input-field:not(:placeholder-shown) {
+  outline: none;
+  border: 1.5px solid var(--accent-secondary);
+  box-shadow: 0 0 0 .15vw var(--accent-secondary);
+}
+.auth-input-field:focus ~ .auth-input-label,
+.auth-input-field:not(:placeholder-shown) ~ .auth-input-label {
+  transform: translateY(-50%) scale(0.8);
+  background-color: var(--bg-primary);
+  padding: 0 .2em;
+  color: var(--accent-secondary);
+}
+.auth-submit-button {
+  display: block;
+  width: 100%;
+  background-color: var(--accent-primary);
+  padding: 0.75rem;
+  text-align: center;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  transition: background-color 0.3s;
+}
+.auth-submit-button:hover {
+  background-color: var(--accent-secondary);
+}
+.auth-toggle-link {
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+.auth-toggle-link a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.auth-toggle-link a:hover {
+  text-decoration: underline;
+  color: var(--accent-secondary);
+}
+.c-button {
+  color: #000;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 0.9em 1.6em;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  z-index: 1;
+}
+.c-button--gooey {
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 4px solid var(--accent-primary);
+  border-radius: 0.75rem;
+  position: relative;
+  transition: all 700ms ease;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+.c-button--gooey .c-button__blobs {
+  height: 100%;
+  filter: url(#goo);
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -3px;
+  right: -1px;
+  z-index: -1;
+}
+.c-button--gooey .c-button__blobs div {
+  background-color: var(--accent-primary);
+  width: 34%;
+  height: 100%;
+  border-radius: 100%;
+  position: absolute;
+  transform: scale(1.4) translateY(125%) translateZ(0);
+  transition: all 700ms ease;
+}
+.c-button--gooey .c-button__blobs div:nth-child(1) {
+  left: -5%;
+}
+.c-button--gooey .c-button__blobs div:nth-child(2) {
+  left: 30%;
+  transition-delay: 60ms;
+}
+.c-button--gooey .c-button__blobs div:nth-child(3) {
+  left: 66%;
+  transition-delay: 25ms;
+}
+.c-button--gooey:hover {
+  color: white;
+}
+.c-button--gooey:hover .c-button__blobs div {
+  transform: scale(1.4) translateY(0) translateZ(0);
+}
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #0B1A31;
+  z-index: 100;
+}
+.loading-svg {
+  width: 80%;
+  max-width: 400px;
+  height: auto;
+}
+.loading-text {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 50px;
+  stroke: url(#soulscribe-gradient);
+  stroke-width: 2;
+  fill: transparent;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: draw-text 2s ease-in-out forwards;
+}
+.loading-screen .gradient-start {
+  stop-color: var(--accent-primary);
+}
+.loading-screen .gradient-end {
+  stop-color: var(--accent-secondary);
+}
+@keyframes draw-text {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- NEW: Pulsing Ring Loader Animation --- */
+.pl {
+  width: 3em;
+  height: 3em;
+  margin-top: -0.75rem; /* Adds space below the SOULSCRIBE text */
+}
+
+.pl__ring {
+  animation: ringA 2s linear infinite;
+  fill: none;
+  stroke-linecap: round;
+}
+
+/* These classes use the theme's accent colors */
+.pl__ring--a {
+  stroke: var(--accent-primary);
+}
+.pl__ring--b {
+  animation-name: ringB;
+  stroke: var(--accent-secondary);
+}
+.pl__ring--c {
+  animation-name: ringC;
+  stroke: var(--accent-primary);
+}
+.pl__ring--d {
+  animation-name: ringD;
+  stroke: var(--accent-secondary);
+}
+
+/* Animations (no changes to the keyframes) */
+@keyframes ringA {
+  from, 4% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -330; }
+  12% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -335; }
+  32% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -595; }
+  40%, 54% { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -660; }
+  62% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -665; }
+  82% { stroke-dasharray: 60 600; stroke-width: 30; stroke-dashoffset: -925; }
+  90%, to { stroke-dasharray: 0 660; stroke-width: 20; stroke-dashoffset: -990; }
+}
+@keyframes ringB {
+  from, 12% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -110; }
+  20% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -115; }
+  40% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -195; }
+  48%, 62% { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -220; }
+  70% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -225; }
+  90% { stroke-dasharray: 20 200; stroke-width: 30; stroke-dashoffset: -305; }
+  98%, to { stroke-dasharray: 0 220; stroke-width: 20; stroke-dashoffset: -330; }
+}
+@keyframes ringC {
+  from { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+  8% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+  28% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+  36%, 58% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+  66% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+  86% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+  94%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+}
+@keyframes ringD {
+  from, 8% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: 0; }
+  16% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -5; }
+  36% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -175; }
+  44%, 50% { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -220; }
+  58% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
+  78% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
+  86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+}
