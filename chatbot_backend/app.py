@@ -291,3 +291,18 @@ def get_mood_history():
     
     return jsonify(history_data), 200
 
+
+# WARNING: This is a temporary endpoint for database initialization on Render's free tier.
+# It should be removed after the first successful deployment and execution.
+@app.route('/api/v1/init-db-do-not-use-in-prod')
+def init_db():
+    """A temporary endpoint to create database tables on Render."""
+    print("DATABASE INITIALIZATION ENDPOINT CALLED")
+    try:
+        with app.app_context():
+            db.create_all()
+        print("Database tables created successfully.")
+        return jsonify({"message": "Database tables created successfully!"}), 200
+    except Exception as e:
+        print(f"Error during database initialization: {e}")
+        return jsonify({"message": "Error during database initialization.", "error": str(e)}), 500
