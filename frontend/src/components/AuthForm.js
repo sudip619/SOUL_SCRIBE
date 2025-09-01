@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-const API_BASE_URL = 'http://127.0.0.1:5000/api';
+import { API_BASE_URL } from '../services/api';
 
 function AuthForm({ onLoginSuccess, showAlert }) {
   const [isRegistering, setIsRegistering] = useState(false);
