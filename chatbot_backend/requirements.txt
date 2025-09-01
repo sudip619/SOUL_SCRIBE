@@ -1,8 +1,10 @@
-Flask 
-Flask-CORS 
+Flask
+Flask-CORS
 python-dotenv
- Werkzeug
+Werkzeug
 SQLAlchemy
 Flask-SQLAlchemy
-pymysql
 cryptography
+gunicorn
+psycopg2-binary
+requests
