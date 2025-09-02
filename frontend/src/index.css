@@ -669,3 +669,81 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   78% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
   86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
 }
+
+/* Expanding Card Stack (below chat) */
+.card-stack-section {
+  width: 100%;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  justify-content: center;
+}
+.card-stack-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1400px;
+  overflow-x: auto;
+  padding-bottom: .5rem;
+}
+.card-stack-item {
+  position: relative;
+  width: 120px;
+  height: 420px;
+  border-radius: 20px;
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: 1px solid var(--border-color);
+  transition: width .5s ease, box-shadow .4s ease, transform .5s ease;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.card-stack-item:hover {
+  width: 520px;
+  box-shadow: 0 0 30px 1px var(--accent-primary);
+}
+.card-vertical {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  color: rgba(255,255,255,.9);
+  font-weight: 700;
+  letter-spacing: .5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.card-index { opacity: .9; font-size: 1.2rem; }
+.card-name { opacity: .9; font-size: 1rem; }
+
+.card-details {
+  position: absolute;
+  inset: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .35s ease .1s, transform .35s ease .1s;
+  color: var(--text-primary);
+}
+.card-stack-item:hover .card-details {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card-stack-item:hover .card-vertical { opacity: 0; }
+
+.card-details-title { font-size: 1.25rem; font-weight: 800; margin-bottom: .5rem; color: #fff; }
+.card-details-text { color: #e6f7ff; line-height: 1.6; }
+
+@media (max-width: 1024px) {
+  .card-stack-item { height: 360px; }
+  .card-stack-item:hover { width: 420px; }
+}
+@media (max-width: 640px) {
+  .card-stack-row { gap: .75rem; }
+  .card-stack-item { width: 100px; height: 320px; }
+  .card-stack-item:hover { width: 320px; }
+  .card-details-title { font-size: 1.1rem; }
+}
