@@ -133,7 +133,7 @@ body.theme-bright {
 /* Sad: same radial-gradient layout as angry, with specified colors */
 body.theme-muted {
   animation: none !important;
-  --color1: #2e3a4d;
+  --color1: #465d5d;
   --color2: #465d5d;
   --bg-color: #000000;
   background: var(--bg-color) !important;
