@@ -18,7 +18,8 @@ const moodToTheme = {
   'anxious': 'theme-grounding',
   'frustrated': 'theme-grounding',
   'overwhelmed': 'theme-grounding',
-  'angry': 'theme-grounding',
+  'angry': 'theme-angry',
+  'annoyed': 'theme-angry',
 };
 
 export const ThemeProvider = ({ children }) => {
