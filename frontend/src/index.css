@@ -93,7 +93,12 @@
 
 /* --- NEW STYLES for post-login background and auth page layout --- */
 
-/* This class will be toggled on the body AFTER login to activate the gradient */
+/* Use the same animated gradient for all moods by default when a theme is active */
+body.theme-bright,
+body.theme-calm,
+body.theme-muted,
+body.theme-grounding,
+body.theme-angry,
 body.animated-gradient-bg {
   background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
   background-size: 400% 400%;
