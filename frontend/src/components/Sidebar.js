@@ -47,7 +47,7 @@ function Sidebar({ currentView, onNavigate }) {
   const handleEnter = () => {
     setIsOpen(true);
     setPlayBounce(false);
-    timerRef.current = setTimeout(() => setPlayBounce(true), 1600);
+    timerRef.current = setTimeout(() => setPlayBounce(true), 900);
   };
 
   const handleLeave = () => {
