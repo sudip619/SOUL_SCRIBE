@@ -56,6 +56,17 @@
   --border-color: rgba(217, 83, 79, 0.2);
 }
 
+/* Angry/Annoyed theme: magenta/purple neon with deep plum gradient */
+.theme-angry {
+  --bg-primary: #0f0b1d; /* deep plum/navy */
+  --bg-secondary: #1e1230; /* darker purple */
+  --text-primary: #fde7ff; /* light pinkish */
+  --text-secondary: #d2b5e6;
+  --accent-primary: #ff2fb9; /* vibrant magenta */
+  --accent-secondary: #7a2cff; /* electric purple */
+  --border-color: rgba(255, 47, 185, 0.25);
+}
+
 
 /* --- BASE STYLES --- */
 @layer base {
@@ -749,6 +760,11 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   flex-grow: .4;
   flex-basis: 0;
   transition: flex-grow .45s ease;
+}
+/* Specific palette for Angry card in the stack */
+.card-stack-item.emotion-angry {
+  background-image: linear-gradient(163deg, #ff2fb9 0%, #7a2cff 100%);
+  border-color: rgba(255, 47, 185, 0.25);
 }
 .card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: .3; }
 .card-stack-item:hover {
