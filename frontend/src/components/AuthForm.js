@@ -61,7 +61,7 @@ function AuthForm({ onLoginSuccess, showAlert }) {
   };
 
   return (
-    <>
+    <div className="auth-page-wrapper">
     <div className="auth-page-container">
       
       {/* MODIFIED: Added fade-down animation with a 2500ms duration */}
@@ -125,7 +125,7 @@ function AuthForm({ onLoginSuccess, showAlert }) {
         <spline-viewer url="https://prod.spline.design/CTZipUkFTTfJgLHe/scene.splinecode"></spline-viewer>
       </div>
     </section>
-    </>
+    </div>
   );
 }
 
