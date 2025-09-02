@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { makeAuthenticatedRequest } from '../services/api';
 import MoodSelector from './MoodSelector';
+import CardStack from './CardStack';
 
 function ChatView({ showAlert }) {
   const [messages, setMessages] = useState([]);
@@ -57,6 +58,7 @@ function ChatView({ showAlert }) {
   };
 
   return (
+    <>
     <div className="flex flex-col w-full max-w-md rounded-lg shadow-xl border border-border-color h-[600px] overflow-hidden">
       <div className="flex-grow-[4] p-4 overflow-y-auto space-y-4 text-dark-text-light" style={{ minHeight: '0' }}>
         {messages.map((msg, index) => (
@@ -142,6 +144,11 @@ function ChatView({ showAlert }) {
         </div>
       </div>
     </div>
+
+    <section className="card-stack-section" data-aos="fade-up" data-aos-duration="1000">
+      <CardStack />
+    </section>
+    </>
   );
 }
 
