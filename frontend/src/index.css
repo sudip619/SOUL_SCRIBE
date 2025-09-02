@@ -711,7 +711,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 }
 .sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
 .sidebar-icon { display: inline-flex; color: var(--accent-primary); }
-.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .45s ease, transform .45s ease; white-space: nowrap; }
+.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity 1.2s ease, transform 1.2s ease; white-space: nowrap; }
 .sidebar:hover .sidebar-label { opacity: 1; transform: translateX(0); }
 
 /* Expanding Card Stack (below chat) */
