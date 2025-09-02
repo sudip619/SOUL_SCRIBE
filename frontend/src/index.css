@@ -106,16 +106,16 @@ body.animated-gradient-bg {
 
 /* Angry: blob-like magenta/purple glow on dark, matching provided reference */
 body.theme-angry {
-  /* Override any animated gradient */
+  /* Exact gradient per spec */
   animation: none !important;
-  background-color: #000;
+  background-color: #000000;
   background-image:
-    radial-gradient(48vw 38vh at 88% -5%, rgba(255, 60, 180, 0.9) 0%, rgba(233, 45, 165, 0.62) 22%, rgba(128, 55, 210, 0.5) 40%, rgba(0,0,0,0) 62%),
-    radial-gradient(26vw 26vh at 8% 100%, rgba(122, 44, 255, 0.65) 0%, rgba(255, 56, 170, 0.38) 38%, rgba(0,0,0,0) 62%),
-    linear-gradient(180deg, #000 0%, #0b0614 100%);
+    radial-gradient(at 90% 10%, #9f2096 0px, transparent 50%),
+    radial-gradient(at 10% 90%, #3b0210 0px, transparent 50%);
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  overflow: hidden;
 }
+'}  }```
 
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
