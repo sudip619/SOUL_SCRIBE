@@ -674,30 +674,28 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .card-stack-section {
   width: 100%;
   padding: 4rem 2rem 6rem;
-  display: flex;
-  justify-content: center;
 }
+.card-stack-rows { display: grid; gap: 1rem; }
 .card-stack-row {
   display: flex;
   gap: 1rem;
   width: 100%;
   max-width: 1400px;
-  overflow-x: auto;
-  padding-bottom: .5rem;
+  margin: 0 auto;
 }
 .card-stack-item {
   position: relative;
-  width: 120px;
   height: 420px;
   border-radius: 20px;
   background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: 1px solid var(--border-color);
-  transition: width .5s ease, box-shadow .4s ease, transform .5s ease;
+  transition: flex-basis .5s ease, box-shadow .4s ease;
   overflow: hidden;
-  flex: 0 0 auto;
+  flex: 1 1 12%;
+  min-width: 100px;
 }
 .card-stack-item:hover {
-  width: 520px;
+  flex-basis: 40%;
   box-shadow: 0 0 30px 1px var(--accent-primary);
 }
 .card-vertical {
