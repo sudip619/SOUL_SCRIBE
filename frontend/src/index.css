@@ -674,6 +674,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .card-stack-section {
   width: 100%;
   padding: 4rem 2rem 6rem;
+  overflow: hidden;
 }
 .card-stack-rows { display: grid; gap: 1rem; }
 .card-stack-row {
@@ -689,13 +690,13 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   border-radius: 20px;
   background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: 1px solid var(--border-color);
-  transition: flex-basis .5s ease, box-shadow .4s ease;
   overflow: hidden;
-  flex: 1 1 12%;
-  min-width: 100px;
+  flex: 1 1 0;
+  transition: flex .45s ease, box-shadow .4s ease;
 }
+.card-stack-row:hover .card-stack-item { flex: 1 1 0; }
 .card-stack-item:hover {
-  flex-basis: 40%;
+  flex: 3 1 0;
   box-shadow: 0 0 30px 1px var(--accent-primary);
 }
 .card-vertical {
@@ -737,11 +738,11 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 
 @media (max-width: 1024px) {
   .card-stack-item { height: 360px; }
-  .card-stack-item:hover { flex-basis: 55%; }
+  .card-stack-item:hover { flex: 2.2 1 0; }
 }
 @media (max-width: 640px) {
   .card-stack-row { gap: .75rem; }
-  .card-stack-item { min-width: 80px; height: 320px; }
-  .card-stack-item:hover { flex-basis: 70%; }
+  .card-stack-item { height: 320px; }
+  .card-stack-item:hover { flex: 1.8 1 0; }
   .card-details-title { font-size: 1.1rem; }
 }
