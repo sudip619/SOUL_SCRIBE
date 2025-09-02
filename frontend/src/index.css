@@ -672,22 +672,30 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 
 /* App shell with animated sidebar */
 .app-shell {
+  position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 2rem;
   width: 100%;
+  padding-left: 88px; /* reserve space for collapsed sidebar so content never shifts */
 }
 .app-content { flex: 1; display: flex; justify-content: center; }
 .sidebar {
+  position: fixed;
+  left: 24px;
+  top: 96px; /* sits below header */
+  height: calc(100vh - 128px);
   width: 64px;
   background-color: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  transition: width .35s ease;
   overflow: hidden;
+  will-change: width;
+  transition: width .7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .7s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  z-index: 50;
 }
-.sidebar:hover { width: 220px; }
-.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; }
+.sidebar:hover { width: 244px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; height: 100%; overflow-y: auto; }
 .sidebar-item {
   display: flex;
   align-items: center;
@@ -699,11 +707,12 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   padding: .6rem .75rem;
   border-radius: 12px;
   cursor: pointer;
+  transition: background .3s ease, transform .3s ease;
 }
-.sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); }
+.sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
 .sidebar-icon { display: inline-flex; color: var(--accent-primary); }
-.sidebar-label { opacity: 0; transition: opacity .25s ease; white-space: nowrap; }
-.sidebar:hover .sidebar-label { opacity: 1; }
+.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .45s ease, transform .45s ease; white-space: nowrap; }
+.sidebar:hover .sidebar-label { opacity: 1; transform: translateX(0); }
 
 /* Expanding Card Stack (below chat) */
 .card-stack-section {
