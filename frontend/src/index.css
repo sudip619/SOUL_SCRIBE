@@ -694,7 +694,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   flex: 1 1 0;
   transition: flex-grow .45s ease;
 }
-.card-stack-row:hover .card-stack-item { flex-grow: 1; }
+.card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: 1; }
 .card-stack-item:hover {
   flex-grow: 4;
 }
