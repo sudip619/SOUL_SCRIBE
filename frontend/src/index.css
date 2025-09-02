@@ -784,9 +784,10 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 body.theme-angry .sidebar-item:hover, body.theme-angry .sidebar-item.is-active { background: #180202; box-shadow: inset 0 0 0 1px #2a0000; }
 body.theme-bright .sidebar-item:hover, body.theme-bright .sidebar-item.is-active { background: #221802; box-shadow: inset 0 0 0 1px #3a2b04; }
 body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active { background: #01161e; }
-.sidebar-icon { display: inline-flex; color: var(--accent-primary); }
+.sidebar-icon { display: inline-flex; color: color-mix(in srgb, var(--accent-primary) 45%, white); transition: color .25s ease; }
 /* Ensure all SVGs inside icons inherit themed color */
 .sidebar-icon svg { color: currentColor; fill: currentColor; stroke: currentColor; }
+.sidebar-item:hover .sidebar-icon, .sidebar-item.is-active .sidebar-icon { color: color-mix(in srgb, var(--accent-primary) 30%, white); }
 .sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .35s ease, transform .35s ease; white-space: nowrap; }
 .sidebar.is-open .sidebar-label { opacity: 1; transform: translateX(0); }
 
