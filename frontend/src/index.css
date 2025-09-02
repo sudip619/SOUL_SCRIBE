@@ -126,6 +126,36 @@ body.animated-gradient-bg {
 .logo-card-inner:hover { transform: scale(0.98); }
 .logo-card:hover { box-shadow: 0px 0px 30px 1px var(--accent-primary); }
 
+/* 3D Spline viewer section below the login area */
+.spline-scroll-section {
+  width: 100%;
+  padding: 0 2rem 4rem;
+  margin-top: 6rem;
+  display: flex;
+  justify-content: center;
+}
+.spline-card {
+  width: 100%;
+  max-width: 1280px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+}
+/* Ensure the web component fills the card and looks big */
+.spline-card spline-viewer {
+  display: block;
+  width: 100%;
+  height: 80vh;
+}
+@media (max-width: 1024px) {
+  .spline-card spline-viewer { height: 70vh; }
+}
+@media (max-width: 640px) {
+  .spline-card { border-radius: 12px; }
+  .spline-card spline-viewer { height: 60vh; }
+}
+
 
 /* --- ALL YOUR EXISTING ANIMATION STYLES --- */
 /* (All of your other custom classes for buttons, inputs, etc., are kept below) */
