@@ -9,7 +9,7 @@ function CardStack() {
   return (
     <div className="card-stack-row">
       {EMOTIONS.map((title, i) => (
-        <div className="card-stack-item" key={i}>
+        <div className={`card-stack-item ${title === 'Angry' ? 'emotion-angry' : ''}`} key={i}>
           <div className="card-vertical">
             <span className="card-index">{String(i + 1).padStart(2, '0')}</span>
             <span className="card-name">{title}</span>
