@@ -123,11 +123,8 @@ function AuthForm({ onLoginSuccess, showAlert }) {
     <section className="spline-hero-section" data-aos="fade-up" data-aos-duration="1000">
       <div className="spline-hero-content">
         <div className="spline-info">
-          <h2 className="spline-heading">SoulScribe</h2>
-          <p className="spline-description">
-            Your AI companion for mindful journaling. Track your moods, reflect with guided prompts,
-            and discover patterns that help you grow. Secure, thoughtful, and always by your side.
-          </p>
+          <h2 className="spline-heading">Hi I am SoulSCRIBE.</h2>
+          <p className="spline-description">feeling a little cloudy ? let me handle it. come on login and let's start this experience that is literally 'emotional'</p>
         </div>
         <div className="spline-view">
           <spline-viewer url="https://prod.spline.design/CTZipUkFTTfJgLHe/scene.splinecode"></spline-viewer>
