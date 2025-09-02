@@ -56,15 +56,15 @@
   --border-color: rgba(217, 83, 79, 0.2);
 }
 
-/* Angry/Annoyed theme: magenta/purple neon with deep plum gradient */
+/* Angry/Annoyed theme: derived strictly from #1f0000 and #3d001e */
 .theme-angry {
-  --bg-primary: #0f0b1d; /* deep plum/navy */
-  --bg-secondary: #1e1230; /* darker purple */
-  --text-primary: #fde7ff; /* light pinkish */
-  --text-secondary: #d2b5e6;
-  --accent-primary: #ff2fb9; /* vibrant magenta */
-  --accent-secondary: #7a2cff; /* electric purple */
-  --border-color: rgba(255, 47, 185, 0.25);
+  --bg-primary: #1a0000; /* darker version of #1f0000 */
+  --bg-secondary: #2b0011; /* darker mix of #3d001e */
+  --text-primary: #ffd6e0; /* light tint of #3d001e for high contrast */
+  --text-secondary: #f1a5b6; /* softer tint of #3d001e */
+  --accent-primary: #ff3d7a; /* brightened tint of #3d001e */
+  --accent-secondary: #b8003b; /* deepened shade of #3d001e */
+  --border-color: rgba(255, 61, 122, 0.25); /* from accent-primary */
 }
 
 
