@@ -758,6 +758,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   transition: background .3s ease, transform .3s ease;
 }
 .sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
+body.theme-angry .sidebar-item:hover, body.theme-angry .sidebar-item.is-active { background: color-mix(in srgb, #3d001e 42%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, #3d001e 28%, transparent); }
 .sidebar-icon { display: inline-flex; color: var(--accent-primary); }
 .sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .35s ease, transform .35s ease; white-space: nowrap; }
 .sidebar.is-open .sidebar-label { opacity: 1; transform: translateX(0); }
