@@ -696,7 +696,8 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
   z-index: 50;
 }
-.sidebar:hover { width: 244px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); animation: sidebar-bounce .6s ease-out 1 1.6s; }
+.sidebar.is-open { width: 244px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+.sidebar.play-bounce { animation: sidebar-bounce .6s ease-out 1; }
 .sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
 .sidebar-inner::-webkit-scrollbar { width: 0; height: 0; }
 .sidebar-item {
@@ -715,7 +716,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
 .sidebar-icon { display: inline-flex; color: var(--accent-primary); }
 .sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity 1.2s ease, transform 1.2s ease; white-space: nowrap; }
-.sidebar:hover .sidebar-label { opacity: 1; transform: translateX(0); }
+.sidebar.is-open .sidebar-label { opacity: 1; transform: translateX(0); }
 
 @keyframes sidebar-bounce {
   0% { transform: translateX(0) scaleX(1); }
