@@ -154,20 +154,28 @@ body.animated-gradient-bg {
   font-size: 1.05rem;
   line-height: 1.7;
 }
+.spline-hero-section { overflow: hidden; }
+.spline-view { position: relative; overflow: visible; justify-self: end; }
 .spline-view spline-viewer {
   display: block;
   width: 100%;
   height: 80vh;
+  transform: scale(2) translateX(10%);
+  transform-origin: right center;
+}
+@media (max-width: 1440px) {
+  .spline-view spline-viewer { transform: scale(1.8) translateX(8%); }
 }
 @media (max-width: 1280px) {
   .spline-hero-content { grid-template-columns: 1fr 1fr; }
+  .spline-view spline-viewer { transform: scale(1.6) translateX(6%); }
 }
 @media (max-width: 1024px) {
   .spline-hero-content { grid-template-columns: 1fr; }
-  .spline-view spline-viewer { height: 70vh; }
+  .spline-view spline-viewer { height: 70vh; transform: scale(1.3) translateX(0%); transform-origin: center; }
 }
 @media (max-width: 640px) {
-  .spline-view spline-viewer { height: 60vh; }
+  .spline-view spline-viewer { height: 60vh; transform: scale(1.1) translateX(0%); }
 }
 
 
