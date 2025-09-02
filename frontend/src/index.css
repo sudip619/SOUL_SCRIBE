@@ -737,11 +737,11 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 
 @media (max-width: 1024px) {
   .card-stack-item { height: 360px; }
-  .card-stack-item:hover { width: 420px; }
+  .card-stack-item:hover { flex-basis: 55%; }
 }
 @media (max-width: 640px) {
   .card-stack-row { gap: .75rem; }
-  .card-stack-item { width: 100px; height: 320px; }
-  .card-stack-item:hover { width: 320px; }
+  .card-stack-item { min-width: 80px; height: 320px; }
+  .card-stack-item:hover { flex-basis: 70%; }
   .card-details-title { font-size: 1.1rem; }
 }
