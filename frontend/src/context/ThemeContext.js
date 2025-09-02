@@ -33,7 +33,8 @@ export const ThemeProvider = ({ children }) => {
       'theme-bright',
       'theme-calm',
       'theme-muted',
-      'theme-grounding'
+      'theme-grounding',
+      'theme-angry'
     );
     
     // Add the new theme class
