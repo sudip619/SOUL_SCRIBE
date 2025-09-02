@@ -676,9 +676,10 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   padding: 4rem 2rem 6rem;
   overflow: hidden;
 }
-.card-stack-rows { display: grid; gap: 1rem; }
+.card-stack-rows { display: block; }
 .card-stack-row {
   display: flex;
+  flex-wrap: nowrap;
   gap: 1rem;
   width: 100%;
   max-width: 1400px;
@@ -691,12 +692,13 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border: 1px solid var(--border-color);
   overflow: hidden;
-  flex: 1 1 0;
+  flex-grow: .4;
+  flex-basis: 0;
   transition: flex-grow .45s ease;
 }
-.card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: 1; }
+.card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: .3; }
 .card-stack-item:hover {
-  flex-grow: 4;
+  flex-grow: 5.5;
 }
 .card-vertical {
   position: absolute;
@@ -737,11 +739,11 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 
 @media (max-width: 1024px) {
   .card-stack-item { height: 360px; }
-  .card-stack-item:hover { flex-grow: 3; }
+  .card-stack-item:hover { flex-grow: 4; }
 }
 @media (max-width: 640px) {
-  .card-stack-row { gap: .75rem; }
-  .card-stack-item { height: 320px; }
-  .card-stack-item:hover { flex-grow: 2.2; }
+  .card-stack-row { gap: .6rem; }
+  .card-stack-item { height: 300px; }
+  .card-stack-item:hover { flex-grow: 3; }
   .card-details-title { font-size: 1.1rem; }
 }
