@@ -102,6 +102,7 @@ body.animated-gradient-bg {
   background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
   background-size: 400% 400%;
   animation: gradientBG 25s ease infinite;
+  background-attachment: fixed;
 }
 
 /* Angry: blob-like magenta/purple glow on dark, matching provided reference */
@@ -114,6 +115,7 @@ body.theme-angry {
   background: var(--bg-color) !important;
   background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
   background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
 }
 
 
