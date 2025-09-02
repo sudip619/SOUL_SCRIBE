@@ -690,7 +690,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   border-radius: 16px;
   overflow: hidden;
   will-change: width;
-  transition: width .7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .7s ease;
+  transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.4s ease;
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
   z-index: 50;
 }
