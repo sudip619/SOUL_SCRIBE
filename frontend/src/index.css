@@ -692,7 +692,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   border-radius: 16px;
   overflow: hidden;
   will-change: width, transform;
-  transition: width 1.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 1.6s ease, transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width .9s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .9s ease, transform .9s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 6px 16px rgba(0,0,0,0.25);
   z-index: 50;
 }
@@ -715,7 +715,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 }
 .sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
 .sidebar-icon { display: inline-flex; color: var(--accent-primary); }
-.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity 1.2s ease, transform 1.2s ease; white-space: nowrap; }
+.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .55s ease, transform .55s ease; white-space: nowrap; }
 .sidebar.is-open .sidebar-label { opacity: 1; transform: translateX(0); }
 
 @keyframes sidebar-bounce {
