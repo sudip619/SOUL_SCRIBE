@@ -93,6 +93,7 @@ body.animated-gradient-bg {
 }
 
 /* Styles for the new two-column auth page layout */
+.auth-page-wrapper { width: 100%; }
 .auth-page-container {
   display: flex;
   justify-content: center;
