@@ -670,6 +670,41 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
 }
 
+/* App shell with animated sidebar */
+.app-shell {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+}
+.app-content { flex: 1; display: flex; justify-content: center; }
+.sidebar {
+  width: 64px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: width .35s ease;
+  overflow: hidden;
+}
+.sidebar:hover { width: 220px; }
+.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; }
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: .6rem .75rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); }
+.sidebar-icon { display: inline-flex; color: var(--accent-primary); }
+.sidebar-label { opacity: 0; transition: opacity .25s ease; white-space: nowrap; }
+.sidebar:hover .sidebar-label { opacity: 1; }
+
 /* Expanding Card Stack (below chat) */
 .card-stack-section {
   width: 100%;
