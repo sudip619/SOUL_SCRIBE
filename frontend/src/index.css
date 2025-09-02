@@ -110,8 +110,8 @@ body.theme-angry {
   animation: none !important;
   background-color: #000;
   background-image:
-    radial-gradient(54rem 40rem at 88% 10%, rgba(255, 40, 170, 0.75) 0%, rgba(175, 25, 140, 0.55) 35%, rgba(0,0,0,0) 62%),
-    radial-gradient(36rem 28rem at 10% 92%, rgba(122, 44, 255, 0.60) 0%, rgba(255, 50, 160, 0.35) 35%, rgba(0,0,0,0) 62%),
+    radial-gradient(40vw 30vh at 82% 12%, rgba(255, 40, 170, 0.78) 0%, rgba(175, 25, 140, 0.55) 38%, rgba(0,0,0,0) 62%),
+    radial-gradient(28vw 24vh at 12% 88%, rgba(122, 44, 255, 0.62) 0%, rgba(255, 50, 160, 0.35) 38%, rgba(0,0,0,0) 62%),
     linear-gradient(180deg, #000 0%, #0f0b1d 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
