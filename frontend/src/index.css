@@ -106,12 +106,14 @@ body.animated-gradient-bg {
 
 /* Angry: blob-like magenta/purple glow on dark, matching provided reference */
 body.theme-angry {
-  background-color: var(--bg-primary);
-  background-image:
-    radial-gradient(40rem 28rem at 80% 12%, rgba(255, 47, 185, 0.55), rgba(255, 47, 185, 0) 60%),
-    radial-gradient(28rem 22rem at 12% 88%, rgba(122, 44, 255, 0.50), rgba(122, 44, 255, 0) 60%),
-    linear-gradient(180deg, #000000 0%, var(--bg-primary) 100%);
+  /* Override any animated gradient */
+  animation: none !important;
+  background:
+    radial-gradient(40rem 28rem at 80% 12%, rgba(255, 47, 185, 0.58), rgba(255, 47, 185, 0) 60%),
+    radial-gradient(28rem 22rem at 12% 88%, rgba(122, 44, 255, 0.55), rgba(122, 44, 255, 0) 60%),
+    linear-gradient(180deg, #000 0%, var(--bg-primary) 100%);
   background-repeat: no-repeat;
+  background-size: auto;
 }
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
