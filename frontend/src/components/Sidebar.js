@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const NavItem = ({ active, label, onClick, children }) => (
   <button
@@ -12,6 +12,10 @@ const NavItem = ({ active, label, onClick, children }) => (
 );
 
 function Sidebar({ currentView, onNavigate }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [playBounce, setPlayBounce] = useState(false);
+  const timerRef = useRef(null);
+
   const items = [
     { key: 'chat', label: 'Chat', icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg>
@@ -38,8 +42,29 @@ function Sidebar({ currentView, onNavigate }) {
     onNavigate(key);
   };
 
+  useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
+
+  const handleEnter = () => {
+    setIsOpen(true);
+    setPlayBounce(false);
+    timerRef.current = setTimeout(() => setPlayBounce(true), 1600);
+  };
+
+  const handleLeave = () => {
+    setIsOpen(false);
+    setPlayBounce(false);
+    if (timerRef.current) clearTimeout(timerRef.current);
+  };
+
   return (
-    <aside className="sidebar" data-aos="fade-right" data-aos-duration="800">
+    <aside
+      className={`sidebar ${isOpen ? 'is-open' : ''} ${playBounce ? 'play-bounce' : ''}`}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onAnimationEnd={() => setPlayBounce(false)}
+      data-aos="fade-right"
+      data-aos-duration="800"
+    >
       <div className="sidebar-inner">
         {items.map((it) => (
           <NavItem key={it.key} active={currentView === it.key} label={it.label} onClick={() => go(it.key)}>
