@@ -4,6 +4,7 @@ import AuthForm from './components/AuthForm';
 import ProfileView from './components/ProfileView';
 import MoodTrendsView from './components/MoodTrendsView';
 import ChatView from './components/ChatView';
+import Sidebar from './components/Sidebar';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import toast, { Toaster } from 'react-hot-toast';
 import LoadingScreen from './components/LoadingScreen';
@@ -133,8 +134,17 @@ const AppContent = () => {
               )}
             </nav>
           </header>
-          <main className="flex-grow flex items-center justify-center p-8">
-            {renderView()}
+          <main className="flex-grow p-8">
+            {isLoggedIn ? (
+              <div className="app-shell">
+                <Sidebar currentView={currentView} onNavigate={handleNavClick} />
+                <div className="app-content">
+                  {renderView()}
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center justify-center">{renderView()}</div>
+            )}
           </main>
           <footer className="text-dark-text-muted p-4 text-center text-sm">
             <p>&copy; 2025 AI Mental Health Chatbot Team. All rights reserved.</p>

@@ -18,7 +18,8 @@ const moodToTheme = {
   'anxious': 'theme-grounding',
   'frustrated': 'theme-grounding',
   'overwhelmed': 'theme-grounding',
-  'angry': 'theme-grounding',
+  'angry': 'theme-angry',
+  'annoyed': 'theme-angry',
 };
 
 export const ThemeProvider = ({ children }) => {
@@ -32,7 +33,8 @@ export const ThemeProvider = ({ children }) => {
       'theme-bright',
       'theme-calm',
       'theme-muted',
-      'theme-grounding'
+      'theme-grounding',
+      'theme-angry'
     );
     
     // Add the new theme class

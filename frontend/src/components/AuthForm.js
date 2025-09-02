@@ -61,6 +61,7 @@ function AuthForm({ onLoginSuccess, showAlert }) {
   };
 
   return (
+    <div className="auth-page-wrapper">
     <div className="auth-page-container">
       
       {/* MODIFIED: Added fade-down animation with a 2500ms duration */}
@@ -117,6 +118,19 @@ function AuthForm({ onLoginSuccess, showAlert }) {
         </div>
       </div>
 
+    </div>
+
+    <section className="spline-hero-section" data-aos="fade-up" data-aos-duration="1000">
+      <div className="spline-hero-content">
+        <div className="spline-info">
+          <h2 className="spline-heading">Hi I am SoulSCRIBE.</h2>
+          <p className="spline-description">feeling a little cloudy ? let me handle it. come on login and let's start this experience that is literally 'emotional'</p>
+        </div>
+        <div className="spline-view">
+          <spline-viewer url="https://prod.spline.design/CTZipUkFTTfJgLHe/scene.splinecode"></spline-viewer>
+        </div>
+      </div>
+    </section>
     </div>
   );
 }
