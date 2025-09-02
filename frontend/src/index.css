@@ -718,20 +718,31 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   top: 96px; /* sits below header */
   height: calc(100vh - 128px);
   width: 64px;
-  background-color: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--border-color);
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
+      color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 28%, transparent);
   border-radius: 16px;
+  background-clip: padding-box;
   overflow: hidden;
   will-change: width, transform;
   transition: width .45s ease, box-shadow .45s ease, transform .45s ease;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 24px rgba(0,0,0,0.35);
   z-index: 50;
 }
-.sidebar.is-open { width: 244px; box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+.sidebar.is-open { width: 244px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 28px rgba(0,0,0,0.45); }
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.02) 70%, rgba(255,255,255,0));
+}
 .sidebar.play-bounce { animation: sidebar-bounce .6s ease-out 1; }
-.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; }
+.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; position: relative; }
 .sidebar-inner::-webkit-scrollbar { width: 0; height: 0; }
 .sidebar-item {
   display: flex;
