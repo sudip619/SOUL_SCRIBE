@@ -65,9 +65,10 @@
   /* MODIFIED: The default background is now the solid dark blue for the login page */
   body {
     color: var(--text-primary);
-    background-color: #041021; 
+    background-color: #041021;
     @apply font-sans;
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    overflow-x: hidden;
   }
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
