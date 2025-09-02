@@ -106,12 +106,15 @@ body.animated-gradient-bg {
 
 /* Angry: blob-like magenta/purple glow on dark, matching provided reference */
 body.theme-angry {
-  /* Exact gradient per spec */
+  /* Exact gradient per provided code using CSS variables */
   animation: none !important;
-  background-color: #000000;
+  --color1: #9f2096; /* Top-right magenta */
+  --color2: #3b0210; /* Bottom-left purple */
+  --bg-color: #000000; /* Deep black */
+  background-color: var(--bg-color);
   background-image:
-    radial-gradient(at 90% 10%, #9f2096 0px, transparent 50%),
-    radial-gradient(at 10% 90%, #3b0210 0px, transparent 50%);
+    radial-gradient(at 90% 10%, var(--color1) 0px, transparent 50%),
+    radial-gradient(at 10% 90%, var(--color2) 0px, transparent 50%);
   background-repeat: no-repeat;
   overflow: hidden;
 }
