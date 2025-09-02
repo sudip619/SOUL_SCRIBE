@@ -121,7 +121,7 @@ body.theme-angry {
 /* Happy: same radial-gradient layout as angry, with given colors */
 body.theme-bright {
   animation: none !important;
-  --color1: #744a01;
+  --color1: #574319;
   --color2: #c29905;
   --bg-color: #000000;
   background: var(--bg-color) !important;
