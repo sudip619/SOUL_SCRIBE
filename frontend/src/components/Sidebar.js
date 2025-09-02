@@ -62,8 +62,8 @@ function Sidebar({ currentView, onNavigate }) {
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onAnimationEnd={() => setPlayBounce(false)}
-      data-aos="fade-right"
-      data-aos-duration="800"
+      role="navigation"
+      aria-label="Main"
     >
       <div className="sidebar-inner">
         {items.map((it) => (
