@@ -807,10 +807,10 @@ body.theme-angry .sidebar-item:hover, body.theme-angry .sidebar-item.is-active {
   flex-basis: 0;
   transition: flex-grow .45s ease;
 }
-/* Specific palette for Angry card in the stack */
+/* Angry card uses same palette as others */
 .card-stack-item.emotion-angry {
-  background-image: linear-gradient(163deg, #ff2fb9 0%, #7a2cff 100%);
-  border-color: rgba(255, 47, 185, 0.25);
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-color: var(--border-color);
 }
 .card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: .3; }
 .card-stack-item:hover {
