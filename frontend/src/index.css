@@ -41,9 +41,9 @@
   --bg-secondary: #16252a;
   --text-primary: #d7e8ef;
   --text-secondary: #9fb4bc;
-  --accent-primary: #144e6b; /* matches gradient color1 */
-  --accent-secondary: #22343a; /* matches gradient color2 */
-  --border-color: rgba(20, 78, 107, 0.28);
+  --accent-primary: #2e3a4d; /* matches updated gradient color1 */
+  --accent-secondary: #465d5d; /* matches updated gradient color2 */
+  --border-color: rgba(46, 58, 77, 0.28);
 }
 
 .theme-grounding {
