@@ -718,7 +718,9 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   top: 96px; /* sits below header */
   height: calc(100vh - 128px);
   width: 64px;
-  background-color: var(--bg-secondary);
+  background-color: color-mix(in srgb, var(--bg-secondary) 85%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
