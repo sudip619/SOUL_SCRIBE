@@ -61,7 +61,7 @@ function ProfileView({ username, showAlert }) {
   };
 
   return (
-    <div className="w-full max-w-md p-8 rounded-lg shadow-xl border border-border-color">
+    <div className="container-wide glass-panel p-8">
       <h2 className="text-3xl font-bold text-center text-accent-teal mb-8">Your Profile</h2>
       <p className="text-center text-xl font-semibold mb-6 text-dark-text-lighter">Welcome, {username}!</p>
 
@@ -74,8 +74,7 @@ function ProfileView({ username, showAlert }) {
             name="main_concern"
             value={mainConcern}
             onChange={(e) => setMainConcern(e.target.value)}
-            className="w-full p-3 bg-dark-bg-primary text-dark-text-light border border-dark-text-muted rounded-md
-                       focus:outline-none focus:ring-2 focus:ring-accent-pink focus:border-accent-pink transition duration-300"
+            className="w-full p-3 bg-dark-bg-primary/30 text-dark-text-light border border-dark-text-muted/40 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-pink focus:border-accent-pink transition duration-300"
           >
             <option value="">Select...</option>
             <option value="stress">Stress</option>
@@ -128,9 +127,7 @@ function ProfileView({ username, showAlert }) {
 
         <button
           type="submit"
-          className="bg-accent-teal text-dark-text-lighter py-3 rounded-md font-semibold mt-6
-                       hover:bg-accent-pink transition-all duration-300 ease-in-out
-                       transform hover:scale-105 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-pink"
+          className="send-fly-button mt-6"
         >
           Save Preferences
         </button>

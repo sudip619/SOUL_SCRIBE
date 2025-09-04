@@ -59,7 +59,7 @@ function ChatView({ showAlert }) {
 
   return (
     <div className="w-full flex flex-col items-center gap-8">
-    <div className="flex flex-col w-full max-w-md rounded-lg h-[600px] overflow-hidden glass-panel">
+    <div className="flex flex-col w-full max-w-3xl rounded-lg h-[640px] overflow-hidden glass-panel">
       <div className="flex-grow-[4] p-4 overflow-y-auto space-y-4 text-dark-text-light" style={{ minHeight: '0' }}>
         {messages.map((msg, index) => (
           <div

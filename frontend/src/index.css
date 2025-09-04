@@ -5,66 +5,67 @@
 @tailwind utilities;
 
 /* --- THEME DEFINITIONS --- */
-/* This is the new default theme for the login page */
+/* Expressive Neo theme (aesthetic neon + glass) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 :root {
-  --bg-primary: #041021;      /* Solid dark blue */
-  --bg-secondary: #0B1A31;    /* Slightly lighter for cards */
-  --text-primary: #b9ecfd;     /* Light blue text */
-  --text-secondary: #829AB1;   /* Muted secondary text */
-  --accent-primary: #38b6ff;   /* Bright blue accent */
-  --accent-secondary: #3194cc; /* Deeper blue highlight */
-  --border-color: rgba(56, 182, 255, 0.2);
+  --bg-primary: #0a0b12;
+  --bg-secondary: #111423;
+  --text-primary: #e8f0ff;
+  --text-secondary: #9aa6c7;
+  --accent-primary: #7c3aed; /* neon purple */
+  --accent-secondary: #06b6d4; /* cyan */
+  --border-color: rgba(124, 58, 237, 0.25);
 }
 
 .theme-bright {
-  --bg-primary: #1a0f00;
-  --bg-secondary: #2b1a01;
-  --text-primary: #fff2db;
-  --text-secondary: #e7c79a;
-  --accent-primary: #c29905;
-  --accent-secondary: #574319;
-  --border-color: rgba(194, 153, 5, 0.25);
+  --bg-primary: #0b0820;
+  --bg-secondary: #121032;
+  --text-primary: #f3ecff;
+  --text-secondary: #bfb4ea;
+  --accent-primary: #c084fc; /* bright lavender */
+  --accent-secondary: #34d399; /* mint */
+  --border-color: rgba(192, 132, 252, 0.3);
 }
 
 .theme-calm {
-  --bg-primary: #34495E;
-  --bg-secondary: #4A6572;
-  --text-primary: #ECF0F1;
-  --text-secondary: #B0BEC5;
-  --accent-primary: #5D9CEC;
-  --accent-secondary: #9B59B6;
-  --border-color: rgba(93, 156, 236, 0.2);
+  --bg-primary: #0a1a1f;
+  --bg-secondary: #10242c;
+  --text-primary: #e7fffb;
+  --text-secondary: #a5c6c8;
+  --accent-primary: #22d3ee; /* sky cyan */
+  --accent-secondary: #60a5fa; /* sky blue */
+  --border-color: rgba(34, 211, 238, 0.25);
 }
 
 .theme-muted {
-  --bg-primary: #22343a;
-  --bg-secondary: #16252a;
-  --text-primary: #d7e8ef;
-  --text-secondary: #9fb4bc;
-  --accent-primary: #465d5d;
-  --accent-secondary: #465d5d;
-  --border-color: rgba(46, 58, 77, 0.28);
+  --bg-primary: #0d1418;
+  --bg-secondary: #0d1216;
+  --text-primary: #e0f2f1;
+  --text-secondary: #94a3b8;
+  --accent-primary: #5b6b78; /* cool slate */
+  --accent-secondary: #374956; /* deeper slate */
+  --border-color: rgba(91, 107, 120, 0.28);
 }
 
 .theme-grounding {
-  --bg-primary: #2F4F4F;
-  --bg-secondary: #3E606F;
-  --text-primary: #CED4DA;
-  --text-secondary: #868E96;
-  --accent-primary: #D9534F;
-  --accent-secondary: #B8860B;
-  --border-color: rgba(217, 83, 79, 0.2);
+  --bg-primary: #0f1a12;
+  --bg-secondary: #0f2319;
+  --text-primary: #e8ffe8;
+  --text-secondary: #b7d7c0;
+  --accent-primary: #34d399; /* emerald */
+  --accent-secondary: #f59e0b; /* amber */
+  --border-color: rgba(52, 211, 153, 0.25);
 }
 
 /* Angry/Annoyed theme: derived strictly from #1f0000 and #3d001e */
 .theme-angry {
-  --bg-primary: #1a0000; /* darker version of #1f0000 */
-  --bg-secondary: #2b0011; /* darker mix of #3d001e */
-  --text-primary: #ffd6e0; /* light tint of #3d001e for high contrast */
-  --text-secondary: #f1a5b6; /* softer tint of #3d001e */
-  --accent-primary: #ff3d7a; /* brightened tint of #3d001e */
-  --accent-secondary: #b8003b; /* deepened shade of #3d001e */
-  --border-color: rgba(255, 61, 122, 0.25); /* from accent-primary */
+  --bg-primary: #140208;
+  --bg-secondary: #1c0410;
+  --text-primary: #ffe4ea;
+  --text-secondary: #ff9bb6;
+  --accent-primary: #ff447a;
+  --accent-secondary: #ff6b6b;
+  --border-color: rgba(255, 68, 122, 0.28);
 }
 
 
@@ -77,8 +78,8 @@
   /* MODIFIED: The default background is now the solid dark blue for the login page */
   body {
     color: var(--text-primary);
-    background-color: #041021;
-    @apply font-sans;
+    background-color: #0a0b12;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
     overflow-x: hidden;
   }
