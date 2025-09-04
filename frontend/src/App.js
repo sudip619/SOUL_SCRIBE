@@ -145,7 +145,7 @@ const AppContent = () => {
               <div className="app-shell">
                 <Sidebar currentView={currentView} onNavigate={handleNavClick} />
                 <div className="app-content">
-                  <div className="container-wide glass-panel p-6">{renderView()}</div>
+                  <div className="container-wide p-0">{renderView()}</div>
                 </div>
               </div>
             ) : (
