@@ -11,7 +11,7 @@ const NavItem = ({ active, label, onClick, children }) => (
   </button>
 );
 
-function Sidebar({ currentView, onNavigate }) {
+function Sidebar({ currentView, onNavigate, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
   const [playBounce, setPlayBounce] = useState(false);
   const timerRef = useRef(null);
@@ -38,9 +38,13 @@ function Sidebar({ currentView, onNavigate }) {
     { key: 'help', label: 'Help', icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17h-2v-2h2zm1.07-7.75-.9.92A1.49 1.49 0 0 0 12.5 14h-1v-1a2 2 0 0 1 .55-1.38l1.2-1.2a1.5 1.5 0 1 0-2.55-1.06H9a3.5 3.5 0 1 1 5.07 2.69z"/></svg>
     )},
+    { key: 'logout', label: 'Logout', icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M16 13v-2H7V8L3 12l4 4v-3zM20 3h-8a2 2 0 0 0-2 2v4h2V5h8v14h-8v-4h-2v4a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg>
+    )},
   ];
 
   const go = (key) => {
+    if (key === 'logout') return onLogout && onLogout();
     if (key === 'insights') return onNavigate('moodTrends');
     onNavigate(key);
   };
