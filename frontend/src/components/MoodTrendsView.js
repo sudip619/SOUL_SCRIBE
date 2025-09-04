@@ -454,47 +454,41 @@ function MoodTrendsView({ showAlert }) {
     };
   }, [isModalOpen, moodLogs]);
 
-  const primaryBg = "#1A1A2E";
-  const secondaryBg = "#16213E";
-  const textColorPrimary = "#E0E0E0";
-  const textColorLighter = "#F0F0F0";
-  const accentColor = "#00ADB5";
-  const borderColor = "#00ADB5";
   const textMuted = "#888888";
 
 
   return (
-    <div className={`w-full bg-[${secondaryBg}] p-8 rounded-lg shadow-xl border border-[${borderColor}]/20`}>
-      <h2 className={`text-3xl font-bold text-center text-[${accentColor}] mb-8`}>Your Mood Trends</h2>
+    <div className="w-full glass-panel p-8">
+      <h2 className="text-3xl font-bold text-center text-accent-primary mb-8">Your Mood Trends</h2>
 
       {moodLogs.length === 0 ? (
-        <p className={`text-center text-[${textColorPrimary}] mb-4`}>No mood logs yet. Log some moods in the chat view to see your trends!</p>
+        <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
       ) : (
         <>
           {/* Line Chart: Wellbeing & Energy */}
-          <h3 className={`text-xl font-semibold text-[${textColorLighter}] text-center mb-4`}>Daily Average: Wellbeing & Energy</h3>
+          <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
           <div
             id="moodChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer"
+            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface"
             onClick={openChartModal}
           >
             <canvas
               id="moodChart"
               ref={chartRef}
-              className={`min-w-[700px] h-[350px] bg-[${primaryBg}] rounded-md p-4`}
+              className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}
             ></canvas>
           </div>
 
           {/* NEW: Stacked Bar Chart: Daily Mood Distribution */}
-          <h3 className={`text-xl font-semibold text-[${textColorLighter}] text-center mb-4`}>Daily Mood Distribution</h3>
+          <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
           <div
             id="stackedBarChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner" // Not clickable for modal
+            className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface"
           >
             <canvas
               id="stackedBarChart"
               ref={stackedBarChartRef}
-              className={`min-w-[700px] h-[350px] bg-[${primaryBg}] rounded-md p-4`}
+              className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}
             ></canvas>
           </div>
         </>
@@ -508,8 +502,7 @@ function MoodTrendsView({ showAlert }) {
           onClick={closeChartModal}
         >
           <div
-            className={`relative bg-[${secondaryBg}] p-8 rounded-lg shadow-2xl w-[90%] max-w-[1200px] h-[80%] max-h-[800px]
-                       flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out`}
+            className="relative glass-panel p-8 w-[90%] max-w-[1200px] h-[80%] max-h-[800px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -522,7 +515,7 @@ function MoodTrendsView({ showAlert }) {
               <canvas
                 id="expandedMoodChart"
                 ref={expandedChartRef}
-                className={`min-w-[1000px] h-full bg-[${primaryBg}] rounded-md p-4`}
+                className="min-w-[1000px] h-full rounded-md p-4 panel-surface"
               ></canvas>
             </div>
           </div>
