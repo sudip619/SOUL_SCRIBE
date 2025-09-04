@@ -507,7 +507,7 @@ function MoodTrendsView({ showAlert }) {
           >
             <button
               onClick={closeChartModal}
-              className={`absolute top-3 right-5 text-4xl font-bold text-[${textMuted}] hover:text-[${accentColor}] transition-colors duration-200 focus:outline-none`}
+              className={`absolute top-3 right-5 text-4xl font-bold text-[${textMuted}] hover:text-accent-teal transition-colors duration-200 focus:outline-none`}
             >
               &times;
             </button>
