@@ -846,6 +846,7 @@ body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active {
 .card-stack-item:hover {
   flex-grow: 5.5;
 }
+.card-stack-item.is-clickable { cursor: pointer; }
 .card-vertical {
   position: absolute;
   inset: 0;
