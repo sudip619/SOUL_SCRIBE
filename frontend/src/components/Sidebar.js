@@ -17,6 +17,9 @@ function Sidebar({ currentView, onNavigate }) {
   const timerRef = useRef(null);
 
   const items = [
+    { key: 'home', label: 'Home', icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    )},
     { key: 'chat', label: 'Chat', icon: (
       <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/></svg>
     )},
