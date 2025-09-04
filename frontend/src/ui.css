@@ -1,0 +1,37 @@
+/* Live, theme-aware background */
+.bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-scene .blob { position: absolute; filter: blur(40px); opacity: .25; border-radius: 50%; mix-blend-mode: screen; }
+.bg-scene .blob-a { width: 42vmin; height: 42vmin; left: -10vmin; top: 10vmin; background: var(--accent-primary); animation: float-a 18s ease-in-out infinite; }
+.bg-scene .blob-b { width: 48vmin; height: 48vmin; right: -12vmin; top: 20vmin; background: var(--accent-secondary); animation: float-b 22s ease-in-out infinite; }
+.bg-scene .blob-c { width: 36vmin; height: 36vmin; left: 30vmin; bottom: -8vmin; background: color-mix(in srgb, var(--accent-primary) 65%, var(--accent-secondary)); animation: float-c 26s ease-in-out infinite; }
+@keyframes float-a { 0%,100%{ transform: translateY(0) translateX(0) scale(1);} 50%{ transform: translateY(-6vmin) translateX(4vmin) scale(1.08);} }
+@keyframes float-b { 0%,100%{ transform: translateY(0) translateX(0) scale(1);} 50%{ transform: translateY(5vmin) translateX(-6vmin) scale(0.95);} }
+@keyframes float-c { 0%,100%{ transform: translateY(0) translateX(0) scale(1);} 50%{ transform: translateY(-4vmin) translateX(3vmin) scale(1.12);} }
+
+/* Glass panels */
+.glass-panel { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 65%, transparent), color-mix(in srgb, var(--bg-primary) 55%, transparent)); border: 1px solid var(--border-color); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%); border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
+
+/* Chat bubbles */
+.bubble { max-width: 78%; padding: .85rem 1rem; border-radius: 16px; box-shadow: 0 6px 18px rgba(0,0,0,.25); animation: pop-in .4s cubic-bezier(.22,1,.36,1) both; }
+.bubble-user { background: color-mix(in srgb, var(--accent-primary) 88%, black 0%); color: white; border-bottom-right-radius: 4px; }
+.bubble-bot { background: color-mix(in srgb, var(--bg-secondary) 85%, transparent); color: var(--text-primary); border-bottom-left-radius: 4px; border: 1px solid color-mix(in srgb, var(--accent-primary) 18%, transparent); }
+@keyframes pop-in { 0%{ opacity:0; transform: translateY(8px) scale(.98);} 100%{ opacity:1; transform: translateY(0) scale(1);} }
+
+/* Composer */
+.composer { display: flex; gap: .6rem; align-items: center; }
+.composer .chat-input-card { box-shadow: 0 10px 24px rgba(0,0,0,.25); }
+.composer:focus-within .chat-input-card { outline: 2px solid color-mix(in srgb, var(--accent-primary) 40%, transparent); }
+
+/* Mood chips */
+.mood-row { display:flex; flex-wrap: wrap; gap:.5rem; justify-content:center; padding:.25rem; }
+.mood-chip { display:inline-flex; align-items:center; gap:.5rem; padding:.45rem .6rem; border-radius: 999px; color: var(--text-primary); background: color-mix(in srgb, var(--bg-secondary) 75%, transparent); border: 1px solid var(--border-color); transition: transform .25s ease, box-shadow .25s ease, background .25s ease; }
+.mood-chip:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 10px 24px rgba(0,0,0,.25); background: color-mix(in srgb, var(--bg-secondary) 85%, transparent); }
+.mood-chip img { width: 20px; height: 20px; }
+.mood-chip .label { font-size: .85rem; opacity: .9; }
+
+/* Section reveal (additional to AOS) */
+.reveal-up { opacity: 0; transform: translateY(16px); animation: reveal-up .8s .15s cubic-bezier(.22,1,.36,1) forwards; }
+@keyframes reveal-up { to { opacity:1; transform: translateY(0);} }
+
+/* Utilities */
+.container-wide { width: 100%; max-width: 1100px; margin: 0 auto; }
