@@ -22,13 +22,10 @@
 .section-lead { color: var(--text-secondary); max-width: 840px; }
 .home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 
-/* Cards */
-.feature-card, .step-card { background: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%); border: 1px solid var(--border-color); border-radius: 16px; padding: 1px; }
-.feature-card > *, .step-card > * { background: var(--bg-secondary); border-radius: 15px; }
-.feature-card { display: grid; grid-template-rows: auto auto 1fr; }
-.feature-card .icon-badge { margin: .9rem .9rem 0 .9rem; }
-.feature-title { margin: .75rem .9rem 0 .9rem; color: var(--text-primary); font-weight: 700; }
-.feature-text { margin: .5rem .9rem 1rem .9rem; color: var(--text-secondary); line-height: 1.6; }
+/* Text-only info rows */
+.info-item { display: grid; grid-template-columns: auto 1fr; gap: .9rem; align-items: start; padding: .25rem 0; }
+.feature-title { margin: 0 0 .1rem 0; color: var(--text-primary); font-weight: 700; }
+.feature-text { margin: 0; color: var(--text-secondary); line-height: 1.6; }
 
 /* Icon badge */
 .icon-badge { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent-primary) 25%, transparent); color: var(--accent-primary); }
