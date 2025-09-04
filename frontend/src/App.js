@@ -6,6 +6,7 @@ import MoodTrendsView from './components/MoodTrendsView';
 import ChatView from './components/ChatView';
 import Sidebar from './components/Sidebar';
 import HomeView from './components/HomeView';
+import LiveBackground from './components/LiveBackground';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import toast, { Toaster } from 'react-hot-toast';
 import LoadingScreen from './components/LoadingScreen';
@@ -121,7 +122,8 @@ const AppContent = () => {
 
       {!isAuthenticating && (
         <>
-          <header className="w-full p-6 flex justify-between items-center">
+          <LiveBackground />
+          <header className="w-full p-6 flex justify-between items-center relative z-10">
             <h1 className="text-2xl font-bold text-accent-primary" data-aos="fade-right" data-aos-duration="2500">SoulSCRIBE</h1>
             <nav>
               {isLoggedIn && (
@@ -138,19 +140,19 @@ const AppContent = () => {
               )}
             </nav>
           </header>
-          <main className="flex-grow p-8">
+          <main className="flex-grow p-8 relative z-10">
             {isLoggedIn ? (
               <div className="app-shell">
                 <Sidebar currentView={currentView} onNavigate={handleNavClick} />
                 <div className="app-content">
-                  {renderView()}
+                  <div className="container-wide glass-panel p-6">{renderView()}</div>
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center">{renderView()}</div>
+              <div className="flex items-center justify-center container-wide glass-panel p-6">{renderView()}</div>
             )}
           </main>
-          <footer className="text-dark-text-muted p-4 text-center text-sm">
+          <footer className="text-dark-text-muted p-4 text-center text-sm relative z-10">
             <p>&copy; 2025 AI Mental Health Chatbot Team. All rights reserved.</p>
           </footer>
         </>
