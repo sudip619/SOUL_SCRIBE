@@ -10,7 +10,7 @@ function ChatView({ showAlert }) {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-  const { applyTheme } = useTheme();
+  const { applyTheme, resetTheme } = useTheme();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -146,7 +146,10 @@ function ChatView({ showAlert }) {
     <section className="card-stack-section" data-aos="fade-up" data-aos-duration="1000">
       <CardStack showAlert={showAlert} />
       <div className="flex justify-center mt-4">
-        <button onClick={() => applyTheme('neutral')} className="nav-button px-4 py-2 rounded-md">Reset Theme</button>
+        <button onClick={() => resetTheme()} className="reset-theme-button">
+          <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+          Reset Theme
+        </button>
       </div>
     </section>
     </div>
