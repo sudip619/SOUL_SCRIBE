@@ -83,6 +83,8 @@
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
     overflow-x: hidden;
   }
+  /* Apply broader transitions only during theme swap */
+  body.theme-smooth-transition * { transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease, filter .6s ease; }
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
   }
@@ -255,7 +257,7 @@ body.theme-muted {
   font-size: smaller;
   border: none;
   font-weight: bold;
-  letter-spacing: 3px;  
+  letter-spacing: 3px;
   text-transform: uppercase;
   cursor: pointer;
   position: relative;
@@ -264,6 +266,25 @@ body.theme-muted {
   color: var(--accent-primary);
   outline: 2px solid var(--accent-primary);
 }
+
+/* Reset Theme button (wider + aesthetic) */
+.reset-theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .9rem 1.5rem;
+  min-width: 240px;
+  color: var(--text-primary);
+  background: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+.reset-theme-button:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.05); box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+.reset-theme-button:active { transform: translateY(0) scale(.98); }
+.reset-theme-button svg { width: 18px; height: 18px; fill: currentColor; }
 .nav-button:hover {
   color: white;
   outline-color: var(--accent-secondary);
