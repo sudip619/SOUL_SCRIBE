@@ -41,8 +41,8 @@
   --bg-secondary: #16252a;
   --text-primary: #d7e8ef;
   --text-secondary: #9fb4bc;
-  --accent-primary: #2e3a4d; /* matches updated gradient color1 */
-  --accent-secondary: #465d5d; /* matches updated gradient color2 */
+  --accent-primary: #465d5d;
+  --accent-secondary: #465d5d;
   --border-color: rgba(46, 58, 77, 0.28);
 }
 
@@ -140,6 +140,19 @@ body.theme-muted {
   background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
+
+  /* Emotion cards and key elements aligned to sad gradient */
+  .card-stack-item,
+  .card-stack-item.emotion-angry {
+    background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%);
+    border-color: var(--border-color);
+  }
+  .send-fly-button { background: var(--color1); }
+  .nav-button { color: var(--color1); outline-color: var(--color1); }
+  .nav-button:hover::before { background-color: var(--color1); }
+  .chat-input-card { background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%); }
+  .c-button--gooey { border-color: var(--color1); }
+  .c-button--gooey .c-button__blobs div { background-color: var(--color1); }
 }
 
 @keyframes gradientBG {
