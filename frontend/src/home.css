@@ -41,20 +41,17 @@
 .theme-angry-chip > span { background: #ff3d7a; }
 
 /* Steps */
-.steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.step-card { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: .75rem; padding: 1px; }
-.step-card .icon-badge { margin: .85rem 0 .85rem .85rem; }
-.step-card .feature-title { margin: .85rem .85rem 0 0; }
-.step-card .feature-text { margin: .35rem .85rem .85rem 0; }
+.steps-list { display: grid; grid-template-columns: 1fr; gap: .75rem; }
+.step-item { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: .9rem; padding: .25rem 0; }
 
 /* Privacy */
-.privacy-card { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: .75rem; background: color-mix(in srgb, var(--bg-secondary) 80%, transparent); border: 1px solid var(--border-color); border-radius: 16px; padding: .9rem; }
+.privacy-row { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: .9rem; }
 
 /* Responsive */
 @media (max-width: 1024px) {
   .home-hero-inner { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .home-grid, .steps-grid { grid-template-columns: 1fr; }
+  .home-grid { grid-template-columns: 1fr; }
   .home-title { font-size: 1.75rem; }
 }
