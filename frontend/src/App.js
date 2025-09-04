@@ -5,6 +5,7 @@ import ProfileView from './components/ProfileView';
 import MoodTrendsView from './components/MoodTrendsView';
 import ChatView from './components/ChatView';
 import Sidebar from './components/Sidebar';
+import HomeView from './components/HomeView';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import toast, { Toaster } from 'react-hot-toast';
 import LoadingScreen from './components/LoadingScreen';
@@ -52,7 +53,7 @@ const AppContent = () => {
       setIsLoggedIn(true);
       setCurrentUsername(username);
       setCurrentUserId(userId);
-      setCurrentView('chat');
+      setCurrentView('home');
     } else {
       setIsLoggedIn(false);
       setCurrentView('auth');
@@ -66,7 +67,7 @@ const AppContent = () => {
       setIsLoggedIn(true);
       setCurrentUsername(username);
       setCurrentUserId(userId);
-      setCurrentView('chat');
+      setCurrentView('home');
       showAlert(`Welcome back, ${username}!`, true);
       setIsAuthenticating(false);
     }, 2000); // 2-second delay
@@ -94,6 +95,8 @@ const AppContent = () => {
     switch (currentView) {
       case 'auth':
         return <AuthForm onLoginSuccess={handleLoginSuccess} showAlert={showAlert} />;
+      case 'home':
+        return <HomeView />;
       case 'chat':
         return <ChatView showAlert={showAlert} />;
       case 'profile':
@@ -123,6 +126,7 @@ const AppContent = () => {
             <nav>
               {isLoggedIn && (
                 <div className="flex items-center gap-x-6">
+                  <button onClick={() => handleNavClick('home')} className="nav-button px-4 py-2 rounded-md">Home</button>
                   <button onClick={() => handleNavClick('chat')} className="nav-button px-4 py-2 rounded-md">Chat</button>
                   <button onClick={() => handleNavClick('profile')} className="nav-button px-4 py-2 rounded-md">Profile</button>
                   <button onClick={() => handleNavClick('moodTrends')} className="nav-button px-4 py-2 rounded-md">Mood Trends</button>
