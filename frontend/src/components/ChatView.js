@@ -59,7 +59,7 @@ function ChatView({ showAlert }) {
 
   return (
     <div className="w-full flex flex-col items-center gap-8">
-    <div className="flex flex-col w-full max-w-md rounded-lg shadow-xl border border-border-color h-[600px] overflow-hidden">
+    <div className="flex flex-col w-full max-w-md rounded-lg h-[600px] overflow-hidden glass-panel">
       <div className="flex-grow-[4] p-4 overflow-y-auto space-y-4 text-dark-text-light" style={{ minHeight: '0' }}>
         {messages.map((msg, index) => (
           <div
@@ -67,11 +67,7 @@ function ChatView({ showAlert }) {
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg shadow-md break-words
-                         ${msg.role === 'user'
-                            ? 'bg-accent-teal text-white rounded-br-none'
-                            : 'bg-dark-bg-primary text-dark-text-light rounded-bl-none'
-                          }`}
+              className={`bubble break-words ${msg.role === 'user' ? 'bubble-user' : 'bubble-bot'}`}
             >
               {msg.content}
             </div>
@@ -79,16 +75,16 @@ function ChatView({ showAlert }) {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[80%] p-3 rounded-lg shadow-md bg-dark-bg-primary text-dark-text-light rounded-bl-none">
+            <div className="bubble bubble-bot">
               <span className="inline-block animate-pulse">Typing...</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex flex-col flex-grow-[1] bg-dark-bg-primary border-t border-dark-bg-secondary">
+      <div className="flex flex-col flex-grow-[1] bg-dark-bg-primary/20 border-t border-dark-bg-secondary/30">
         {/* --- MODIFIED INPUT AREA --- */}
-        <div className="flex p-4 items-center gap-x-2">
+        <div className="composer p-4 items-center gap-x-2">
           
           {/* This entire block replaces your old <input /> */}
           <div className="chat-input-card">
