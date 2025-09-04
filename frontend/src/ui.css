@@ -35,3 +35,4 @@
 
 /* Utilities */
 .container-wide { width: 100%; max-width: 1100px; margin: 0 auto; }
+.panel-surface { background: color-mix(in srgb, var(--bg-secondary) 85%, transparent); border: 1px solid var(--border-color); }
