@@ -8,6 +8,9 @@
 @keyframes float-b { 0%,100%{ transform: translateY(0) translateX(0) scale(1);} 50%{ transform: translateY(5vmin) translateX(-6vmin) scale(0.95);} }
 @keyframes float-c { 0%,100%{ transform: translateY(0) translateX(0) scale(1);} 50%{ transform: translateY(-4vmin) translateX(3vmin) scale(1.12);} }
 
+/* Smooth theme swap transitions for background blobs */
+body.theme-smooth-transition .bg-scene .blob { transition: background .7s ease, opacity .7s ease, filter .7s ease, transform .7s ease; }
+
 /* Glass panels */
 .glass-panel { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 65%, transparent), color-mix(in srgb, var(--bg-primary) 55%, transparent)); border: 1px solid var(--border-color); backdrop-filter: blur(12px) saturate(120%); -webkit-backdrop-filter: blur(12px) saturate(120%); border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06); }
 
