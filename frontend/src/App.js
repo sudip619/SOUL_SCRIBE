@@ -135,7 +135,7 @@ const AppContent = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center container-wide glass-panel p-6">{renderView()}</div>
+              <>{renderView()}</>
             )}
           </main>
           <footer className="text-dark-text-muted p-4 text-center text-sm relative z-10">
