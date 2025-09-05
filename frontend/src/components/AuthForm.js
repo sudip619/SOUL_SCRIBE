@@ -99,6 +99,11 @@ function AuthForm({ onLoginSuccess, showAlert }) {
               <div className="c-button__blobs"><div></div><div></div><div></div></div>
             </button>
           </form>
+          <div className="auth-toggle-link">
+            <a href="#" onClick={(e) => { e.preventDefault(); setIsRegistering(!isRegistering); }}>
+              {isRegistering ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+            </a>
+          </div>
         </div>
       </div>
     </div>
