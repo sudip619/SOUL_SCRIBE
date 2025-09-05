@@ -59,13 +59,13 @@
 
 /* Neutral theme based on provided gradient (#f2f2f2 left, #ada996 right) */
 .theme-neutral {
-  --bg-primary: #0a0b12;
-  --bg-secondary: #111423;
-  --text-primary: #e8f0ff;
-  --text-secondary: #9aa6c7;
-  --accent-primary: #ada996; /* replaces calm's purple */
-  --accent-secondary: #f2f2f2; /* replaces calm's blue */
-  --border-color: rgba(173, 169, 150, 0.28);
+  --bg-primary: #000000; /* neutral black */
+  --bg-secondary: #0a0a0a; /* near-black */
+  --text-primary: #f2f2f2; /* neutral light */
+  --text-secondary: #c7c7c7; /* neutral gray */
+  --accent-primary: #ada996; /* sand */
+  --accent-secondary: #f2f2f2; /* light */
+  --border-color: rgba(173, 169, 150, 0.30);
 }
 
 /* Angry/Annoyed theme: derived strictly from #1f0000 and #3d001e */
@@ -183,8 +183,8 @@ body.theme-neutral {
 }
 
 /* Mood chips */
-body.theme-neutral .mood-chip { background: color-mix(in srgb, var(--bg-secondary) 90%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
-body.theme-neutral .mood-chip:hover { background: color-mix(in srgb, var(--bg-secondary) 95%, black); }
+body.theme-neutral .mood-chip { background: color-mix(in srgb, var(--bg-secondary) 85%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
+body.theme-neutral .mood-chip:hover { background: color-mix(in srgb, var(--bg-secondary) 92%, black); }
 
 /* Card stack (darker accents) */
 body.theme-neutral .card-stack-item { background-image: linear-gradient(163deg, color-mix(in srgb, var(--accent-primary) 70%, black) 0%, color-mix(in srgb, var(--accent-secondary) 70%, black) 100%); border-color: color-mix(in srgb, var(--accent-primary) 25%, transparent); }
