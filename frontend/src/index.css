@@ -182,19 +182,6 @@ body.theme-neutral {
   background-attachment: fixed !important;
 }
 
-/* Neutral-specific darker surfaces */
-body.theme-neutral .glass-panel { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary) 85%, black), color-mix(in srgb, var(--bg-primary) 80%, black)); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
-body.theme-neutral .panel-surface { background: color-mix(in srgb, var(--bg-secondary) 88%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 20%, transparent); }
-
-/* Chat bubbles */
-body.theme-neutral .bubble-bot { background: color-mix(in srgb, var(--bg-secondary) 90%, black); color: var(--text-primary); border: 1px solid color-mix(in srgb, var(--accent-primary) 14%, transparent); }
-body.theme-neutral .bubble-user { background: color-mix(in srgb, var(--accent-primary) 70%, black); color: #fff; }
-
-/* Composer and input */
-body.theme-neutral .composer .chat-input-card2 { background-color: color-mix(in srgb, var(--bg-secondary) 92%, black); }
-body.theme-neutral .chat-input-field { background-color: color-mix(in srgb, var(--bg-primary) 96%, black); border-color: color-mix(in srgb, var(--text-secondary) 65%, black); }
-body.theme-neutral .chat-input-field:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--accent-primary) 45%, transparent); }
-
 /* Mood chips */
 body.theme-neutral .mood-chip { background: color-mix(in srgb, var(--bg-secondary) 90%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
 body.theme-neutral .mood-chip:hover { background: color-mix(in srgb, var(--bg-secondary) 95%, black); }
