@@ -47,28 +47,19 @@ function MoodSelector({ showAlert }) {
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 px-1 py-0.5 w-full">
+    <div className="mood-row w-full">
       {moods.map((mood) => (
-        // In MoodSelector.js
-
-      <button
-        key={mood.name}
-        onClick={(e) => logSelectedMood(mood.name, e)}
-        // MODIFIED: Added transform and hover classes for the "pop" effect
-        className="group relative flex flex-col items-center justify-center p-1.5 rounded-md
-                   bg-dark-bg-secondary text-dark-text-lighter hover:bg-accent-teal hover:text-white
-                   shadow-sm hover:shadow-md focus:outline-none focus:ring-1 focus:ring-accent-pink
-                   transform transition-all duration-300 ease-out hover:scale-110 hover:-translate-y-2 hover:shadow-2xl" // <-- ADDED THESE
-        title={mood.title}
-      >
-        <img
-          src={mood.icon}
-          alt={mood.name}
-          className="w-8 h-8 object-contain pointer-events-none"
-        />
-      </button>
+        <button
+          key={mood.name}
+          onClick={(e) => logSelectedMood(mood.name, e)}
+          className="mood-chip"
+          title={mood.title}
+        >
+          <img src={mood.icon} alt={mood.name} className="object-contain" />
+          <span className="label capitalize hidden sm:inline">{mood.name}</span>
+        </button>
       ))}
-    </div>  
+    </div>
   );
 }
 

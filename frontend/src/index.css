@@ -5,66 +5,78 @@
 @tailwind utilities;
 
 /* --- THEME DEFINITIONS --- */
-/* This is the new default theme for the login page */
+/* Expressive Neo theme (aesthetic neon + glass) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 :root {
-  --bg-primary: #041021;      /* Solid dark blue */
-  --bg-secondary: #0B1A31;    /* Slightly lighter for cards */
-  --text-primary: #b9ecfd;     /* Light blue text */
-  --text-secondary: #829AB1;   /* Muted secondary text */
-  --accent-primary: #38b6ff;   /* Bright blue accent */
-  --accent-secondary: #3194cc; /* Deeper blue highlight */
-  --border-color: rgba(56, 182, 255, 0.2);
+  --bg-primary: #0a1a1f;
+  --bg-secondary: #10242c;
+  --text-primary: #e7fffb;
+  --text-secondary: #a5c6c8;
+  --accent-primary: #22d3ee; /* sky cyan */
+  --accent-secondary: #60a5fa; /* sky blue */
+  --border-color: rgba(34, 211, 238, 0.25);
 }
 
 .theme-bright {
-  --bg-primary: #1a0f00;
-  --bg-secondary: #2b1a01;
-  --text-primary: #fff2db;
-  --text-secondary: #e7c79a;
-  --accent-primary: #c29905;
-  --accent-secondary: #574319;
-  --border-color: rgba(194, 153, 5, 0.25);
+  --bg-primary: #0b0820;
+  --bg-secondary: #121032;
+  --text-primary: #f3ecff;
+  --text-secondary: #bfb4ea;
+  --accent-primary: #c084fc; /* bright lavender */
+  --accent-secondary: #34d399; /* mint */
+  --border-color: rgba(192, 132, 252, 0.3);
 }
 
 .theme-calm {
-  --bg-primary: #34495E;
-  --bg-secondary: #4A6572;
-  --text-primary: #ECF0F1;
-  --text-secondary: #B0BEC5;
-  --accent-primary: #5D9CEC;
-  --accent-secondary: #9B59B6;
-  --border-color: rgba(93, 156, 236, 0.2);
+  --bg-primary: #0a0b12;
+  --bg-secondary: #111423;
+  --text-primary: #e8f0ff;
+  --text-secondary: #9aa6c7;
+  --accent-primary: #7c3aed; /* neon purple */
+  --accent-secondary: #06b6d4; /* cyan */
+  --border-color: rgba(124, 58, 237, 0.25);
 }
 
 .theme-muted {
-  --bg-primary: #22343a;
-  --bg-secondary: #16252a;
-  --text-primary: #d7e8ef;
-  --text-secondary: #9fb4bc;
-  --accent-primary: #2e3a4d; /* matches updated gradient color1 */
-  --accent-secondary: #465d5d; /* matches updated gradient color2 */
-  --border-color: rgba(46, 58, 77, 0.28);
+  --bg-primary: #0d1418;
+  --bg-secondary: #0d1216;
+  --text-primary: #e0f2f1;
+  --text-secondary: #94a3b8;
+  --accent-primary: #5b6b78; /* cool slate */
+  --accent-secondary: #374956; /* deeper slate */
+  --border-color: rgba(91, 107, 120, 0.28);
 }
 
 .theme-grounding {
-  --bg-primary: #2F4F4F;
-  --bg-secondary: #3E606F;
-  --text-primary: #CED4DA;
-  --text-secondary: #868E96;
-  --accent-primary: #D9534F;
-  --accent-secondary: #B8860B;
-  --border-color: rgba(217, 83, 79, 0.2);
+  --bg-primary: #0f1a12;
+  --bg-secondary: #0f2319;
+  --text-primary: #e8ffe8;
+  --text-secondary: #b7d7c0;
+  --accent-primary: #34d399; /* emerald */
+  --accent-secondary: #f59e0b; /* amber */
+  --border-color: rgba(52, 211, 153, 0.25);
+}
+
+/* Neutral theme based on provided gradient (#f2f2f2 left, #ada996 right) */
+.theme-neutral {
+  --bg-primary: #000000; /* neutral black */
+  --bg-secondary: #0a0a0a; /* near-black */
+  --text-primary: #f2f2f2; /* neutral light */
+  --text-secondary: #c7c7c7; /* neutral gray */
+  --accent-primary: #ada996; /* sand */
+  --accent-secondary: #f2f2f2; /* light */
+  --border-color: rgba(173, 169, 150, 0.30);
 }
 
 /* Angry/Annoyed theme: derived strictly from #1f0000 and #3d001e */
 .theme-angry {
-  --bg-primary: #1a0000; /* darker version of #1f0000 */
-  --bg-secondary: #2b0011; /* darker mix of #3d001e */
-  --text-primary: #ffd6e0; /* light tint of #3d001e for high contrast */
-  --text-secondary: #f1a5b6; /* softer tint of #3d001e */
-  --accent-primary: #ff3d7a; /* brightened tint of #3d001e */
-  --accent-secondary: #b8003b; /* deepened shade of #3d001e */
-  --border-color: rgba(255, 61, 122, 0.25); /* from accent-primary */
+  --bg-primary: #140208;
+  --bg-secondary: #1c0410;
+  --text-primary: #ffe4ea;
+  --text-secondary: #ff9bb6;
+  --accent-primary: #ff447a;
+  --accent-secondary: #ff6b6b;
+  --border-color: rgba(255, 68, 122, 0.28);
 }
 
 
@@ -77,11 +89,13 @@
   /* MODIFIED: The default background is now the solid dark blue for the login page */
   body {
     color: var(--text-primary);
-    background-color: #041021;
-    @apply font-sans;
+    background-color: #0a0b12;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
     overflow-x: hidden;
   }
+  /* Apply broader transitions only during theme swap */
+  body.theme-smooth-transition * { transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease, filter .6s ease; }
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
   }
@@ -98,6 +112,7 @@ body.theme-bright,
 body.theme-calm,
 body.theme-muted,
 body.theme-grounding,
+body.theme-neutral,
 body.animated-gradient-bg {
   background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
   background-size: 400% 400%;
@@ -140,7 +155,47 @@ body.theme-muted {
   background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
+
+  /* Emotion cards and key elements aligned to sad gradient */
+  .card-stack-item,
+  .card-stack-item.emotion-angry {
+    background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%);
+    border-color: var(--border-color);
+  }
+  .send-fly-button { background: var(--color1); }
+  .nav-button { color: var(--color1); outline-color: var(--color1); }
+  .nav-button:hover::before { background-color: var(--color1); }
+  .chat-input-card { background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%); }
+  .c-button--gooey { border-color: var(--color1); }
+  .c-button--gooey .c-button__blobs div { background-color: var(--color1); }
 }
+
+/* Neutral: dark theme matching calm, with accents swapped and mostly black bg */
+body.theme-neutral {
+  animation: none !important;
+  --color1: #ada996; /* right/top light accent */
+  --color2: #f2f2f2; /* left/bottom light accent */
+  --bg-color: #000000;
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Mood chips */
+body.theme-neutral .mood-chip { background: color-mix(in srgb, var(--bg-secondary) 85%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
+body.theme-neutral .mood-chip:hover { background: color-mix(in srgb, var(--bg-secondary) 92%, black); }
+
+/* Card stack (darker accents) */
+body.theme-neutral .card-stack-item { background-image: linear-gradient(163deg, color-mix(in srgb, var(--accent-primary) 70%, black) 0%, color-mix(in srgb, var(--accent-secondary) 70%, black) 100%); border-color: color-mix(in srgb, var(--accent-primary) 25%, transparent); }
+
+/* Buttons */
+body.theme-neutral .send-fly-button { background: color-mix(in srgb, var(--accent-primary) 85%, black); }
+body.theme-neutral .nav-button { color: var(--accent-primary); outline-color: var(--accent-primary); }
+body.theme-neutral .nav-button:hover::before { background-color: var(--accent-primary); }
+
+/* Sidebar hover */
+body.theme-neutral .sidebar-item:hover, body.theme-neutral .sidebar-item.is-active { background: rgba(173, 169, 150, 0.12); }
 
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
@@ -154,85 +209,11 @@ body.theme-muted {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 17rem;
   width: 100%;
 }
+.auth-page-container.auth-only { transform: translateX(-6%); }
 
-/* Animated Logo Placeholder Card */
-.logo-card {
-  width: 480px;
-  height: 480px;
-  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 20px;
-  transition: all .3s;
-}
-.logo-card-inner {
-  width: 100%;
-  height: 100%;
-  background-color: #0B1A31;
-  border-radius: 20px;
-  transition: all .2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--text-primary);
-  padding: 2rem;
-}
-.logo-card-inner:hover { transform: scale(0.98); }
-.logo-card:hover { box-shadow: 0px 0px 30px 1px var(--accent-primary); }
 
-/* 3D Spline viewer section below the login area (no background container) */
-.spline-hero-section {
-  width: 100%;
-  padding: 0 2rem 4rem;
-  margin-top: 6rem;
-}
-.spline-hero-content {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  align-items: center;
-  gap: 2rem;
-}
-.spline-info {
-  max-width: 720px;
-}
-.spline-heading {
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight: 800;
-  color: var(--accent-primary);
-  margin-bottom: 0.75rem;
-}
-.spline-description {
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-.spline-hero-section { overflow: hidden; }
-.spline-view { position: relative; overflow: visible; justify-self: end; }
-.spline-view spline-viewer {
-  display: block;
-  width: 100%;
-  height: 80vh;
-  transform: scale(2) translateX(10%);
-  transform-origin: right center;
-}
-@media (max-width: 1440px) {
-  .spline-view spline-viewer { transform: scale(1.8) translateX(8%); }
-}
-@media (max-width: 1280px) {
-  .spline-hero-content { grid-template-columns: 1fr 1fr; }
-  .spline-view spline-viewer { transform: scale(1.6) translateX(6%); }
-}
-@media (max-width: 1024px) {
-  .spline-hero-content { grid-template-columns: 1fr; }
-  .spline-view spline-viewer { height: 70vh; transform: scale(1.3) translateX(0%); transform-origin: center; }
-}
-@media (max-width: 640px) {
-  .spline-view spline-viewer { height: 60vh; transform: scale(1.1) translateX(0%); }
-}
 
 
 /* --- ALL YOUR EXISTING ANIMATION STYLES --- */
@@ -241,7 +222,7 @@ body.theme-muted {
   font-size: smaller;
   border: none;
   font-weight: bold;
-  letter-spacing: 3px;  
+  letter-spacing: 3px;
   text-transform: uppercase;
   cursor: pointer;
   position: relative;
@@ -250,6 +231,25 @@ body.theme-muted {
   color: var(--accent-primary);
   outline: 2px solid var(--accent-primary);
 }
+
+/* Reset Theme button (wider + aesthetic) */
+.reset-theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .9rem 1.5rem;
+  min-width: 240px;
+  color: var(--text-primary);
+  background: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+.reset-theme-button:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.05); box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+.reset-theme-button:active { transform: translateY(0) scale(.98); }
+.reset-theme-button svg { width: 18px; height: 18px; fill: currentColor; }
 .nav-button:hover {
   color: white;
   outline-color: var(--accent-secondary);
@@ -460,42 +460,22 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   color: var(--accent-primary);
 }
 .auth-form-container {
-  width: 350px;
-  border-radius: 0.75rem;
-  background-color: #0B1A31;
+  width: 380px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.25);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
   padding: 2rem;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
-}
-.auth-title {
-  text-align: center;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: 700;
-  color: var(--accent-primary);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .auth-form {
   margin-top: 1.5rem;
 }
-.auth-input-card {
-  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  
-  border-radius: 1rem;
-  transition: all .3s;
-  margin-top: 1rem;
-}
-.auth-input-card:hover {
-  box-shadow: 0px 0px 30px 1px var(--accent-primary);
-}
-.auth-input-card2 {
-  background-color: #0B1A31;
-  border-radius: 1rem;
-  transition: all .2s;
-  padding: 3px;
-}
-.auth-input-card2:hover {
-  transform: scale(0.98);
-}
+.auth-input-card { background: transparent; border-radius: 1rem; transition: all .3s; margin-top: 1rem; box-shadow: none; }
+.auth-input-card:hover { box-shadow: none; }
+.auth-input-card2 { background-color: transparent; border-radius: 1rem; transition: all .2s; padding: 3px; }
+.auth-input-card2:hover { transform: scale(0.98); background-color: rgba(255,255,255,0.06); }
 .auth-input-group {
   position: relative;
 }
@@ -503,12 +483,13 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   width: 100%;
   border: solid 1.5px var(--text-secondary);
   border-radius: 0.8rem;
-  background: none;
+  background: rgba(255,255,255,0.02);
   padding: 1rem;
   font-size: 1rem;
   color: var(--text-primary);
-  transition: border 150ms cubic-bezier(0.4,0,0.2,1), box-shadow .4s;
+  transition: border 150ms cubic-bezier(0.4,0,0.2,1), box-shadow .4s, background-color .25s ease;
 }
+.auth-input-field:hover { background-color: rgba(255,255,255,0.06); }
 .auth-input-label {
   position: absolute;
   left: 15px;
@@ -533,7 +514,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .auth-submit-button {
   display: block;
   width: 100%;
-  background-color: var(--accent-primary);
+  background-color: color-mix(in srgb, var(--accent-primary) 60%, transparent);
   padding: 0.75rem;
   text-align: center;
   color: white;
@@ -832,6 +813,7 @@ body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active {
 .card-stack-item:hover {
   flex-grow: 5.5;
 }
+.card-stack-item.is-clickable { cursor: pointer; }
 .card-vertical {
   position: absolute;
   inset: 0;
