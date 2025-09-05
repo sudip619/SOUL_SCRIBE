@@ -62,75 +62,45 @@ function AuthForm({ onLoginSuccess, showAlert }) {
 
   return (
     <div className="auth-page-wrapper">
-    <div className="auth-page-container">
-      
-      {/* MODIFIED: Added fade-down animation with a 2500ms duration */}
-      <div className="auth-form-container" data-aos="fade-down" data-aos-duration="1000">
-        <p className="auth-title">{isRegistering ? 'Create an Account' : 'Welcome Back!'}</p>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          
-          <div className="auth-input-card">
-            <div className="auth-input-card2">
-              <div className="auth-input-group">
-                <input required type="text" id="username" className="auth-input-field" value={username} onChange={(e) => setUsername(e.target.value)} placeholder=" " />
-                <label htmlFor="username" className="auth-input-label">Username</label>
-              </div>
-            </div>
-          </div>
-
-          <div className="auth-input-card">
-            <div className="auth-input-card2">
-              <div className="auth-input-group">
-                <input required type="password" id="password" className="auth-input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder=" " />
-                <label htmlFor="password" className="auth-input-label">Password</label>
-              </div>
-            </div>
-          </div>
-
-          {isRegistering && (
+      <div className="auth-page-container auth-only">
+        <div className="auth-form-container" data-aos="fade-down" data-aos-duration="800">
+          <form className="auth-form" onSubmit={handleSubmit}>
             <div className="auth-input-card">
               <div className="auth-input-card2">
                 <div className="auth-input-group">
-                  <input required type="password" id="confirmPassword" className="auth-input-field" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder=" " />
-                  <label htmlFor="confirmPassword" className="auth-input-label">Confirm Password</label>
+                  <input required type="text" id="username" className="auth-input-field" value={username} onChange={(e) => setUsername(e.target.value)} placeholder=" " />
+                  <label htmlFor="username" className="auth-input-label">Username</label>
                 </div>
               </div>
             </div>
-          )}
 
-          <button type="submit" className="c-button c-button--gooey">
-            {isRegistering ? 'Sign Up' : 'Sign In'}
-            <div className="c-button__blobs"><div></div><div></div><div></div></div>
-          </button>
-        </form>
+            <div className="auth-input-card">
+              <div className="auth-input-card2">
+                <div className="auth-input-group">
+                  <input required type="password" id="password" className="auth-input-field" value={password} onChange={(e) => setPassword(e.target.value)} placeholder=" " />
+                  <label htmlFor="password" className="auth-input-label">Password</label>
+                </div>
+              </div>
+            </div>
 
-        <div className="auth-toggle-link">
-          <a href="#" onClick={(e) => { e.preventDefault(); setIsRegistering(!isRegistering); }}>
-            {isRegistering ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-          </a>
+            {isRegistering && (
+              <div className="auth-input-card">
+                <div className="auth-input-card2">
+                  <div className="auth-input-group">
+                    <input required type="password" id="confirmPassword" className="auth-input-field" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder=" " />
+                    <label htmlFor="confirmPassword" className="auth-input-label">Confirm Password</label>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <button type="submit" className="c-button c-button--gooey">
+              {isRegistering ? 'Sign Up' : 'Sign In'}
+              <div className="c-button__blobs"><div></div><div></div><div></div></div>
+            </button>
+          </form>
         </div>
       </div>
-
-      {/* MODIFIED: Added fade-down animation with a delay */}
-      <div className="logo-card" data-aos="fade-down" data-aos-duration="2500" data-aos-anchor-placement="center-bottom">
-        <div className="logo-card-inner">
-          <img src="/images/logo.png" alt="SoulScribe Logo" className="w-full h-auto object-contain" />
-        </div>
-      </div>
-
-    </div>
-
-    <section className="spline-hero-section" data-aos="fade-up" data-aos-duration="1000">
-      <div className="spline-hero-content">
-        <div className="spline-info">
-          <h2 className="spline-heading">Hi I am SoulSCRIBE.</h2>
-          <p className="spline-description">feeling a little cloudy ? let me handle it. come on login and let's start this experience that is literally 'emotional'</p>
-        </div>
-        <div className="spline-view">
-          <spline-viewer url="https://prod.spline.design/CTZipUkFTTfJgLHe/scene.splinecode"></spline-viewer>
-        </div>
-      </div>
-    </section>
     </div>
   );
 }
