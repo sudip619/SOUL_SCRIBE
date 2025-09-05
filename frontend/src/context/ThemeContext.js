@@ -10,7 +10,7 @@ const moodToTheme = {
   'energized': 'theme-bright',
   // Calm Theme
   'calm': 'theme-calm',
-  'neutral': 'theme-calm',
+  'neutral': 'theme-neutral',
   // Muted Theme
   'sad': 'theme-muted',
   'tired': 'theme-muted',
@@ -28,7 +28,8 @@ const removeAllThemes = () => {
     'theme-calm',
     'theme-muted',
     'theme-grounding',
-    'theme-angry'
+    'theme-angry',
+    'theme-neutral'
   );
 };
 
