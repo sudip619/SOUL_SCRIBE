@@ -125,6 +125,11 @@ export async function makeAuthenticatedRequest(url, method = 'GET', data = null)
     throw new Error('No authentication token found.');
   }
 
+  // Normalize path: ensure it starts with /api
+  let path = url || '';
+  if (!path.startsWith('/')) path = `/${path}`;
+  if (!path.startsWith('/api')) path = `/api${path}`;
+
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
@@ -133,9 +138,11 @@ export async function makeAuthenticatedRequest(url, method = 'GET', data = null)
   const config = { method, headers };
   if (data) config.body = JSON.stringify(data);
 
+  const fullUrl = `${API_BASE_URL}${path}`;
+
   let response;
   try {
-    response = await fetch(`${API_BASE_URL}${url}`, config);
+    response = await fetch(fullUrl, config);
   } catch (err) {
     // Network-level error (CORS, DNS, refused connection, offline, etc.)
     console.error('Network error during API request:', err);
