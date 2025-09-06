@@ -48,7 +48,8 @@ export async function postJSON(path, data, options = {}) {
 
     return response;
   } catch (fetchErr) {
-    console.warn('Fetch failed (first attempt), will try XHR fallback:', fetchErr);
+    // Log the URL and error for debugging (no sensitive body data is logged)
+    console.error('[postJSON] fetch failed for URL:', url, 'error:', fetchErr);
 
     // Second attempt: try XHR
     return new Promise((resolve, reject) => {
@@ -75,10 +76,11 @@ export async function postJSON(path, data, options = {}) {
           };
           resolve(res);
         };
-        xhr.onerror = () => reject(new Error('Network error (XHR) — possible CORS or connectivity issue.'));
-        xhr.ontimeout = () => reject(new Error('Request timed out (XHR).'));
+        xhr.onerror = () => reject(new Error(`Network error (XHR) — possible CORS or connectivity issue when calling ${url}`));
+        xhr.ontimeout = () => reject(new Error(`Request timed out (XHR) when calling ${url}`));
         xhr.send(JSON.stringify(data));
       } catch (xhrErr) {
+        console.error('[postJSON] XHR construction failed for URL:', url, 'error:', xhrErr);
         reject(xhrErr);
       }
     });
