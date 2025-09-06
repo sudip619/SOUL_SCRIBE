@@ -12,22 +12,35 @@ export { API_BASE_URL };
 export async function postJSON(path, data, options = {}) {
   const url = path.startsWith('http') ? path : `${API_BASE_URL}${path}`;
 
+  // Avoid sending credentials by default (reduces CORS complexity). Allow override via options.
   const fetchConfig = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    mode: 'cors',
-    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+    // mode: 'cors' is default for cross-origin requests from browsers
     body: JSON.stringify(data),
     ...options,
   };
 
+  // Attach an AbortController to implement a timeout, preventing indefinite hangs
+  const controller = new AbortController();
+  const timeoutMs = options.timeout || 10000; // 10s default
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  fetchConfig.signal = controller.signal;
+
   try {
     const response = await fetch(url, fetchConfig);
+    clearTimeout(timeout);
+
+    // If response is opaque due to CORS (type === 'opaque'), notify user
+    if (response && response.type === 'opaque') {
+      throw new Error('Opaque response received — likely blocked by CORS. Enable CORS on the API server or use a same-origin proxy.');
+    }
+
     return response;
   } catch (fetchErr) {
-    // Some analytics tools may wrap window.fetch and cause unexpected errors.
-    // Attempt a lightweight XMLHttpRequest fallback so we can still reach the backend
+    clearTimeout(timeout);
     console.warn('Fetch failed, attempting XHR fallback:', fetchErr);
+
     return new Promise((resolve, reject) => {
       try {
         const xhr = new XMLHttpRequest();
@@ -37,6 +50,7 @@ export async function postJSON(path, data, options = {}) {
         if (options.headers && options.headers.Authorization) {
           xhr.setRequestHeader('Authorization', options.headers.Authorization);
         }
+        xhr.timeout = timeoutMs;
         xhr.onload = () => {
           const res = {
             ok: xhr.status >= 200 && xhr.status < 300,
@@ -52,7 +66,8 @@ export async function postJSON(path, data, options = {}) {
           };
           resolve(res);
         };
-        xhr.onerror = () => reject(new Error('Network error (XHR)'));
+        xhr.onerror = () => reject(new Error('Network error (XHR) — possible CORS or connectivity issue.'));
+        xhr.ontimeout = () => reject(new Error('Request timed out (XHR).'));
         xhr.send(JSON.stringify(data));
       } catch (xhrErr) {
         reject(xhrErr);
