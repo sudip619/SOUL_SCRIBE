@@ -12,6 +12,14 @@ export { API_BASE_URL };
 export async function postJSON(path, data, options = {}) {
   const url = path.startsWith('http') ? path : `${API_BASE_URL}${path}`;
 
+  // Temporary debug: log request URL and non-sensitive data shape (no values)
+  try {
+    const dataInfo = data && typeof data === 'object' ? { keys: Object.keys(data) } : { type: typeof data };
+    console.debug('[postJSON] Request URL:', url, 'Data info:', dataInfo, 'Options keys:', Object.keys(options || {}));
+  } catch (dbgErr) {
+    console.debug('[postJSON] Request URL:', url, '(error building debug info):', dbgErr);
+  }
+
   // Avoid sending credentials by default (reduces CORS complexity). Allow override via options.
   const fetchConfig = {
     method: 'POST',
