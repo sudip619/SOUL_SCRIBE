@@ -21,15 +21,17 @@ export async function postJSON(path, data, options = {}) {
     ...options,
   };
 
-  // Attach an AbortController to implement a timeout, preventing indefinite hangs
-  const controller = new AbortController();
   const timeoutMs = options.timeout || 10000; // 10s default
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-  fetchConfig.signal = controller.signal;
 
+  // First attempt: plain fetch without AbortController to avoid incompatibilities
   try {
-    const response = await fetch(url, fetchConfig);
-    clearTimeout(timeout);
+    const fetchWithoutSignal = { ...fetchConfig };
+    const fetchPromise = fetch(url, fetchWithoutSignal);
+
+    // Implement timeout by racing the fetch against a timeout promise.
+    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (fetch).')), timeoutMs));
+
+    const response = await Promise.race([fetchPromise, timeoutPromise]);
 
     // If response is opaque due to CORS (type === 'opaque'), notify user
     if (response && response.type === 'opaque') {
@@ -38,15 +40,14 @@ export async function postJSON(path, data, options = {}) {
 
     return response;
   } catch (fetchErr) {
-    clearTimeout(timeout);
-    console.warn('Fetch failed, attempting XHR fallback:', fetchErr);
+    console.warn('Fetch failed (first attempt), will try XHR fallback:', fetchErr);
 
+    // Second attempt: try XHR
     return new Promise((resolve, reject) => {
       try {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', url);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        // If Authorization header present in options.headers, set it
         if (options.headers && options.headers.Authorization) {
           xhr.setRequestHeader('Authorization', options.headers.Authorization);
         }
