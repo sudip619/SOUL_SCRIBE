@@ -39,7 +39,7 @@ function AuthForm({ onLoginSuccess, showAlert }) {
 
   const handleLogin = async () => {
     try {
-      const response = await postJSON('/login', { username, password });
+      const response = await postJSON('/api/login', { username, password });
       let data = null;
       try { data = await response.json(); } catch (_) { data = null; }
       if (response.ok) {
