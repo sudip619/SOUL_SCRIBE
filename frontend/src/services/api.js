@@ -48,8 +48,39 @@ export async function postJSON(path, data, options = {}) {
 
     return response;
   } catch (fetchErr) {
-    // Log the URL and error for debugging (no sensitive body data is logged)
+    // Log and try to bypass wrappers by using a fresh iframe's fetch implementation
     console.error('[postJSON] fetch failed for URL:', url, 'error:', fetchErr);
+
+    try {
+      // Create an inert iframe to access an unwrapped fetch implementation
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = 'about:blank';
+      document.documentElement.appendChild(iframe);
+      const win = iframe.contentWindow;
+      if (win && typeof win.fetch === 'function') {
+        try {
+          console.debug('[postJSON] Attempting iframe.fetch fallback for URL:', url);
+          const iframeFetchPromise = win.fetch(url, { ...fetchConfig });
+          const timeoutPromise2 = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (iframe.fetch).')), timeoutMs));
+          const iframeResponse = await Promise.race([iframeFetchPromise, timeoutPromise2]);
+          try { document.documentElement.removeChild(iframe); } catch (_) {}
+          if (iframeResponse && iframeResponse.type === 'opaque') {
+            throw new Error('Opaque response received from iframe.fetch — likely blocked by CORS.');
+          }
+          return iframeResponse;
+        } catch (iframeErr) {
+          console.warn('[postJSON] iframe.fetch fallback failed for URL:', url, 'error:', iframeErr);
+          try { document.documentElement.removeChild(iframe); } catch (_) {}
+        }
+      } else {
+        try { document.documentElement.removeChild(iframe); } catch (_) {}
+      }
+    } catch (iframeConstructionErr) {
+      console.warn('[postJSON] Could not use iframe.fetch fallback:', iframeConstructionErr);
+    }
+
+    console.warn('Fetch (and iframe.fetch) failed, will try XHR fallback');
 
     // Second attempt: try XHR
     return new Promise((resolve, reject) => {
