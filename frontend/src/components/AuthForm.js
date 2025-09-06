@@ -22,7 +22,7 @@ function AuthForm({ onLoginSuccess, showAlert }) {
       return;
     }
     try {
-      const response = await postJSON('/register', { username, password });
+      const response = await postJSON('/api/register', { username, password });
       let data = null;
       try { data = await response.json(); } catch (_) { data = null; }
       if (response.ok) {
