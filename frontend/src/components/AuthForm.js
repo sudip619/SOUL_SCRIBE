@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { API_BASE_URL, postJSON } from '../services/api';
+import { postJSON } from '../services/api';
 
 function AuthForm({ onLoginSuccess, showAlert }) {
   const [isRegistering, setIsRegistering] = useState(false);
