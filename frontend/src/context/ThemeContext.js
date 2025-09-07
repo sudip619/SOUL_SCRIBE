@@ -29,6 +29,7 @@ const removeAllThemes = () => {
     'theme-introspective',
     'theme-frustrated',
     'theme-tired',
+    'theme-anxious',
     'theme-calm',
     'theme-muted',
     'theme-grounding',
