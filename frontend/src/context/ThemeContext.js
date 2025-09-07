@@ -7,7 +7,7 @@ const ThemeContext = createContext();
 const moodToTheme = {
   // Bright Theme
   'happy': 'theme-happy',
-  'energized': 'theme-bright',
+  'energized': 'theme-energized',
   // Calm Theme
   'calm': 'theme-calm',
   'neutral': 'theme-neutral',
