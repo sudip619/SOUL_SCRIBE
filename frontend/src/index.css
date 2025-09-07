@@ -1051,7 +1051,49 @@ body.theme-introspective {
 .theme-introspective .card-details, .theme-introspective .auth-form-container, .theme-introspective .auth-input-field { color: var(--text-primary); }
 
 /* ============================================= */
+/* ==      Theme: Frustrated (theme-frustrated) == */
+/* ============================================= */
+
+/* Apply this class to body or main app container to activate the Frustrated/Anxious theme */
+.theme-frustrated {
+  /* -- CSS Variables for the Frustrated Theme -- */
+  /* Deep, near-black greens and teals for a tense background */
+  --bg-primary: #0a0f0d;    /* Near-black Green */
+  --bg-secondary: #0f2027;   /* Dark Teal/Blue-Green */
+
+  /* Muted, dark text colors for a serious, focused tone */
+  --text-primary: #8db1a4;   /* Muted Green-Gray */
+  --text-secondary: #7D938A; /* Darker Green-Gray */
+
+  /* Sharp, contrasting greens for accents */
+  --accent-primary: #28623a;   /* Strong Green */
+  --accent-secondary: #006C67;  /* Sharp Teal */
+
+  /* Semi-transparent border based on the primary green accent */
+  --border-color: rgba(40, 98, 58, 0.3);
+
+  /* -- Radial Accent Variables for Background Effects -- */
+  /* Dark, moody greens for a subtle, focused glow */
+  --radial-accent-color1: #2d4f4a;   /* Muted Dark Teal */
+  --radial-accent-color2: #0f2027;   /* Dark Teal */
+  --radial-bg-color: #000000;
+}
+
+/* body radial background for frustrated theme */
+body.theme-frustrated {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #2d4f4a);
+  --color2: var(--radial-accent-color2, #0f2027);
+  --bg-color: var(--radial-bg-color, #000000);
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* ============================================= */
 /* ==           Sidebar Component             == */
+
 /* ============================================= */
 
 .sidebar {
