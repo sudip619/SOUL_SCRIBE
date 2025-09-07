@@ -1382,7 +1382,7 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
   /* -- CSS Variables for the Anxious Theme -- */
   /* Deep, near-black greens and teals for a tense background */
   --bg-primary: #0a0f0d;    /* Near-black Green */
-  --bg-secondary: #0f2027;   /* Dark Teal/Blue-Green */
+  --bg-secondary: #09151A;   /* Dark Teal/Blue-Green (updated) */
 
   /* Muted, dark text colors for a serious, focused tone */
   --text-primary: #8db1a4;   /* Muted Green-Gray */
