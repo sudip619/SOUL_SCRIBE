@@ -1300,15 +1300,15 @@ body.theme-tired {
 
 /* Sidebar */
 body.theme-tired .sidebar {
-  /* Highly translucent sidebar for Tired theme */
-  background-color: rgba(51,51,51,0.06); /* very translucent */
-  backdrop-filter: blur(10px) saturate(120%);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
-  border: 1px solid color-mix(in srgb, var(--accent-secondary, #888888) 12%, transparent);
+  /* Translucent sidebar with hints of #404D4A and #202616 */
+  background: linear-gradient(180deg, rgba(64,77,74,0.06), rgba(32,38,22,0.04));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, #404D4A 12%, transparent);
 }
 body.theme-tired .sidebar-item { color: var(--text-primary, #D4D4D4); }
-body.theme-tired .sidebar-item .sidebar-icon { color: var(--text-secondary, #888888); }
-body.theme-tired .sidebar-item:hover { background-color: #2b2b2b; box-shadow: inset 0 0 0 1px #4a4a4a; }
+body.theme-tired .sidebar-item .sidebar-icon { color: #677156; }
+body.theme-tired .sidebar-item:hover { background-color: rgba(32,38,22,0.12); box-shadow: inset 0 0 0 1px rgba(64,77,74,0.12); }
 
 /* Emotion cards */
 body.theme-tired .emotion-card-stack .emotion-card,
@@ -1325,25 +1325,25 @@ body.theme-tired .emotion-card .vertical-index { color: var(--text-secondary, #8
 /* Send and Reset buttons for Tired mood */
 body.theme-tired .send-fly-button,
 body.theme-tired .reset-theme-button {
-  background: #232a28;
-  border-color: color-mix(in srgb, #232a28 30%, transparent);
+  background: #404D4A;
+  border-color: color-mix(in srgb, #404D4A 30%, transparent);
   color: white;
 }
 body.theme-tired .reset-theme-button svg { fill: white; }
 
 /* Chat interface */
 body.theme-tired .chat-interface {
-  /* Use #232a28 as the subtle base color for the chat surfaces */
-  background-color: rgba(35,42,40,0.88); /* #232a28 with high opacity */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid color-mix(in srgb, #232a28 30%, transparent);
+  /* Translucent chat surface with hints of #404D4A and #202616 */
+  background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.06));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, #404D4A 18%, transparent);
 }
 
-/* Tired: composer and input match the chat surface color */
-body.theme-tired .composer { background: rgba(35,42,40,0.9); border-top: 1px solid color-mix(in srgb, #232a28 18%, transparent); }
-body.theme-tired .chat-input-card { background: rgba(35,42,40,0.95); border: 1px solid color-mix(in srgb, #232a28 24%, transparent); box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
-body.theme-tired .chat-input-card2 { background: rgba(35,42,40,0.95); }
+/* Tired: composer and input match the chat surface color (hints of the two colors) */
+body.theme-tired .composer { background: linear-gradient(180deg, rgba(64,77,74,0.10), rgba(32,38,22,0.06)); border-top: 1px solid color-mix(in srgb, #404D4A 12%, transparent); }
+body.theme-tired .chat-input-card { background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.08)); border: 1px solid color-mix(in srgb, #404D4A 20%, transparent); box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
+body.theme-tired .chat-input-card2 { background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.08)); }
 
 /* Message bubbles adopt darker/lighter tones of #232a28 */
 body.theme-tired .bubble,
