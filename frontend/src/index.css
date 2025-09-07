@@ -426,7 +426,8 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .send-fly-button {
   font-family: inherit;
   font-size: 18px;
-  background: var(--accent-primary);
+  /* Use per-theme send button background when available, fall back to accent */
+  background: var(--send-button-bg, var(--accent-primary));
   color: white;
   padding: 0.7em 1em;
   padding-left: 0.9em;
@@ -438,6 +439,23 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   transition: all 0.2s;
   cursor: pointer;
 }
+
+/* Make native selects match the per-theme send button color (fill and text)
+   Applies site-wide for any active theme. Options styling remains native. */
+body[class*="theme-"] select,
+body[class*="theme-"] .select-like {
+  background: var(--send-button-bg, var(--accent-primary));
+  color: white;
+  border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
+}
+
+/* Target the ProfileView main concern select specifically to ensure contrast */
+#main-concern {
+  background: var(--send-button-bg, var(--accent-primary));
+  color: white;
+  border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
+}
+#main-concern option { color: black; }
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
