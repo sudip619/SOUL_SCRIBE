@@ -1373,7 +1373,7 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
   --radial-bg-color: #000000;
 }
 
-body.theme-anxious {
+.theme-anxious {
   animation: none !important;
   --color1: var(--radial-accent-color1, #757cff);
   --color2: var(--radial-accent-color2, #1c1e45);
