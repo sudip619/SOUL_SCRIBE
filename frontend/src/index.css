@@ -1481,7 +1481,12 @@ body.theme-energized .emotion-card .card-title { color: var(--text-primary, #FEF
 body.theme-energized .emotion-card .card-text { color: var(--text-secondary, #F4F4D5); }
 body.theme-energized .emotion-card .vertical-index { color: var(--accent-primary, #F9DC5C); opacity: 0.95; }
 body.theme-energized .send-fly-button,
-body.theme-energized .reset-theme-button { background: var(--accent-primary, #F9DC5C); color: white; border-color: color-mix(in srgb, var(--accent-primary, #F9DC5C) 30%, transparent); }
+body.theme-energized .reset-theme-button,
+body.theme-energized .reset-theme-button svg {
+  background: #302700;
+  color: white;
+  border-color: color-mix(in srgb, #302700 30%, transparent);
+}
 
 /* Chat interface */
 body.theme-energized .chat-interface { background-color: rgba(117,94,77,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
