@@ -1191,6 +1191,15 @@ body.theme-neutral .send-fly-button {
   color: white;
 }
 
+/* Reset theme button in Neutral mood */
+body.theme-neutral .reset-theme-button,
+body.theme-neutral .reset-theme-button svg {
+  background: #242324;
+  border-color: color-mix(in srgb, #242324 30%, transparent);
+  color: white;
+}
+body.theme-neutral .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
 /* ============================================= */
 /* ==        Emotion Cards Component          == */
 /* ============================================= */
