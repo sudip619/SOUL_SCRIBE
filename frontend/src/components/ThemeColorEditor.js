@@ -15,14 +15,29 @@ function normalizeHex(value) {
   const v = value.trim();
   // If value is already a hex like #rrggbb or #rgb, return as-is
   if (v.startsWith('#')) return v.toUpperCase();
-  // If it's rgb(...) convert to hex
+  // If it's rgb(...) or rgba(...) convert to hex
   if (v.startsWith('rgb')) {
     const nums = v.replace(/[^0-9,]/g, '').split(',').map(n => parseInt(n, 10));
     if (nums.length >= 3) {
-      return '#' + nums.slice(0,3).map(n => n.toString(16).padStart(2,'0')).join('').toUpperCase();
+      return (
+        '#' + nums.slice(0,3).map(n => n.toString(16).padStart(2,'0')).join('').toUpperCase()
+      );
     }
   }
-  return v.toUpperCase();
+  // If it's a named color or other, attempt to compute via canvas
+  try {
+    const ctx = document.createElement('canvas').getContext('2d');
+    ctx.fillStyle = v;
+    const computed = ctx.fillStyle; // will be rgb(a) or hex
+    if (computed.startsWith('#')) return computed.toUpperCase();
+    if (computed.startsWith('rgb')) {
+      const nums = computed.replace(/[^0-9,]/g, '').split(',').map(n => parseInt(n,10));
+      if (nums.length >= 3) return '#' + nums.slice(0,3).map(n => n.toString(16).padStart(2,'0')).join('').toUpperCase();
+    }
+  } catch (e) {
+    // ignore
+  }
+  return '#000000';
 }
 
 export default function ThemeColorEditor() {
