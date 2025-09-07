@@ -160,13 +160,17 @@ body.theme-happy {
 /* Calm theme overrides: darker send/reset buttons and darker emotion card gradient */
 body.theme-calm .card-stack-item,
 body.theme-calm .emotion-card-stack .emotion-card {
-  background: linear-gradient(180deg, #080b1b 0%, color-mix(in srgb, #080b1b 85%, black 15%));
-  border: 1px solid color-mix(in srgb, #080b1b 30%, transparent);
+  /* Dark gradient using calm theme's accent and background colors */
+  background: linear-gradient(163deg,
+    color-mix(in srgb, var(--accent-primary, #7c3aed) 30%, black 40%),
+    color-mix(in srgb, var(--bg-secondary, #111423) 70%, black 25%));
+  border: 1px solid color-mix(in srgb, var(--bg-secondary, #111423) 40%, black 25%);
   color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
 }
 body.theme-calm .emotion-card .card-title { color: var(--text-primary); }
 body.theme-calm .emotion-card .card-text { color: var(--text-secondary); }
-body.theme-calm .card-vertical { color: color-mix(in srgb, #080b1b 65%, white); }
+body.theme-calm .card-vertical { color: color-mix(in srgb, var(--accent-primary, #7c3aed) 30%, white); }
 
 body.theme-calm .send-fly-button {
   background: #080b1b;
