@@ -1225,19 +1225,19 @@ body.theme-frustrated .chat-interface { background-color: rgba(30,31,46,0.8); ba
 /* Happy: emotion cards, send and reset buttons use the provided warm palette */
 body.theme-happy .card-stack-item,
 body.theme-happy .emotion-card-stack .emotion-card {
-  background: linear-gradient(to bottom, #5a4136, #4d382d);
-  border: 1px solid var(--border-color, rgba(251,167,111,0.3));
-  color: var(--text-primary);
+  background: linear-gradient(to bottom, #3D303A, #857A8B);
+  border: 1px solid var(--border-color, rgba(237, 207, 142, 0.3));
+  color: #ffffff;
 }
 body.theme-happy .emotion-card .card-title { color: #ffffff; }
-body.theme-happy .emotion-card .card-text { color: var(--text-primary); }
-body.theme-happy .card-vertical { color: var(--accent-secondary, #fbc1e8); opacity: 0.95; }
+body.theme-happy .emotion-card .card-text { color: #ffffff; }
+body.theme-happy .card-vertical { color: var(--accent-secondary, #C28CAE); opacity: 0.95; }
 
 body.theme-happy .send-fly-button,
 body.theme-happy .reset-theme-button,
 body.theme-happy .reset-theme-button svg {
-  background: var(--accent-primary, #fba76f);
-  border-color: color-mix(in srgb, var(--accent-primary, #fba76f) 30%, transparent);
+  background: #3D303A;
+  border-color: color-mix(in srgb, #3D303A 30%, transparent);
   color: white;
 }
 body.theme-happy .reset-theme-button:hover,
