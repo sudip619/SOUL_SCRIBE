@@ -999,21 +999,53 @@ body.theme-introspective {
 }
 .theme-introspective .chat-input-field:focus { border: 1.5px solid color-mix(in srgb, var(--overw-primary) 40%, transparent); box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--overw-primary) 10%, transparent); }
 
-/* Message bubbles */
+/* Make the main glass panels and chat surfaces more translucent for the Introspective/Overwhelmed mood */
+.theme-introspective .glass-panel {
+  background: linear-gradient(180deg, rgba(47,25,51,0.14), rgba(29,11,26,0.08));
+  border: 1px solid rgba(47,25,51,0.18);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: 0 10px 30px rgba(15,8,20,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Composer and input area translucency */
+.theme-introspective .composer {
+  background: rgba(47,25,51,0.12);
+  border-top: 1px solid rgba(47,25,51,0.10);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+.theme-introspective .chat-input-card {
+  background: rgba(47,25,51,0.10);
+  border: 1px solid rgba(47,25,51,0.14);
+  box-shadow: 0 8px 20px rgba(15,8,20,0.35);
+}
+.theme-introspective .chat-input-card2 { background-color: rgba(0,0,0,0.12); }
+.theme-introspective .chat-input-field {
+  border: solid 1.5px color-mix(in srgb, var(--overw-dark2) 45%, black);
+  color: var(--text-primary);
+  background: transparent;
+}
+
+/* Message bubbles: slightly translucent with soft borders */
 .theme-introspective .bubble,
 .theme-introspective .bubble-bot {
-  background: linear-gradient(180deg, var(--overw-dark1), var(--overw-dark2));
+  background: linear-gradient(180deg, rgba(39,19,42,0.80), rgba(29,11,26,0.72));
   color: var(--text-primary);
-  border: 1px solid color-mix(in srgb, var(--overw-primary) 18%, transparent);
+  border: 1px solid rgba(47,25,51,0.18);
 }
+.theme-introspective .bubble-user { background: linear-gradient(180deg, rgba(47,25,51,0.85), rgba(39,19,42,0.78)); color: var(--text-primary); }
 
 /* Send button */
 .theme-introspective .send-fly-button {
-  background: var(--overw-primary);
+  background: color-mix(in srgb, var(--overw-primary) 85%, black);
   border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent);
   color: white;
 }
 .theme-introspective .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* Slightly reduce panel shadows to emphasize translucency */
+.theme-introspective .panel-surface { background: linear-gradient(180deg, rgba(47,25,51,0.06), rgba(29,11,26,0.04)); border: 1px solid rgba(47,25,51,0.10); }
 
 /* Ensure inputs and smaller UI elements remain legible */
 .theme-introspective .card-details, .theme-introspective .auth-form-container, .theme-introspective .auth-input-field { color: var(--text-primary); }
