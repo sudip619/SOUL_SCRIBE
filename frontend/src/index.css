@@ -1182,10 +1182,11 @@ body.theme-frustrated {
 /* ==  Frustrated/Anxious theme overrides      == */
 /* ============================================= */
 body.theme-frustrated .sidebar {
-  background-color: rgba(25,26,38,0.85);
+  /* More transparent sidebar for Frustrated theme */
+  background-color: rgba(25,26,38,0.36); /* reduced opacity */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--border-color);
+  border: 1px solid color-mix(in srgb, var(--border-color, rgba(117,124,255,0.25)) 45%, transparent);
 }
 body.theme-frustrated .sidebar-item { color: var(--text-primary); }
 body.theme-frustrated .sidebar-item .sidebar-icon { color: #b0b3f2; }
