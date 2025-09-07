@@ -1416,6 +1416,23 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
 /* ==        Emotion Cards Component          == */
 /* ============================================= */
 
+/* Anxious-specific overrides: emotion card gradient and buttons */
+body.theme-anxious .emotion-card-stack .emotion-card,
+body.theme-anxious .card-stack-item {
+  background: linear-gradient(180deg, #0A1417 0%, #0A282B 100%);
+  border: 1px solid color-mix(in srgb, #0A1417 25%, transparent);
+  color: var(--text-primary);
+}
+body.theme-anxious .send-fly-button,
+body.theme-anxious .reset-theme-button,
+body.theme-anxious .reset-theme-button svg {
+  background: #0a1417;
+  border-color: color-mix(in srgb, #0a1417 30%, transparent);
+  color: white;
+}
+body.theme-anxious .send-fly-button:hover,
+body.theme-anxious .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
 .emotion-card-stack .emotion-card {
   /* Background using a gradient of the theme's darkest shades */
   background: linear-gradient(to bottom, #2d4f4a, #0f2027);
