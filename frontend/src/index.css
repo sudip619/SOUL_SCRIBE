@@ -1428,33 +1428,33 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
 
 /* You can apply this class to your main app container or body tag to activate this theme. */
 .theme-energized {
-  /* -- CSS Variables for the Energized Theme (Updated) -- */
-  /* Using darker, rich browns for a high-contrast background */
-  --bg-primary: #3b1a00;
-  --bg-secondary: #522500;
+  /* -- CSS Variables for the Energized Theme (Updated by user) -- */
+  /* Using the requested browns and background tones */
+  --bg-primary: #755E4D;
+  --bg-secondary: #322501;
 
-  /* Using the lightest, softest colors from your new palette for text */
+  /* Primary and secondary text for high contrast on dark backgrounds */
   --text-primary: #FEFAE0;
   --text-secondary: #F4F4D5;
 
-  /* Combining the rich yellow and the new green for vibrant, natural accents */
+  /* Accent colors (bright and readable) */
   --accent-primary: #F9DC5C;
-  --accent-secondary: #CCD5AE;
+  --accent-secondary: #FFE8A8;
 
   /* Semi-transparent border based on the primary yellow accent */
   --border-color: rgba(249, 220, 92, 0.3);
 
-  /* -- Radial Accent Variables for a warm, dark background glow -- */
+  /* -- Radial Accent Variables -- */
   --radial-accent-color1: #EDA268;
-  --radial-accent-color2: #FAE588;
-  --radial-bg-color: #2a1400;
+  --radial-accent-color2: #DBE1BC;
+  --radial-bg-color: #180D01;
 }
 
 body.theme-energized {
   animation: none !important;
   --color1: var(--radial-accent-color1, #EDA268);
-  --color2: var(--radial-accent-color2, #FAE588);
-  --bg-color: var(--radial-bg-color, #2a1400);
+  --color2: var(--radial-accent-color2, #DBE1BC);
+  --bg-color: var(--radial-bg-color, #180D01);
   background: var(--bg-color) !important;
   background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
   background-repeat: no-repeat !important;
@@ -1463,28 +1463,28 @@ body.theme-energized {
 
 /* Sidebar for Energized */
 body.theme-energized .sidebar {
-  background: linear-gradient(to bottom, var(--bg-secondary, #522500), var(--bg-primary, #3b1a00));
+  background: linear-gradient(to bottom, var(--bg-secondary, #322501), var(--bg-primary, #755E4D));
   border: 1px solid color-mix(in srgb, var(--accent-primary, #F9DC5C) 15%, transparent);
 }
 body.theme-energized .sidebar-item { color: var(--text-primary, #FEFAE0); }
-body.theme-energized .sidebar-item .sidebar-icon { color: #DBE1BC; }
+body.theme-energized .sidebar-item .sidebar-icon { color: var(--accent-secondary, #FFE8A8); }
 body.theme-energized .sidebar-item:hover { background-color: rgba(249, 220, 92, 0.1); box-shadow: inset 0 0 0 1px rgba(204, 213, 174, 0.2); }
 
 /* Emotion cards & buttons */
 body.theme-energized .emotion-card-stack .emotion-card,
 body.theme-energized .card-stack-item {
-  background: linear-gradient(to bottom, #522500, #3b1a00);
+  background: linear-gradient(to bottom, var(--bg-secondary, #322501), var(--bg-primary, #755E4D));
   border: 1px solid var(--border-color, rgba(249, 220, 92, 0.3));
   color: var(--text-primary);
 }
 body.theme-energized .emotion-card .card-title { color: var(--text-primary, #FEFAE0); }
-body.theme-energized .emotion-card .card-text { color: var(--accent-secondary, #CCD5AE); }
+body.theme-energized .emotion-card .card-text { color: var(--text-secondary, #F4F4D5); }
 body.theme-energized .emotion-card .vertical-index { color: var(--accent-primary, #F9DC5C); opacity: 0.95; }
 body.theme-energized .send-fly-button,
 body.theme-energized .reset-theme-button { background: var(--accent-primary, #F9DC5C); color: white; border-color: color-mix(in srgb, var(--accent-primary, #F9DC5C) 30%, transparent); }
 
 /* Chat interface */
-body.theme-energized .chat-interface { background-color: rgba(59,26,0,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+body.theme-energized .chat-interface { background-color: rgba(117,94,77,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 
 /* ============================================= */
 /* ==        Emotion Cards Component          == */
