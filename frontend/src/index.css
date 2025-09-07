@@ -467,7 +467,7 @@ body[class*="theme-"] .select-like {
   color: white;
   border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
 }
-#main-concern option { color: black; }
+#main-concern option { color: var(--text-primary, #000); }
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
