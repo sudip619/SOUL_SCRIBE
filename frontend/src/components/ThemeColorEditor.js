@@ -5,6 +5,9 @@ const VARS = [
   { key: '--bg-secondary', label: 'Background Secondary' },
   { key: '--accent-primary', label: 'Accent Primary' },
   { key: '--accent-secondary', label: 'Accent Secondary' },
+  { key: '--radial-accent-color1', label: 'Radial Accent Color 1' },
+  { key: '--radial-accent-color2', label: 'Radial Accent Color 2' },
+  { key: '--radial-bg-color', label: 'Radial Background Color' },
 ];
 
 function normalizeHex(value) {
