@@ -157,6 +157,32 @@ body.theme-happy {
   background-attachment: fixed !important;
 }
 
+/* Calm theme overrides: darker send/reset buttons and darker emotion card gradient */
+body.theme-calm .card-stack-item,
+body.theme-calm .emotion-card-stack .emotion-card {
+  background: linear-gradient(180deg, #080b1b 0%, color-mix(in srgb, #080b1b 85%, black 15%));
+  border: 1px solid color-mix(in srgb, #080b1b 30%, transparent);
+  color: var(--text-primary);
+}
+body.theme-calm .emotion-card .card-title { color: var(--text-primary); }
+body.theme-calm .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-calm .card-vertical { color: color-mix(in srgb, #080b1b 65%, white); }
+
+body.theme-calm .send-fly-button {
+  background: #080b1b;
+  border-color: color-mix(in srgb, #080b1b 30%, transparent);
+  color: white;
+}
+body.theme-calm .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+body.theme-calm .reset-theme-button,
+body.theme-calm .reset-theme-button svg {
+  background: #080b1b;
+  border-color: color-mix(in srgb, #080b1b 30%, transparent);
+  color: white;
+}
+body.theme-calm .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
 /* Sad: same radial-gradient layout as angry, with specified colors */
 body.theme-muted {
   animation: none !important;
