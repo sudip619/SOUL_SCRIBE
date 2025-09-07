@@ -1156,23 +1156,29 @@ body.theme-frustrated {
 /* ==  Theme overrides: Happy & Neutral        == */
 /* ============================================= */
 
-/* Happy: make emotion cards and send button darker shades of happy accents */
-.theme-happy .card-stack-item,
-.theme-happy .emotion-card-stack .emotion-card {
-  background: linear-gradient(180deg,
-    color-mix(in srgb, var(--accent-primary, #f58f00) 75%, black 25%),
-    color-mix(in srgb, var(--accent-secondary, #bb7f2a) 75%, black 25%));
-  border: 1px solid color-mix(in srgb, var(--accent-primary, #f58f00) 30%, transparent);
+/* Happy: emotion cards, send and reset buttons use #312107 (darker warm brown) */
+body.theme-happy .card-stack-item,
+body.theme-happy .emotion-card-stack .emotion-card {
+  background: linear-gradient(180deg, #312107 0%, color-mix(in srgb, #312107 85%, black 15%));
+  border: 1px solid color-mix(in srgb, #312107 30%, transparent);
   color: var(--text-primary);
 }
-.theme-happy .emotion-card .card-title { color: var(--text-primary); }
-.theme-happy .emotion-card .card-text { color: var(--text-secondary); }
-.theme-happy .card-vertical { color: color-mix(in srgb, var(--accent-primary, #f58f00) 55%, white); }
-.theme-happy .send-fly-button {
-  background: color-mix(in srgb, var(--accent-primary, #f58f00) 85%, black 15%);
-  border-color: color-mix(in srgb, var(--accent-primary, #f58f00) 40%, transparent);
+body.theme-happy .emotion-card .card-title { color: var(--text-primary); }
+body.theme-happy .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-happy .card-vertical { color: color-mix(in srgb, #312107 65%, white); }
+body.theme-happy .send-fly-button {
+  background: #312107;
+  border-color: color-mix(in srgb, #312107 30%, transparent);
   color: white;
 }
+/* Reset Theme button for Happy */
+body.theme-happy .reset-theme-button,
+body.theme-happy .reset-theme-button svg {
+  background: #312107;
+  border-color: color-mix(in srgb, #312107 30%, transparent);
+  color: white;
+}
+body.theme-happy .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
 
 /* Neutral: darker emotion cards and send button derived from neutral accents */
 body.theme-neutral .card-stack-item,
