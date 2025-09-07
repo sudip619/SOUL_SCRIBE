@@ -947,6 +947,77 @@ body.theme-introspective {
   background-attachment: fixed !important;
 }
 
+/* --------------------------------------------- */
+/* Overwhelmed-specific color overrides (2f1933) */
+/* Apply darker shades to cards, sidebar and chat under the introspective theme */
+.theme-introspective {
+  /* darker shades based on #2f1933 */
+  --overw-primary: #2f1933; /* base */
+  --overw-dark1: #27132a;   /* darker */
+  --overw-dark2: #1d0b1a;   /* darkest */
+}
+
+/* Emotion cards (card stack and emotion-card component) */
+.theme-introspective .card-stack-item,
+.theme-introspective .emotion-card-stack .emotion-card {
+  background: linear-gradient(180deg, var(--overw-primary) 0%, var(--overw-dark1) 100%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 30%, transparent);
+  color: var(--text-primary);
+}
+.theme-introspective .card-details-title { color: var(--text-primary); }
+.theme-introspective .card-details-text { color: var(--text-secondary); }
+.theme-introspective .card-vertical { color: color-mix(in srgb, var(--overw-primary) 65%, white); }
+
+/* Sidebar and mood chips */
+.theme-introspective .sidebar {
+  background: linear-gradient(to bottom, var(--overw-dark1), var(--overw-primary));
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 20%, transparent);
+}
+.theme-introspective .sidebar-item {
+  color: var(--text-primary);
+}
+.theme-introspective .sidebar-item:hover,
+.theme-introspective .sidebar-item.is-active {
+  background-color: var(--overw-dark2);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--overw-primary) 20%, transparent);
+}
+.theme-introspective .mood-chip {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--overw-primary) 85%, black) 0%, color-mix(in srgb, var(--overw-dark1) 85%, black) 100%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 22%, transparent);
+  color: var(--text-primary);
+}
+.theme-introspective .mood-chip img { opacity: 0.95; filter: grayscale(20%) brightness(.9); }
+
+/* Chat composer and input */
+.theme-introspective .composer { background: linear-gradient(180deg, color-mix(in srgb, var(--overw-dark1) 60%, transparent), color-mix(in srgb, var(--overw-dark2) 65%, transparent)); border-top: 1px solid color-mix(in srgb, var(--overw-primary) 12%, transparent); }
+.theme-introspective .chat-input-card { background-image: linear-gradient(163deg, var(--overw-primary) 0%, var(--overw-dark1) 100%); border: 1px solid color-mix(in srgb, var(--overw-primary) 25%, transparent); }
+.theme-introspective .chat-input-card2 { background-color: rgba(0,0,0,0.18); }
+.theme-introspective .chat-input-field {
+  border: solid 1.5px color-mix(in srgb, var(--overw-dark2) 45%, black);
+  color: var(--text-primary);
+  background: transparent;
+}
+.theme-introspective .chat-input-field:focus { border: 1.5px solid color-mix(in srgb, var(--overw-primary) 40%, transparent); box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--overw-primary) 10%, transparent); }
+
+/* Message bubbles */
+.theme-introspective .bubble,
+.theme-introspective .bubble-bot {
+  background: linear-gradient(180deg, var(--overw-dark1), var(--overw-dark2));
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 18%, transparent);
+}
+
+/* Send button */
+.theme-introspective .send-fly-button {
+  background: var(--overw-primary);
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent);
+  color: white;
+}
+.theme-introspective .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* Ensure inputs and smaller UI elements remain legible */
+.theme-introspective .card-details, .theme-introspective .auth-form-container, .theme-introspective .auth-input-field { color: var(--text-primary); }
+
 /* ============================================= */
 /* ==           Sidebar Component             == */
 /* ============================================= */
