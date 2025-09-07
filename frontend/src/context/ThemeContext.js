@@ -15,8 +15,8 @@ const moodToTheme = {
   'sad': 'theme-muted',
   'tired': 'theme-muted',
   // Grounding Theme
-  'anxious': 'theme-frustrated',
-  'frustrated': 'theme-grounding',
+  'anxious': 'theme-grounding',
+  'frustrated': 'theme-frustrated',
   'overwhelmed': 'theme-introspective',
   'angry': 'theme-angry',
   'annoyed': 'theme-angry',
