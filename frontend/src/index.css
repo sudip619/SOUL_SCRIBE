@@ -442,6 +442,18 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 
 /* Make native selects match the per-theme send button color (fill and text)
    Applies site-wide for any active theme. Options styling remains native. */
+
+/* Per-theme send button background variables (used by selects and buttons) */
+body.theme-calm { --send-button-bg: #080b1b; }
+body.theme-neutral { --send-button-bg: #242324; }
+body.theme-frustrated { --send-button-bg: #1d1f2f; }
+body.theme-tired { --send-button-bg: #404D4A; }
+body.theme-anxious { --send-button-bg: #0a1417; }
+body.theme-bright { --send-button-bg: var(--accent-primary); }
+body.theme-muted { --send-button-bg: var(--accent-primary); }
+body.theme-introspective { --send-button-bg: var(--accent-primary); }
+body.theme-angry { --send-button-bg: color-mix(in srgb, var(--accent-primary, #FF447A) 50%, black); }
+
 body[class*="theme-"] select,
 body[class*="theme-"] .select-like {
   background: var(--send-button-bg, var(--accent-primary));
