@@ -990,9 +990,11 @@ body.theme-introspective {
 /* Emotion cards (card stack and emotion-card component) */
 .theme-introspective .card-stack-item,
 .theme-introspective .emotion-card-stack .emotion-card {
-  background: linear-gradient(180deg, var(--overw-primary) 0%, var(--overw-dark1) 100%);
-  border: 1px solid color-mix(in srgb, var(--overw-primary) 30%, transparent);
+  /* Darker gradient for overwhelmed: use the darker shades to deepen the card surface */
+  background: linear-gradient(180deg, var(--overw-dark1) 0%, var(--overw-dark2) 100%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 22%, transparent);
   color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
 }
 .theme-introspective .card-details-title { color: var(--text-primary); }
 .theme-introspective .card-details-text { color: var(--text-secondary); }
