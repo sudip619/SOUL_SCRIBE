@@ -1086,6 +1086,28 @@ body.theme-introspective .reset-theme-button svg {
 body.theme-introspective .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
 
 /* Slightly reduce panel shadows to emphasize translucency */
+
+/* Overwhelmed: force chat input box opaque and match send/reset button color */
+body.theme-introspective .chat-input-card,
+body.theme-introspective .chat-input-card2 {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black) !important;
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 40%, transparent) !important;
+  box-shadow: 0 8px 20px rgba(15,8,20,0.35) !important;
+}
+body.theme-introspective .chat-input-field {
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+}
+body.theme-introspective .chat-input-label { color: color-mix(in srgb, var(--text-secondary) 70%, white 30%); }
+
+/* Ensure reset button matches send button */
+body.theme-introspective .reset-theme-button,
+body.theme-introspective .reset-theme-button svg {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black) !important;
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent) !important;
+  color: white !important;
+}
 .theme-introspective .panel-surface { background: linear-gradient(180deg, rgba(47,25,51,0.06), rgba(29,11,26,0.04)); border: 1px solid rgba(47,25,51,0.10); }
 
 /* Ensure inputs and smaller UI elements remain legible */
