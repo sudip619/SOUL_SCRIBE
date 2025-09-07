@@ -1165,11 +1165,15 @@ body.theme-frustrated {
 /* ============================================= */
 
 .sidebar {
-  /* Base gradient using the dark, warm backgrounds */
-  background: linear-gradient(to bottom, var(--bg-secondary, #2a2216), var(--bg-primary, #1c160c));
-
-  /* Border color derived from the rich orange accent */
+  /* Base translucent sidebar used across themes */
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
+    color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
   border: 1px solid color-mix(in srgb, var(--accent-primary, #f58f00) 25%, transparent);
+  border-radius: 16px;
+  background-clip: padding-box;
 }
 
 .sidebar-item {
