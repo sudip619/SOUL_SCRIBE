@@ -1429,16 +1429,25 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
 /* You can apply this class to your main app container or body tag to activate this theme. */
 .theme-energized {
   /* -- CSS Variables for the Energized Theme -- */
-  --bg-primary: #1a1005;
-  --bg-secondary: #2d1d0c;
-  --text-primary: #c2a25b;
-  --text-secondary: #a27b10;
-  --accent-primary: #df873a;
-  --accent-secondary: #c88a6f;
-  --border-color: rgba(223,135,58,0.3);
-  --radial-accent-color1: #c2a25b;
-  --radial-accent-color2: #a27b10;
-  --radial-bg-color: #0d0602;
+  /* Using the darkest browns from your palette for a rich, dark background */
+  --bg-primary: #522500;
+  --bg-secondary: #713200;
+
+  /* Using the lightest, softest off-whites for high contrast and readability */
+  --text-primary: #FEFAE0;
+  --text-secondary: #F4F4D5;
+
+  /* Using the brightest yellow and orange for vibrant, energetic accents */
+  --accent-primary: #F9DC5C;
+  --accent-secondary: #DA7E37;
+
+  /* Semi-transparent border based on the primary yellow accent */
+  --border-color: rgba(249, 220, 92, 0.3);
+
+  /* -- Radial Accent Variables for a warm, dark background glow -- */
+  --radial-accent-color1: #EDA268;
+  --radial-accent-color2: #FAE588;
+  --radial-bg-color: #522500;
 }
 
 body.theme-energized {
