@@ -1220,29 +1220,33 @@ body.theme-frustrated .chat-interface { background-color: rgba(30,31,46,0.8); ba
 /* ==  Theme overrides: Happy & Neutral        == */
 /* ============================================= */
 
-/* Happy: emotion cards, send and reset buttons use #663f00 (rich warm brown) */
+/* Happy: emotion cards, send and reset buttons use the provided warm palette */
 body.theme-happy .card-stack-item,
 body.theme-happy .emotion-card-stack .emotion-card {
-  background: linear-gradient(180deg, #663f00 0%, color-mix(in srgb, #663f00 85%, black 15%));
-  border: 1px solid color-mix(in srgb, #663f00 30%, transparent);
+  background: linear-gradient(to bottom, #5a4136, #4d382d);
+  border: 1px solid var(--border-color, rgba(251,167,111,0.3));
   color: var(--text-primary);
 }
-body.theme-happy .emotion-card .card-title { color: var(--text-primary); }
-body.theme-happy .emotion-card .card-text { color: var(--text-secondary); }
-body.theme-happy .card-vertical { color: color-mix(in srgb, #663f00 65%, white); }
-body.theme-happy .send-fly-button {
-  background: #663f00;
-  border-color: color-mix(in srgb, #663f00 30%, transparent);
-  color: white;
-}
-/* Reset Theme button for Happy */
+body.theme-happy .emotion-card .card-title { color: #ffffff; }
+body.theme-happy .emotion-card .card-text { color: var(--text-primary); }
+body.theme-happy .card-vertical { color: var(--accent-secondary, #fbc1e8); opacity: 0.95; }
+
+body.theme-happy .send-fly-button,
 body.theme-happy .reset-theme-button,
 body.theme-happy .reset-theme-button svg {
-  background: #663f00;
-  border-color: color-mix(in srgb, #663f00 30%, transparent);
+  background: var(--accent-primary, #fba76f);
+  border-color: color-mix(in srgb, var(--accent-primary, #fba76f) 30%, transparent);
   color: white;
 }
-body.theme-happy .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+body.theme-happy .reset-theme-button:hover,
+body.theme-happy .send-fly-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+/* Happy chat interface (translucent) */
+body.theme-happy .chat-interface {
+  background-color: rgba(44,30,23,0.8); /* #2c1e17 at 80% opacity */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
 
 /* Neutral: darker emotion cards and send button derived from neutral accents */
 body.theme-neutral .card-stack-item,
