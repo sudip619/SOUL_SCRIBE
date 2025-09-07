@@ -133,6 +133,12 @@ body.theme-angry {
   background-attachment: fixed !important;
 }
 
+/* Sidebar icons in angry theme: shades of #FF447A */
+body.theme-angry .sidebar-item .sidebar-icon { color: #FF6E95; }
+body.theme-angry .sidebar-item.is-active .sidebar-icon,
+body.theme-angry .sidebar-item:hover .sidebar-icon { color: #FF447A; filter: drop-shadow(0 0 8px rgba(255,68,122,0.16)); }
+body.theme-angry .sidebar-item.disabled .sidebar-icon { color: #CC3566; opacity: 0.9; }
+
 /* Happy: same radial-gradient layout as angry, with given colors */
 body.theme-bright {
   animation: none !important;
