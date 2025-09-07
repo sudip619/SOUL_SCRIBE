@@ -29,92 +29,98 @@ export async function postJSON(path, data, options = {}) {
     ...options,
   };
 
-  const timeoutMs = options.timeout || 10000; // 10s default
+  const timeoutMs = options.timeout || 20000; // 20s default for more lenient environments
+  const retries = Number.isInteger(options.retries) ? options.retries : 2; // retry attempts for transient failures
 
-  // First attempt: plain fetch without AbortController to avoid incompatibilities
-  try {
-    const fetchWithoutSignal = { ...fetchConfig };
-    const fetchPromise = fetch(url, fetchWithoutSignal);
-
-    // Implement timeout by racing the fetch against a timeout promise.
-    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (fetch).')), timeoutMs));
-
-    const response = await Promise.race([fetchPromise, timeoutPromise]);
-
-    // If response is opaque due to CORS (type === 'opaque'), notify user
-    if (response && response.type === 'opaque') {
-      throw new Error('Opaque response received — likely blocked by CORS. Enable CORS on the API server or use a same-origin proxy.');
-    }
-
-    return response;
-  } catch (fetchErr) {
-    // Log and try to bypass wrappers by using a fresh iframe's fetch implementation
-    console.error('[postJSON] fetch failed for URL:', url, 'error:', fetchErr);
-
+  // First attempt(s): plain fetch with retry/backoff
+  for (let attempt = 0; attempt <= retries; attempt++) {
     try {
-      // Create an inert iframe to access an unwrapped fetch implementation
-      const iframe = document.createElement('iframe');
-      iframe.style.display = 'none';
-      iframe.src = 'about:blank';
-      document.documentElement.appendChild(iframe);
-      const win = iframe.contentWindow;
-      if (win && typeof win.fetch === 'function') {
-        try {
-          console.debug('[postJSON] Attempting iframe.fetch fallback for URL:', url);
-          const iframeFetchPromise = win.fetch(url, { ...fetchConfig });
-          const timeoutPromise2 = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (iframe.fetch).')), timeoutMs));
-          const iframeResponse = await Promise.race([iframeFetchPromise, timeoutPromise2]);
-          try { document.documentElement.removeChild(iframe); } catch (_) {}
-          if (iframeResponse && iframeResponse.type === 'opaque') {
-            throw new Error('Opaque response received from iframe.fetch — likely blocked by CORS.');
-          }
-          return iframeResponse;
-        } catch (iframeErr) {
-          console.warn('[postJSON] iframe.fetch fallback failed for URL:', url, 'error:', iframeErr);
-          try { document.documentElement.removeChild(iframe); } catch (_) {}
-        }
-      } else {
-        try { document.documentElement.removeChild(iframe); } catch (_) {}
+      const fetchWithoutSignal = { ...fetchConfig };
+      const fetchPromise = fetch(url, fetchWithoutSignal);
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (fetch).')), timeoutMs));
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+      if (response && response.type === 'opaque') {
+        throw new Error('Opaque response received — likely blocked by CORS. Enable CORS on the API server or use a same-origin proxy.');
       }
-    } catch (iframeConstructionErr) {
-      console.warn('[postJSON] Could not use iframe.fetch fallback:', iframeConstructionErr);
-    }
 
-    console.warn('Fetch (and iframe.fetch) failed, will try XHR fallback');
+      return response;
+    } catch (fetchErr) {
+      console.error(`[postJSON] fetch attempt ${attempt + 1} failed for URL: ${url}`, fetchErr);
+      if (attempt < retries) {
+        // Exponential backoff before retrying
+        const backoff = 300 * Math.pow(2, attempt);
+        console.debug(`[postJSON] retrying in ${backoff}ms (attempt ${attempt + 2}/${retries + 1})`);
+        await new Promise((res) => setTimeout(res, backoff));
+        continue;
+      }
 
-    // Second attempt: try XHR
-    return new Promise((resolve, reject) => {
+      // After exhausting fetch retries, proceed to iframe/XHR fallbacks
       try {
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        if (options.headers && options.headers.Authorization) {
-          xhr.setRequestHeader('Authorization', options.headers.Authorization);
+        // Create an inert iframe to access an unwrapped fetch implementation
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = 'about:blank';
+        document.documentElement.appendChild(iframe);
+        const win = iframe.contentWindow;
+        if (win && typeof win.fetch === 'function') {
+          try {
+            console.debug('[postJSON] Attempting iframe.fetch fallback for URL:', url);
+            const iframeFetchPromise = win.fetch(url, { ...fetchConfig });
+            const timeoutPromise2 = new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out (iframe.fetch).')), timeoutMs));
+            const iframeResponse = await Promise.race([iframeFetchPromise, timeoutPromise2]);
+            try { document.documentElement.removeChild(iframe); } catch (_) {}
+            if (iframeResponse && iframeResponse.type === 'opaque') {
+              throw new Error('Opaque response received from iframe.fetch — likely blocked by CORS.');
+            }
+            return iframeResponse;
+          } catch (iframeErr) {
+            console.warn('[postJSON] iframe.fetch fallback failed for URL:', url, 'error:', iframeErr);
+            try { document.documentElement.removeChild(iframe); } catch (_) {}
+          }
+        } else {
+          try { document.documentElement.removeChild(iframe); } catch (_) {}
         }
-        xhr.timeout = timeoutMs;
-        xhr.onload = () => {
-          const res = {
-            ok: xhr.status >= 200 && xhr.status < 300,
-            status: xhr.status,
-            text: () => Promise.resolve(xhr.responseText),
-            json: () => {
-              try {
-                return Promise.resolve(JSON.parse(xhr.responseText));
-              } catch (e) {
-                return Promise.reject(e);
-              }
-            },
-          };
-          resolve(res);
-        };
-        xhr.onerror = () => reject(new Error(`Network error (XHR) — possible CORS or connectivity issue when calling ${url}`));
-        xhr.ontimeout = () => reject(new Error(`Request timed out (XHR) when calling ${url}`));
-        xhr.send(JSON.stringify(data));
-      } catch (xhrErr) {
-        console.error('[postJSON] XHR construction failed for URL:', url, 'error:', xhrErr);
-        reject(xhrErr);
+      } catch (iframeConstructionErr) {
+        console.warn('[postJSON] Could not use iframe.fetch fallback:', iframeConstructionErr);
       }
-    });
+
+      console.warn('Fetch (and iframe.fetch) failed, will try XHR fallback');
+
+      // Second attempt: try XHR
+      return new Promise((resolve, reject) => {
+        try {
+          const xhr = new XMLHttpRequest();
+          xhr.open('POST', url);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          if (options.headers && options.headers.Authorization) {
+            xhr.setRequestHeader('Authorization', options.headers.Authorization);
+          }
+          xhr.timeout = timeoutMs;
+          xhr.onload = () => {
+            const res = {
+              ok: xhr.status >= 200 && xhr.status < 300,
+              status: xhr.status,
+              text: () => Promise.resolve(xhr.responseText),
+              json: () => {
+                try {
+                  return Promise.resolve(JSON.parse(xhr.responseText));
+                } catch (e) {
+                  return Promise.reject(e);
+                }
+              },
+            };
+            resolve(res);
+          };
+          xhr.onerror = () => reject(new Error(`Network error (XHR) — possible CORS or connectivity issue when calling ${url}`));
+          xhr.ontimeout = () => reject(new Error(`Request timed out (XHR) when calling ${url}`));
+          xhr.send(JSON.stringify(data));
+        } catch (xhrErr) {
+          console.error('[postJSON] XHR construction failed for URL:', url, 'error:', xhrErr);
+          reject(xhrErr);
+        }
+      });
+    }
   }
 }
 
