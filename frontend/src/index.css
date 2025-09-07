@@ -1310,13 +1310,23 @@ body.theme-tired .sidebar-item:hover { background-color: #2b2b2b; box-shadow: in
 /* Emotion cards */
 body.theme-tired .emotion-card-stack .emotion-card,
 body.theme-tired .card-stack-item {
-  background-color: var(--bg-secondary, #333333);
+  /* Dark gradient using #232a28 and #424d4a */
+  background: linear-gradient(180deg, #232a28 0%, #424d4a 100%);
   border: 1px solid var(--border-color, rgba(138,154,91,0.3));
   color: var(--text-primary);
 }
 body.theme-tired .emotion-card .card-title { color: var(--accent-primary, #8A9A5B); }
 body.theme-tired .emotion-card .card-text { color: var(--text-primary, #D4D4D4); }
 body.theme-tired .emotion-card .vertical-index { color: var(--text-secondary, #888888); opacity: 0.9; }
+
+/* Send and Reset buttons for Tired mood */
+body.theme-tired .send-fly-button,
+body.theme-tired .reset-theme-button {
+  background: #232a28;
+  border-color: color-mix(in srgb, #232a28 30%, transparent);
+  color: white;
+}
+body.theme-tired .reset-theme-button svg { fill: white; }
 
 /* Chat interface */
 body.theme-tired .chat-interface {
