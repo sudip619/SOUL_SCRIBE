@@ -1482,6 +1482,8 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
 body.theme-energized {
   animation: none !important;
   --color1: var(--radial-accent-color1, #EDA268);
+  /* per-theme send button background */
+  --send-button-bg: #302700;
   --color2: var(--radial-accent-color2, #DBE1BC);
   --bg-color: var(--radial-bg-color, #180D01);
   background: var(--bg-color) !important;
