@@ -1333,11 +1333,26 @@ body.theme-tired .reset-theme-button svg { fill: white; }
 
 /* Chat interface */
 body.theme-tired .chat-interface {
-  background-color: rgba(51,51,51,0.85);
+  /* Use #232a28 as the subtle base color for the chat surfaces */
+  background-color: rgba(35,42,40,0.88); /* #232a28 with high opacity */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid color-mix(in srgb, var(--text-secondary, #888888) 30%, transparent);
+  border: 1px solid color-mix(in srgb, #232a28 30%, transparent);
 }
+
+/* Tired: composer and input match the chat surface color */
+body.theme-tired .composer { background: rgba(35,42,40,0.9); border-top: 1px solid color-mix(in srgb, #232a28 18%, transparent); }
+body.theme-tired .chat-input-card { background: rgba(35,42,40,0.95); border: 1px solid color-mix(in srgb, #232a28 24%, transparent); box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
+body.theme-tired .chat-input-card2 { background: rgba(35,42,40,0.95); }
+
+/* Message bubbles adopt darker/lighter tones of #232a28 */
+body.theme-tired .bubble,
+body.theme-tired .bubble-bot {
+  background: linear-gradient(180deg, color-mix(in srgb, #232a28 85%, black 15%), color-mix(in srgb, #232a28 70%, black 30%));
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, #232a28 18%, transparent);
+}
+body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in srgb, #232a28 60%, black 40%), color-mix(in srgb, #232a28 40%, black 60%)); color: white; }
 
 /* ============================================= */
 /* ==        Emotion Cards Component          == */
