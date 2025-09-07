@@ -1076,6 +1076,15 @@ body.theme-introspective {
 }
 .theme-introspective .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
 
+/* Reset Theme button for Introspective/Overwhelmed: match send button */
+body.theme-introspective .reset-theme-button,
+body.theme-introspective .reset-theme-button svg {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black);
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent);
+  color: white;
+}
+body.theme-introspective .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
 /* Slightly reduce panel shadows to emphasize translucency */
 .theme-introspective .panel-surface { background: linear-gradient(180deg, rgba(47,25,51,0.06), rgba(29,11,26,0.04)); border: 1px solid rgba(47,25,51,0.10); }
 
