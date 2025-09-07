@@ -21,7 +21,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # --- CORS Configuration ---
-CORS(app)
+# Allow cross-origin requests to API endpoints. We intentionally allow all origins for
+# development and preview environments (builder preview, localhost, etc.). Do NOT use
+# a wildcard origin in production; replace with explicit origins when deploying.
+CORS(app, resources={r"/api/*": {"origins": ["*"]}}, supports_credentials=False,
+     allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+     expose_headers=["Content-Type"])
 
 # --- Secret Key ---
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your_fallback_secret_key_if_env_not_set')

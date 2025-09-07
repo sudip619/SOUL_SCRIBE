@@ -1,5 +1,6 @@
 import React from 'react';
 import '../home.css';
+import ThemeColorEditor from './ThemeColorEditor';
 
 function IconBadge({ children }) {
   return (
@@ -108,6 +109,7 @@ function HomeView() {
           <div className="theme-chip theme-muted-chip"><span />Sad & Tired</div>
           <div className="theme-chip theme-angry-chip"><span />Angry & Frustrated</div>
         </div>
+        <ThemeColorEditor />
       </section>
 
       <section id="how" className="home-section" data-aos="fade-up" data-aos-duration="1000">

@@ -6,18 +6,18 @@ const ThemeContext = createContext();
 // Updated mapping based on our defined groups
 const moodToTheme = {
   // Bright Theme
-  'happy': 'theme-bright',
-  'energized': 'theme-bright',
+  'happy': 'theme-happy',
+  'energized': 'theme-energized',
   // Calm Theme
   'calm': 'theme-calm',
   'neutral': 'theme-neutral',
   // Muted Theme
   'sad': 'theme-muted',
-  'tired': 'theme-muted',
+  'tired': 'theme-tired',
   // Grounding Theme
-  'anxious': 'theme-grounding',
-  'frustrated': 'theme-grounding',
-  'overwhelmed': 'theme-grounding',
+  'anxious': 'theme-anxious',
+  'frustrated': 'theme-frustrated',
+  'overwhelmed': 'theme-introspective',
   'angry': 'theme-angry',
   'annoyed': 'theme-angry',
 };
@@ -25,6 +25,12 @@ const moodToTheme = {
 const removeAllThemes = () => {
   document.body.classList.remove(
     'theme-bright',
+    'theme-happy',
+    'theme-introspective',
+    'theme-frustrated',
+    'theme-tired',
+    'theme-anxious',
+    'theme-energized',
     'theme-calm',
     'theme-muted',
     'theme-grounding',

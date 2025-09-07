@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { API_BASE_URL } from '../services/api';
+import { postJSON } from '../services/api';
 
 function AuthForm({ onLoginSuccess, showAlert }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -22,41 +22,37 @@ function AuthForm({ onLoginSuccess, showAlert }) {
       return;
     }
     try {
-      const response = await fetch(`${API_BASE_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await response.json();
+      const response = await postJSON('/api/register', { username, password });
+      let data = null;
+      try { data = await response.json(); } catch (_) { data = null; }
       if (response.ok) {
         showAlert('Registration successful! Please log in.', true);
         setIsRegistering(false);
       } else {
-        showAlert(data.message || 'Registration failed.', false);
+        showAlert((data && data.message) || 'Registration failed.', false);
       }
     } catch (error) {
-      showAlert('Network error during registration.', false);
+      console.error('Registration error:', error);
+      showAlert(error.message || 'Network error during registration.', false);
     }
   };
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await response.json();
+      const response = await postJSON('/api/login', { username, password });
+      let data = null;
+      try { data = await response.json(); } catch (_) { data = null; }
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('username', data.username);
         localStorage.setItem('userId', data.user_id);
         onLoginSuccess(data.username, data.user_id);
       } else {
-        showAlert(data.message || 'Login failed.', false);
+        showAlert((data && data.message) || 'Login failed.', false);
       }
     } catch (error) {
-      showAlert('Network error during login.', false);
+      console.error('Login error:', error);
+      showAlert(error.message || 'Network error during login.', false);
     }
   };
 
