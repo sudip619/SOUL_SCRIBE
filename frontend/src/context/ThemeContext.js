@@ -6,7 +6,7 @@ const ThemeContext = createContext();
 // Updated mapping based on our defined groups
 const moodToTheme = {
   // Bright Theme
-  'happy': 'theme-bright',
+  'happy': 'theme-happy',
   'energized': 'theme-bright',
   // Calm Theme
   'calm': 'theme-calm',
@@ -25,6 +25,7 @@ const moodToTheme = {
 const removeAllThemes = () => {
   document.body.classList.remove(
     'theme-bright',
+    'theme-happy',
     'theme-calm',
     'theme-muted',
     'theme-grounding',
