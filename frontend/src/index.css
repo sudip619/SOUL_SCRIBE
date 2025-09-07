@@ -1149,7 +1149,17 @@ body.theme-frustrated {
 .theme-frustrated .chat-input-field { color: var(--text-primary, #8db1a4); background: transparent; border: 1.5px solid color-mix(in srgb, var(--bg-primary, #0a0f0d) 35%, black); }
 .theme-frustrated .bubble, .theme-frustrated .bubble-bot { background: linear-gradient(180deg, color-mix(in srgb, var(--bg-secondary, #0f2027) 80%, black), color-mix(in srgb, var(--bg-primary, #0a0f0d) 85%, black)); color: var(--text-primary, #8db1a4); border: 1px solid color-mix(in srgb, var(--accent-primary, #28623a) 14%, transparent); }
 .theme-frustrated .bubble-user { background: linear-gradient(180deg, color-mix(in srgb, var(--accent-primary, #28623a) 38%, black), color-mix(in srgb, var(--bg-primary, #0a0f0d) 75%, black)); color: white; }
-.theme-frustrated .send-fly-button { background: var(--accent-primary, #28623a); color: white; border-color: color-mix(in srgb, var(--accent-primary, #28623a) 30%, transparent); }
+body.theme-frustrated .send-fly-button { background: #0f2027; color: white; border-color: color-mix(in srgb, #0f2027 30%, transparent); }
+body.theme-frustrated .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* Reset Theme button for Frustrated/Anxious */
+body.theme-frustrated .reset-theme-button,
+body.theme-frustrated .reset-theme-button svg {
+  background: #0f2027;
+  border-color: color-mix(in srgb, #0f2027 30%, transparent);
+  color: white;
+}
+body.theme-frustrated .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
 
 
 /* ============================================= */
