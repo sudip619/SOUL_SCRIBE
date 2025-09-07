@@ -1589,3 +1589,13 @@ body.theme-anxious .reset-theme-button:hover { filter: brightness(1.03); transfo
 .theme-color-editor .color-input { width: 44px; height: 34px; border: none; background: transparent; cursor: pointer; }
 .theme-color-editor .color-swatch { width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); }
 .theme-color-editor .color-hex { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace; padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.02); color: var(--text-primary); }
+
+/* Static login theme: applied to auth page and remains after logout */
+.theme-login {
+  --bg-primary: #0a0b12;
+  --bg-secondary: #0a0b12;
+  --text-primary: #e7fffb;
+  --text-secondary: #a5c6c8;
+  background: var(--bg-primary) !important;
+  background-image: none !important;
+}
