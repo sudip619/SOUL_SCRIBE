@@ -1175,17 +1175,17 @@ body.theme-frustrated {
 }
 
 /* Neutral: darker emotion cards and send button derived from neutral accents */
-.theme-neutral .card-stack-item,
-.theme-neutral .emotion-card-stack .emotion-card {
+body.theme-neutral .card-stack-item,
+body.theme-neutral .emotion-card-stack .emotion-card {
   /* Use solid darker neutral base for cards */
   background: linear-gradient(180deg, #242324 0%, color-mix(in srgb, #242324 85%, black 15%));
   border: 1px solid color-mix(in srgb, #242324 30%, transparent);
   color: var(--text-primary);
 }
-.theme-neutral .emotion-card .card-title { color: var(--text-primary); }
-.theme-neutral .emotion-card .card-text { color: var(--text-secondary); }
-.theme-neutral .card-vertical { color: color-mix(in srgb, #242324 65%, white); }
-.theme-neutral .send-fly-button {
+body.theme-neutral .emotion-card .card-title { color: var(--text-primary); }
+body.theme-neutral .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-neutral .card-vertical { color: color-mix(in srgb, #242324 65%, white); }
+body.theme-neutral .send-fly-button {
   background: #242324;
   border-color: color-mix(in srgb, #242324 30%, transparent);
   color: white;
