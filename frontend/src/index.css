@@ -1300,8 +1300,11 @@ body.theme-tired {
 
 /* Sidebar */
 body.theme-tired .sidebar {
-  background: linear-gradient(to bottom, var(--bg-secondary, #333333), var(--bg-primary, #1E1E1E));
-  border: 1px solid color-mix(in srgb, var(--accent-secondary, #888888) 25%, transparent);
+  /* Highly translucent sidebar for Tired theme */
+  background-color: rgba(51,51,51,0.06); /* very translucent */
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-secondary, #888888) 12%, transparent);
 }
 body.theme-tired .sidebar-item { color: var(--text-primary, #D4D4D4); }
 body.theme-tired .sidebar-item .sidebar-icon { color: var(--text-secondary, #888888); }
