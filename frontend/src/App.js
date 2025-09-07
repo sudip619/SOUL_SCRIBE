@@ -46,6 +46,25 @@ const AppContent = () => {
     }
   }, [isLoggedIn]);
 
+  // Ensure the login/auth page uses a static theme that persists after logout
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // Remove any other theme-* classes except theme-login, then add theme-login
+      Array.from(document.body.classList).forEach((c) => {
+        if (c.startsWith('theme-') && c !== 'theme-login') document.body.classList.remove(c);
+      });
+      document.body.classList.add('theme-login');
+      // Ensure animated background is not active
+      document.body.classList.remove('animated-gradient-bg');
+    } else {
+      // When logged in, remove the static login theme
+      document.body.classList.remove('theme-login');
+    }
+
+    // Also remove theme-login whenever the current view is not auth
+    if (currentView !== 'auth') document.body.classList.remove('theme-login');
+  }, [isLoggedIn, currentView]);
+
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     const username = localStorage.getItem('username');
