@@ -1231,7 +1231,9 @@ body.theme-happy .emotion-card-stack .emotion-card {
 }
 body.theme-happy .emotion-card .card-title { color: #ffffff; }
 body.theme-happy .emotion-card .card-text { color: #ffffff; }
-body.theme-happy .card-vertical { color: var(--accent-secondary, #C28CAE); opacity: 0.95; }
+body.theme-happy .card-vertical { color: #ffffff; opacity: 0.95; }
+/* Ensure index/name variants inherit white before hover */
+body.theme-happy .card-vertical .card-index, body.theme-happy .card-vertical .card-name { color: #ffffff; }
 
 body.theme-happy .send-fly-button,
 body.theme-happy .reset-theme-button,
