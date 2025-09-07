@@ -1462,6 +1462,67 @@ body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in
   box-shadow: inset 0 0 0 1px #233430;
 }
 
+/* --- Unified hover/active variables and translucent surfaces --- */
+:root {
+  /* sensible defaults: use accent colors where available */
+  --sidebar-hover-bg: color-mix(in srgb, var(--accent-primary, #ffffff) 12%, transparent);
+  --sidebar-hover-border: color-mix(in srgb, var(--accent-secondary, #ffffff) 18%, transparent);
+}
+
+/* Use same hover/active effect as sidebar for selects (profile main concern) */
+.sidebar-item:hover, .sidebar-item.is-active {
+  background: var(--sidebar-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border);
+  transform: translateX(2px);
+}
+
+/* Make selects match the sidebar hover/selection effect across themes */
+body[class*="theme-"] select,
+#main-concern,
+body[class*="theme-"] .select-like {
+  transition: all .18s ease;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text-secondary, rgba(255,255,255,0.12)) 30%, transparent);
+  border-radius: 8px;
+  padding: .65rem .75rem;
+}
+
+body[class*="theme-"] select:hover,
+body[class*="theme-"] select:focus,
+#main-concern:hover,
+#main-concern:focus,
+body[class*="theme-"] .select-like:hover,
+body[class*="theme-"] .select-like:focus {
+  background: var(--sidebar-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Ensure options readable when rendered by browsers that support styling */
+body[class*="theme-"] select option { color: var(--text-primary); background: transparent; }
+
+/* Make sidebar and chat interface more translucent across themes */
+.sidebar {
+  /* Use a more translucent layered background derived from theme variables */
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg-secondary, #000000) 40%, transparent),
+    color-mix(in srgb, var(--bg-primary, #000000) 35%, transparent)
+  );
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #000000) 10%, transparent);
+}
+
+.chat-interface {
+  /* stronger translucency */
+  background-color: color-mix(in srgb, var(--bg-primary, #000000) 40%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid color-mix(in srgb, var(--border-color, rgba(255,255,255,0.06)) 18%, transparent);
+}
+
 
 /* ============================================= */
 /* ==           Theme: Energized              == */
