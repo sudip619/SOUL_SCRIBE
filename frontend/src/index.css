@@ -914,26 +914,25 @@ body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active {
 */
 .theme-happy {
   /* -- CSS Variables for the Happy Theme -- */
-  /* Dark, warm backgrounds to make the accents pop */
-  --bg-primary: #1c160c;
-  --bg-secondary: #2a2216;
+  /* A deep, warm brown to serve as the dark base for the light colors */
+  --bg-primary: #2c1e17;
+  --bg-secondary: #3b2a21;
 
-  /* Warm, creamy off-whites for text readability */
-  --text-primary: #fff5e1;
-  --text-secondary: #d1c5a9;
+  /* Light, creamy text colors for a soft and airy feel */
+  --text-primary: #fff0e6;
+  --text-secondary: #ffdf99; /* Soft Yellow */
 
-  /* Rich orange and deep red/brown for contrasting accents */
-  --accent-primary: #f58f00; /* Rich Orange */
-  --accent-secondary: #bb7f2a; /* Earthy Brown/Ochre */
+  /* Vibrant gold and pink for contrasting accents */
+  --accent-primary: #fba76f;   /* Peachy Orange */
+  --accent-secondary: #fbc1e8;  /* Light Pink */
 
-  /* Semi-transparent border based on the primary accent */
-  --border-color: rgba(245, 143, 0, 0.3);
+  /* Semi-transparent border based on the primary peachy accent */
+  --border-color: rgba(251, 167, 111, 0.3);
 
   /* -- Radial Accent Variables for Background Effects -- */
-  /* Bright golden yellows for a sunbeam/glowing effect */
-  --radial-accent-color1: #ead985; /* Pale Yellow */
-  --radial-accent-color2: #e4bf07; /* Golden Yellow */
-  --radial-bg-color: #000000;
+  --radial-accent-color1: #ffdf99; /* Soft Yellow */
+  --radial-accent-color2: #fba76f; /* Peachy Orange */
+  --radial-bg-color: #c7f4ff; /* Light Sky Blue */
 }
 
 /* ============================================= */
