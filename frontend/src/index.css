@@ -915,25 +915,26 @@ body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active {
 */
 .theme-happy {
   /* -- CSS Variables for the Happy Theme -- */
-  /* A deep, warm brown to serve as the dark base for the light colors */
-  --bg-primary: #2c1e17;
-  --bg-secondary: #3b2a21;
+  /* A deep, dark plum background to make the light colors pop */
+  --bg-primary: #2a2128;
+  --bg-secondary: #3c323a;
 
-  /* Light, creamy text colors for a soft and airy feel */
-  --text-primary: #fff0e6;
-  --text-secondary: #ffdf99; /* Soft Yellow */
+  /* Soft, warm off-white and beige for text */
+  --text-primary: #f5f0f3;
+  --text-secondary: #DEC4A1; /* Dun */
 
-  /* Vibrant gold and pink for contrasting accents */
-  --accent-primary: #fba76f;   /* Peachy Orange */
-  --accent-secondary: #fbc1e8;  /* Light Pink */
+  /* Peach Yellow and Lilac for bright, cheerful accents */
+  --accent-primary: #EDCF8E;   /* Peach Yellow */
+  --accent-secondary: #C28CAE;  /* Lilac */
 
-  /* Semi-transparent border based on the primary peachy accent */
-  --border-color: rgba(251, 167, 111, 0.3);
+  /* Semi-transparent border based on the Peach Yellow accent */
+  --border-color: rgba(237, 207, 142, 0.3);
 
-  /* -- Radial Accent Variables for Background Effects -- */
-  --radial-accent-color1: #ffd7bd; /* Soft Peach */
-  --radial-accent-color2: #fbc1e8; /* Light Pink */
-  --radial-bg-color: #c7f4ff; /* Light Sky Blue */
+  /* -- Radial Accent Variables for a warm, rosy background glow -- */
+  /* Using the magenta and beige from your palette */
+  --radial-accent-color1: #BA7BA1; /* Sky magenta */
+  --radial-accent-color2: #D0ABA0; /* Pale Dogwood */
+  --radial-bg-color: #1a1418;
 }
 
 /* ============================================= */
