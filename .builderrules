@@ -1,0 +1,47 @@
+You are absolutely right. My apologies for missing some of the emotions and for providing specific colors when you wanted a more conceptual direction.
+
+It is just before noon on Sunday here in India. Let's create a new, more comprehensive set of instructions that covers all ten emotions and focuses on the overall theme and feeling, giving the AI more creative freedom.
+
+Here is the revised text you can use for the "Custom Instructions" field.
+
+-----
+
+### **Revised Prompt for Custom Instructions Field**
+
+You can copy and paste the text below directly into the "Custom Instructions" box.
+
+```
+**Project Identity: SoulScribe - A Mental Wellness Companion**
+
+The design aesthetic for SoulScribe should be modern, empathetic, and visually "cool." The user should feel they are in a safe, private, and intelligent space. The primary theme is a sophisticated dark mode that uses subtle visual cues to reflect the user's current emotional state.
+
+**1. Core Design Principles**
+
+* **Overall Feel:** The interface should be clean, uncluttered, and intuitive. Use generous spacing and a strong visual hierarchy to guide the user.
+* **Tone:** The design should be calming and reassuring, even when reflecting more challenging emotions. It should feel like a supportive companion.
+* **Interactions:** Animations and transitions should be smooth, fluid, and unobtrusive.
+
+**2. Emotion-Specific Visual Themes**
+
+When a user's session reflects a particular mood, the UI's background, accents, and iconography should subtly shift to align with that feeling. The goal is to create an environment that validates their emotional state.
+
+* **Happy:** The theme should feel bright, radiant, and uplifting. Think of the visual language of warmth, light, and gentle expansion.
+
+* **Calm:** This theme is serene, peaceful, and balanced. The visuals should evoke a sense of stillness, gentle motion, and tranquility, like the surface of calm water.
+
+* **Energized:** The design should feel vibrant, dynamic, and full of positive momentum. Use visuals that suggest activity, focus, and a forward-moving energy.
+
+* **Neutral:** This theme is about clarity, balance, and simplicity. It should be minimalist and clean, providing a quiet, unobtrusive space for reflection.
+
+* **Anxious:** The visual language here should be carefully handled to feel validating but not overwhelming. It could represent a sense of muted tension or a focused, electric hum.
+
+* **Sad:** This theme should be somber, quiet, and reflective. The visuals should feel soft and gentle, creating a space for introspection and comfort.
+
+* **Frustrated:** This theme reflects a feeling of being stuck or blocked. The visual language could use more rigid, geometric, or high-contrast elements to represent this tension.
+
+* **Overwhelmed:** The design should convey a sense of complexity or being crowded, but in a stylized, abstract way. It could involve layered elements or multiple faint points of motion.
+
+* **Angry:** This theme is about intensity and focus. The visual language should be strong and high-contrast, yet contained, to represent a powerful but controlled emotion.
+
+* **Tired:** The theme should feel muted, soft, and restful. The visuals should evoke a sense of fading light, slowing down, and preparing for rest.
+```
