@@ -26,6 +26,7 @@ const removeAllThemes = () => {
   document.body.classList.remove(
     'theme-bright',
     'theme-happy',
+    'theme-introspective',
     'theme-calm',
     'theme-muted',
     'theme-grounding',
