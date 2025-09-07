@@ -260,7 +260,12 @@ body.theme-neutral .sidebar-item:hover, body.theme-neutral .sidebar-item.is-acti
   align-items: center;
   width: 100%;
 }
-.auth-page-container.auth-only { transform: translateX(-6%); }
+.auth-page-container.auth-only { justify-content: flex-start; padding-left: 4rem; transform: none; }
+
+/* Ensure small screens remain centered */
+@media (max-width: 720px) {
+  .auth-page-container.auth-only { justify-content: center; padding-left: 0; }
+}
 
 
 
