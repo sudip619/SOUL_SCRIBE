@@ -108,6 +108,13 @@ const AppContent = () => {
     }
   };
 
+  const handleOpenGraphPage = (key) => {
+    if (!isLoggedIn) return;
+    if (key === 'productivity') setCurrentView('productivity');
+    if (key === 'volatility') setCurrentView('volatility');
+    if (key === 'resilience') setCurrentView('resilience');
+  };
+
   const renderView = () => {
     switch (currentView) {
       case 'auth':
@@ -119,7 +126,13 @@ const AppContent = () => {
       case 'profile':
         return <ProfileView username={currentUsername} showAlert={showAlert} />;
       case 'moodTrends':
-        return <MoodTrendsView showAlert={showAlert} />;
+        return <MoodTrendsView showAlert={showAlert} onOpenGraph={handleOpenGraphPage} />;
+      case 'productivity':
+        return <ProductivityPage />;
+      case 'volatility':
+        return <EmotionalVolatilityPage />;
+      case 'resilience':
+        return <ResiliencePage />;
       default:
         return <AuthForm onLoginSuccess={handleLoginSuccess} showAlert={showAlert} />;
     }
