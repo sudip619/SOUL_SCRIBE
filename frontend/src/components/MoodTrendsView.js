@@ -487,7 +487,7 @@ function MoodTrendsView({ showAlert }) {
           <div
             id="moodChartWrapper"
             className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface"
-            onClick={openChartModal}
+            onClick={(e) => openChartModal(e, 'daily')}
           >
             <canvas
               id="moodChart"
