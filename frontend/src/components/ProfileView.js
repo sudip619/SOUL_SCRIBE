@@ -180,9 +180,9 @@ function ProfileView({ username, showAlert }) {
 
         <button
           type="submit"
-          className="send-fly-button mt-6"
+          className="send-fly-button mt-6 save-preferences-button"
         >
-          Save Preferences
+          <span>Save Preferences</span>
         </button>
       </form>
     </div>
