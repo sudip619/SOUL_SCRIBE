@@ -1251,8 +1251,8 @@ body.theme-frustrated .sidebar-item:hover { background-color: rgba(30,31,46,0.5)
 /* Emotion cards & buttons */
 body.theme-frustrated .emotion-card-stack .emotion-card,
 body.theme-frustrated .card-stack-item {
-  /* Darker gradient for Frustrated theme using #2a2e4c */
-  background: linear-gradient(180deg, #2a2e4c 0%, color-mix(in srgb, #2a2e4c 85%, black 15%));
+  /* Frustrated theme emotion cards: gradient from #302851 to #140F26 */
+  background: linear-gradient(180deg, #302851 0%, #140F26 100%);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
 }
