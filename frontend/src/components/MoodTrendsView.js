@@ -96,7 +96,12 @@ function MoodTrendsView({ showAlert }) {
 
   const myMoodChartInstance = useRef(null); // Ref to hold the Chart.js instance for line chart
   const myExpandedMoodChartInstance = useRef(null); // Ref to hold the Chart.js instance for expanded line chart
+  const myExpandedStackedInstance = useRef(null); // Ref to hold expanded stacked bar chart instance
   const myStackedBarChartInstance = useRef(null); // Ref to hold the Chart.js instance for stacked bar chart
+  const expandedStackedRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [anchorRect, setAnchorRect] = useState(null);
+  const [activeChart, setActiveChart] = useState('daily');
 
   const [moodLogs, setMoodLogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
