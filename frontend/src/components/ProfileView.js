@@ -1,6 +1,58 @@
 // frontend/src/components/ProfileView.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeAuthenticatedRequest } from '../services/api';
+
+// Small accessible dropdown that uses sidebar-like styling for options
+function Dropdown({ id, value, onChange, options = [] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function onDocClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, []);
+
+  const selected = options.find((o) => o.value === value) || options[0] || { label: '' };
+
+  return (
+    <div className="profile-dropdown" ref={ref}>
+      <div
+        id={id}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((s) => !s)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((s) => !s); } if (e.key === 'Escape') setOpen(false); }}
+        className={`sidebar-item ${open ? 'is-active' : ''}`}
+        style={{ width: '100%' }}
+      >
+        <span className="sidebar-label" style={{ opacity: 1, transform: 'translateX(0)' }}>{selected.label}</span>
+      </div>
+
+      {open && (
+        <div className="profile-dropdown-menu" role="listbox" aria-label="Main concern options">
+          {options.map((opt) => (
+            <button
+              type="button"
+              key={opt.value || '__empty'}
+              role="option"
+              aria-selected={String(opt.value) === String(value)}
+              className="sidebar-item"
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              style={{ width: '100%', textAlign: 'left' }}
+            >
+              <span className="sidebar-label" style={{ opacity: 1, transform: 'translateX(0)' }}>{opt.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ProfileView({ username, showAlert }) {
   const [mainConcern, setMainConcern] = useState('');
