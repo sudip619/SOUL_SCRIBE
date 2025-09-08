@@ -52,9 +52,9 @@ function AuthForm({ onLoginSuccess, showAlert }) {
       if (error) throw error;
       console.log('Login successful!', data);
 
-    } catch (error)
+    } catch (error){
     alert('Error during login: ' + error.message);
-  }
+  ``}
 };
 
   return (
