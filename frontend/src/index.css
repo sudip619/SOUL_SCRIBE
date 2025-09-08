@@ -512,6 +512,17 @@ body[class*="theme-"] .select-like {
   box-shadow: 0 0 0 .12vw rgba(34,211,238,0.12);
   border-color: rgba(34,211,238,0.45) !important;
 }
+
+/* Match the sidebar hover effect for the profile dropdown */
+.profile-main-concern:hover,
+.profile-main-concern:focus,
+#main-concern:hover,
+#main-concern:focus {
+  background: var(--sidebar-hover-bg) !important;
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border) !important;
+  color: var(--text-primary) !important;
+  transform: translateX(2px);
+}
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
