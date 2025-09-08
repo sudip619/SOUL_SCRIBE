@@ -502,7 +502,7 @@ function MoodTrendsView({ showAlert }) {
           onClick={closeChartModal}
         >
           <div
-            className="relative glass-panel p-8 w-[90%] max-w-[1200px] h-[80%] max-h-[800px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
+            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[900px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
             onClick={(e) => e.stopPropagation()}
           >
             <button
