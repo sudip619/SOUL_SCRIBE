@@ -17,7 +17,7 @@ export default function ResiliencePage(){
         const data = await res.json();
         if (res.ok) {
           setLogs(data);
-          const prepared = prepareResilience(data);
+          const prepared = prepareResilienceData(data);
           if (canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
             if (chartRef.current) chartRef.current.destroy();
