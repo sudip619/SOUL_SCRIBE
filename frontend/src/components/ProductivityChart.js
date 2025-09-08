@@ -30,11 +30,9 @@ function prepareProductivityData(logs) {
   return { labels, values };
 }
 
-export default function ProductivityChart() {
+export default function ProductivityChart({ onOpenGraph }) {
   const canvasRef = useRef(null);
-  const expandedRef = useRef(null);
   const chartInstance = useRef(null);
-  const expandedInstance = useRef(null);
   const [logs, setLogs] = useState([]);
   const wrapperRef = useRef(null);
 
