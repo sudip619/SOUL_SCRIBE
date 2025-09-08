@@ -427,16 +427,25 @@ function MoodTrendsView({ showAlert }) {
   }, [showAlert]);
 
 
-  const openChartModal = () => {
+  const openChartModal = (e, chartKey = 'daily') => {
     if (!moodLogs.length) {
       showAlert('No chart data to expand. Please log some moods first.', false);
       return;
     }
+    // Determine the wrapper element clicked
+    let wrapperEl = null;
+    if (e && e.currentTarget) wrapperEl = e.currentTarget;
+    else if (e && e.target) wrapperEl = e.target.closest('.chart-wrapper');
+    const rect = wrapperEl ? wrapperEl.getBoundingClientRect() : null;
+    setAnchorRect(rect);
+    setActiveChart(chartKey);
     setIsModalOpen(true);
   };
 
   const closeChartModal = () => {
     setIsModalOpen(false);
+    setAnchorRect(null);
+    setActiveChart('daily');
   };
 
   useEffect(() => {
