@@ -103,11 +103,22 @@ function AuthForm({ onLoginSuccess, showAlert }) {
             <div className="auth-input-card">
               <div className="auth-input-card2">
                 <div className="auth-input-group">
-                  <input required type="text" id="username" className="auth-input-field" value={username} onChange={(e) => setUsername(e.target.value)} placeholder=" " />
-                  <label htmlFor="username" className="auth-input-label">Username</label>
+                  <input required type="email" id="email" className="auth-input-field" value={email} onChange={(e) => setEmail(e.target.value)} placeholder=" " />
+                  <label htmlFor="email" className="auth-input-label">Email</label>
                 </div>
               </div>
             </div>
+
+            {isRegistering && (
+              <div className="auth-input-card">
+                <div className="auth-input-card2">
+                  <div className="auth-input-group">
+                    <input required type="text" id="username" className="auth-input-field" value={username} onChange={(e) => setUsername(e.target.value)} placeholder=" " />
+                    <label htmlFor="username" className="auth-input-label">Username</label>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="auth-input-card">
               <div className="auth-input-card2">
