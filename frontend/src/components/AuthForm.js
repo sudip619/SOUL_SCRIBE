@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { postJSON } from '../services/api';
 import { supabase } from '../supabaseClient';
 
 function AuthForm({ onLoginSuccess, showAlert }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -17,44 +17,83 @@ function AuthForm({ onLoginSuccess, showAlert }) {
     }
   };
 
-  // New handleRegister function
-  const handleRegister = async (username, password) => {
-    try {
-      // Supabase uses email for registration. We'll create a dummy email from the username.
-      const email = `${username}@example.com`;
+  // Register new user using Supabase
+  const handleRegister = async () => {
+    if (!email || !password || !username) {
+      showAlert('Please provide username, email and password to register.', false);
+      return;
+    }
+    if (password !== confirmPassword) {
+      showAlert('Passwords do not match.', false);
+      return;
+    }
 
+    try {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        options: {
-          data: { username: username } // Stores the username in user metadata
-        }
+        options: { data: { username } }
       });
 
-      if (error) throw error;
-      alert('Registration successful! Check your email for a verification link.');
+      if (error) {
+        showAlert(error.message || 'Registration failed.', false);
+        return;
+      }
 
-    } catch (error) {
-      alert('Error during registration: ' + error.message);
+      // If confirmation email is disabled, a session may be returned. If not, user must verify email.
+      const userId = data?.user?.id || null;
+      const displayName = (data?.user?.user_metadata && data.user.user_metadata.username) || username || email.split('@')[0];
+
+      // Persist minimal auth info if we received a session
+      const token = data?.session?.access_token;
+      if (token) {
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('username', displayName);
+        localStorage.setItem('userId', userId);
+        showAlert('Registration successful. You are now signed in.', true);
+        onLoginSuccess && onLoginSuccess(displayName, userId);
+      } else {
+        // No session (email confirmation likely required) — inform user
+        showAlert('Registration successful. Check your email to confirm your account (if email confirmation is enabled).', true);
+      }
+    } catch (err) {
+      console.error('Registration error:', err);
+      showAlert(err.message || 'Registration failed due to network error.', false);
     }
   };
 
-const handleLogin = async (username, password) => {
-  try {
-    const email = `${username}@example.com`;
+  // Login existing user using email + password
+  const handleLogin = async () => {
+    if (!email || !password) {
+      showAlert('Please enter your email and password.', false);
+      return;
+    }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        showAlert(error.message || 'Login failed.', false);
+        return;
+      }
 
-    if (error) throw error;
-    console.log('Login successful!', data);
+      const userId = data?.user?.id || null;
+      const displayName = (data?.user?.user_metadata && data.user.user_metadata.username) || (data?.user?.email ? data.user.email.split('@')[0] : null) || 'User';
+      const token = data?.session?.access_token;
 
-  } catch (error) { // The missing '{' is added here
-    alert('Error during login: ' + error.message);
-  }
-};
+      if (token) {
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('username', displayName);
+        localStorage.setItem('userId', userId);
+        showAlert('Signed in successfully.', true);
+        onLoginSuccess && onLoginSuccess(displayName, userId);
+      } else {
+        showAlert('Signed in, but no session token was returned.', true);
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      showAlert(err.message || 'Login failed due to network error.', false);
+    }
+  };
 
   return (
     <div className="auth-page-wrapper">
