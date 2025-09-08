@@ -92,19 +92,10 @@ const prepareStackedBarData = (logs) => {
 function MoodTrendsView({ showAlert, onOpenGraph }) {
   const chartRef = useRef(null);
   const stackedBarChartRef = useRef(null);
-  const expandedChartRef = useRef(null);
-  const expandedStackedRef = useRef(null);
 
   const myMoodChartInstance = useRef(null);
-  const myExpandedMoodChartInstance = useRef(null);
-  const myExpandedStackedInstance = useRef(null);
   const myStackedBarChartInstance = useRef(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [anchorRect, setAnchorRect] = useState(null);
-  const [activeChart, setActiveChart] = useState('daily');
-  const [modalStyle, setModalStyle] = useState(null);
-  const modalRef = useRef(null);
   const [moodLogs, setMoodLogs] = useState([]);
 
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
