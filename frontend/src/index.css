@@ -1554,6 +1554,28 @@ body[class*="theme-"] .select-like {
   padding: .65rem .75rem;
 }
 
+/* Custom dropdown menu that mirrors sidebar styling */
+.profile-dropdown { position: relative; }
+.profile-dropdown-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: .5rem;
+  z-index: 60;
+  padding: .4rem;
+  border-radius: 12px;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--bg-secondary, #000000) 40%, transparent), color-mix(in srgb, var(--bg-primary, #000000) 35%, transparent));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--sidebar-hover-border, rgba(255,255,255,0.06)) 30%, transparent);
+  box-shadow: 0 12px 40px rgba(2,6,10,0.5);
+  max-height: 260px;
+  overflow: auto;
+}
+.profile-dropdown-menu .sidebar-item { padding: .6rem .8rem; border-radius: 8px; margin-bottom: .35rem; }
+.profile-dropdown-menu .sidebar-item:last-child { margin-bottom: 0; }
+.profile-dropdown-menu .sidebar-item:hover { transform: none; }
+
 body[class*="theme-"] select:hover,
 body[class*="theme-"] select:focus,
 #main-concern:hover,
