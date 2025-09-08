@@ -43,13 +43,42 @@ export default function ResilienceScore({ windowSize = 7 }) {
   const [logs, setLogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [anchorRect, setAnchorRect] = useState(null);
+  const [modalStyle, setModalStyle] = useState(null);
+  const modalRef = useRef(null);
   const wrapperRef = useRef(null);
 
   const openModal = () => {
-    if (wrapperRef.current) setAnchorRect(wrapperRef.current.getBoundingClientRect());
-    setIsModalOpen(true);
+    if (wrapperRef.current) {
+      const rect = wrapperRef.current.getBoundingClientRect();
+      setAnchorRect(rect);
+
+      const availW = window.innerWidth - 16;
+      const availH = window.innerHeight - 16;
+      const desiredWidth = Math.min(Math.round(rect.width * 1.05), availW);
+      const width = Math.max(320, desiredWidth);
+      const height = Math.min(Math.max(Math.round(rect.height * 1.6), 360), availH);
+      let left = Math.round(rect.left + (rect.width / 2) - (width / 2));
+      left = Math.max(8, Math.min(left, Math.max(8, window.innerWidth - width - 8)));
+      let top = Math.round(rect.top);
+      top = Math.max(8, Math.min(top, Math.max(8, window.innerHeight - height - 8)));
+
+      const startStyle = { position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
+      const targetStyle = { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
+
+      setModalStyle(startStyle);
+      setIsModalOpen(true);
+      setTimeout(() => setModalStyle(targetStyle), 20);
+    } else {
+      setIsModalOpen(true);
+    }
   };
-  const closeModal = () => { setIsModalOpen(false); setAnchorRect(null); };
+  const closeModal = () => {
+    if (anchorRect && modalStyle) {
+      const reverseStyle = { position: 'fixed', left: `${anchorRect.left}px`, top: `${anchorRect.top}px`, width: `${anchorRect.width}px`, height: `${anchorRect.height}px`, transition: 'all 260ms cubic-bezier(0.2,0.8,0.2,1)' };
+      setModalStyle(reverseStyle);
+      setTimeout(() => { setIsModalOpen(false); setAnchorRect(null); setModalStyle(null); }, 280);
+    } else { setIsModalOpen(false); setAnchorRect(null); setModalStyle(null); }
+  };
 
   const render = useCallback((canvas, instanceRef, labels, data) => {
     if (!canvas) return null;
