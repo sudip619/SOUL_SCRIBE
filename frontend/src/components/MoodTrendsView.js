@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 
 import { makeAuthenticatedRequest } from '../services/api';
+import ProductivityChart from './ProductivityChart';
+import EmotionalVolatility from './EmotionalVolatility';
+import ResilienceScore from './ResilienceScore';
 
 // Register all necessary Chart.js components once outside the component
 Chart.register(...registerables);
