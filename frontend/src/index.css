@@ -698,8 +698,10 @@ body[class*="theme-"] .select-like {
 }
 .loading-svg {
   width: 80%;
-  max-width: 400px;
+  max-width: 480px;
   height: auto;
+  display: block;
+  margin-bottom: 2.5rem; /* ample spacing between title and loader/button */
 }
 .loading-text {
   font-family: 'Poppins', sans-serif;
