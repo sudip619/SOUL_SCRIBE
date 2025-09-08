@@ -544,9 +544,20 @@ function MoodTrendsView({ showAlert }) {
           onClick={closeChartModal}
         >
           <div
-            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col transform translate-y-0 scale-100 transition-transform duration-200 ease-in-out"
+            className="relative glass-panel p-8 flex flex-col transition-transform duration-200 ease-in-out"
             onClick={(e) => e.stopPropagation()}
-            style={anchorRect ? { position: 'fixed', left: Math.max(8, anchorRect.left) + 'px', top: Math.max(8, anchorRect.top) + 'px', transform: 'none' } : {}}
+            style={(() => {
+              if (!anchorRect) return {};
+              try {
+                const left = Math.max(8, anchorRect.left);
+                const top = Math.max(8, anchorRect.top);
+                const availW = (typeof window !== 'undefined') ? window.innerWidth - 16 : anchorRect.width;
+                const availH = (typeof window !== 'undefined') ? window.innerHeight - 16 : anchorRect.height * 3;
+                const width = Math.min(anchorRect.width, availW);
+                const height = Math.min(Math.max(anchorRect.height * 1.6, 400), availH);
+                return { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transform: 'none' };
+              } catch (e) { return {}; }
+            })()}
           >
             <button
               onClick={closeChartModal}
