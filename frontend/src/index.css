@@ -463,11 +463,27 @@ body[class*="theme-"] .select-like {
 
 /* Target the ProfileView main concern select specifically to ensure contrast */
 #main-concern {
-  background: var(--send-button-bg, var(--accent-primary));
-  color: white;
-  border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
+  /* Translucent, slightly darker glass similar to the sidebar */
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
+    color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%);
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--border-color, rgba(255,255,255,0.06)) 40%, transparent);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  padding: .75rem;
+  border-radius: .6rem;
+  box-shadow: 0 8px 30px rgba(2,6,10,0.45); /* subtle depth */
+  appearance: none;
 }
-#main-concern option { color: var(--text-primary, #000); }
+#main-concern option { color: var(--text-primary, #000); background: transparent; }
+
+/* Ensure focus/hover states match auth inputs */
+#main-concern:focus {
+  outline: none;
+  box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--accent-primary) 18%, transparent);
+  border-color: color-mix(in srgb, var(--accent-primary) 40%, transparent);
+}
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
