@@ -79,61 +79,17 @@ export default function EmotionalVolatility({ onOpenGraph }) {
     load();
     return () => {
       if (chartInstance.current) chartInstance.current.destroy();
-      if (expandedInstance.current) expandedInstance.current.destroy();
     };
   }, [render]);
 
-  useEffect(() => {
-    if (isModalOpen && expandedRef.current && logs.length) {
-      const prepared = prepareVolatilityData(logs);
-      render(expandedRef.current, expandedInstance, prepared.labels, prepared.values);
-    }
-  }, [isModalOpen, logs, render]);
-
   return (
     <>
-      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={openModal}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('volatility'); }}>
         <h3 className="text-xl font-semibold text-[#F0F0F0] text-center mb-4">Emotional Volatility</h3>
         <div style={{ height: 220 }}>
           <canvas ref={canvasRef} />
         </div>
       </div>
-
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start z-50" onClick={closeModal}>
-          <div
-            ref={modalRef}
-            className="relative glass-panel p-8 flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-            style={modalStyle || (() => {
-              if (!anchorRect) return {};
-              try {
-                const availW = (typeof window !== 'undefined') ? window.innerWidth - 16 : anchorRect.width;
-                const availH = (typeof window !== 'undefined') ? window.innerHeight - 16 : anchorRect.height * 3;
-                const desiredWidth = Math.min(Math.round(anchorRect.width * 1.05), availW);
-                const width = Math.max(320, desiredWidth);
-                const height = Math.min(Math.max(Math.round(anchorRect.height * 1.6), 360), availH);
-                const halfWidth = Math.round(width / 2);
-                let centerX = Math.round(anchorRect.left + anchorRect.width / 2);
-                if (window.innerWidth < 800) {
-                  centerX = Math.round(window.innerWidth / 2);
-                  const top = Math.round((window.innerHeight - height) / 2);
-                  return { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px` };
-                }
-                centerX = Math.max(8 + halfWidth, Math.min(centerX, Math.max(8 + halfWidth, (window.innerWidth || availW) - halfWidth - 8)));
-                let top = Math.round(anchorRect.top);
-                top = Math.max(8, Math.min(top, Math.max(8, (window.innerHeight || availH) - height - 8)));
-                return { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px` };
-              } catch (e) { return {}; }
-            })()}
-          >
-            <button onClick={closeModal} className="absolute top-3 right-5 text-4xl">&times;</button>
-            <div className="flex-grow w-full h-full overflow-x-auto p-4" id="volatilityModalContainer">
-              <canvas ref={expandedRef} id="volatilityExpanded" className="min-w-[800px] h-full rounded-md p-4 panel-surface" />
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
