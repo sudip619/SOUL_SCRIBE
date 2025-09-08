@@ -501,6 +501,7 @@ function MoodTrendsView({ showAlert }) {
           <div
             id="stackedBarChartWrapper"
             className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface"
+            onClick={(e) => openChartModal(e, 'stacked')}
           >
             <canvas
               id="stackedBarChart"
