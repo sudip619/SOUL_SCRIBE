@@ -696,12 +696,20 @@ body[class*="theme-"] .select-like {
   background: transparent;
   z-index: 100;
 }
+.loading-header { display: flex; align-items: center; justify-content: center; gap: 2.5rem; }
 .loading-svg {
-  width: 80%;
-  max-width: 480px;
+  width: clamp(280px, 48vw, 640px);
+  max-width: 640px;
   height: auto;
   display: block;
-  margin-bottom: 2.5rem; /* ample spacing between title and loader/button */
+  margin: 0; /* spacing handled by header gap */
+}
+.pl { order: 2; }
+.pl { width: 3.2rem; height: 3.2rem; }
+
+@media (max-width: 640px) {
+  .loading-header { flex-direction: column; gap: 1.25rem; }
+  .pl { order: 2; }
 }
 .loading-text {
   font-family: 'Poppins', sans-serif;
