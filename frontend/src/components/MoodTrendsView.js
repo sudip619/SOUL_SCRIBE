@@ -309,45 +309,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
     };
   }, [moodLogs, renderChart, renderStackedBarChart]);
 
-  const openChartModal = (e, chartKey = 'daily') => {
-    if (!moodLogs.length) {
-      showAlert('No chart data to expand. Please log some moods first.', false);
-      return;
-    }
-    const wrapperEl = e.currentTarget;
-    const rect = wrapperEl.getBoundingClientRect();
-    setAnchorRect(rect);
-    setActiveChart(chartKey);
-    
-    const targetWidth = Math.min(window.innerWidth * 0.9, 1200);
-    const targetHeight = Math.min(window.innerHeight * 0.85, 800);
-    const targetTop = (window.innerHeight - targetHeight) / 2;
-    const targetCenterX = window.innerWidth / 2;
-
-    const startStyle = {
-      position: 'fixed',
-      left: `${rect.left + rect.width / 2}px`,
-      top: `${rect.top}px`,
-      width: `${rect.width}px`,
-      height: `${rect.height}px`,
-      transform: 'translateX(-50%)',
-      overflow: 'hidden',
-      transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)'
-    };
-    const targetStyle = {
-      position: 'fixed',
-      left: `${targetCenterX}px`,
-      top: `${targetTop}px`,
-      width: `${targetWidth}px`,
-      height: `${targetHeight}px`,
-      transform: 'translateX(-50%)',
-      overflow: 'hidden',
-      transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)'
-    };
-    setModalStyle(startStyle);
-    setIsModalOpen(true);
-    setTimeout(() => setModalStyle(targetStyle), 20);
-  };
 
   const closeChartModal = () => {
     if (anchorRect) {
