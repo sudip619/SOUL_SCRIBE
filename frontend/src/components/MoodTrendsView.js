@@ -420,9 +420,9 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           >
             <canvas ref={stackedBarChartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
           </div>
-          <ProductivityChart />
-          <EmotionalVolatility />
-          <ResilienceScore />
+          <ProductivityChart onOpenGraph={onOpenGraph} />
+          <EmotionalVolatility onOpenGraph={onOpenGraph} />
+          <ResilienceScore onOpenGraph={onOpenGraph} />
         </>
       )}
 
