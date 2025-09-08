@@ -160,11 +160,17 @@ export default function EmotionalVolatility() {
                 const desiredWidth = Math.min(Math.round(anchorRect.width * 1.05), availW);
                 const width = Math.max(320, desiredWidth);
                 const height = Math.min(Math.max(Math.round(anchorRect.height * 1.6), 360), availH);
-                let left = Math.round(anchorRect.left + (anchorRect.width / 2) - (width / 2));
-                left = Math.max(8, Math.min(left, Math.max(8, (window.innerWidth || availW) - width - 8)));
+                const halfWidth = Math.round(width / 2);
+                let centerX = Math.round(anchorRect.left + anchorRect.width / 2);
+                if (window.innerWidth < 800) {
+                  centerX = Math.round(window.innerWidth / 2);
+                  const top = Math.round((window.innerHeight - height) / 2);
+                  return { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px` };
+                }
+                centerX = Math.max(8 + halfWidth, Math.min(centerX, Math.max(8 + halfWidth, (window.innerWidth || availW) - halfWidth - 8)));
                 let top = Math.round(anchorRect.top);
                 top = Math.max(8, Math.min(top, Math.max(8, (window.innerHeight || availH) - height - 8)));
-                return { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transform: 'none' };
+                return { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px` };
               } catch (e) { return {}; }
             })()}
           >
