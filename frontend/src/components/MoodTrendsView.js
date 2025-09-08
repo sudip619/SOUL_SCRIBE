@@ -515,7 +515,7 @@ function MoodTrendsView({ showAlert }) {
               <canvas
                 id="expandedMoodChart"
                 ref={expandedChartRef}
-                className="min-w-[1000px] h-full rounded-md p-4 panel-surface"
+                className="min-w-[1400px] h-full rounded-md p-4 panel-surface"
               ></canvas>
             </div>
           </div>
