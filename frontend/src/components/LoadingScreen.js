@@ -3,32 +3,30 @@ import React from 'react';
 
 function LoadingScreen() {
   return (
-    <div className="loading-screen">
-      {/* SOULSCRIBE Text Animation */}
-      <svg viewBox="0 0 400 100" className="loading-svg">
+    <div className="loading-screen" role="status" aria-live="polite">
+      {/* Top progress bar */}
+      <div className="loading-topbar">
+        <div className="loading-topbar-fill" />
+      </div>
+
+      {/* Center badge with circular progress + play mark (AROCK-inspired) */}
+      <div className="loading-badge">
+        <svg className="loading-ring" viewBox="0 0 42 42" aria-hidden="true">
+          <circle className="ring-trail" cx="21" cy="21" r="19.5" />
+          <circle className="ring-progress" cx="21" cy="21" r="19.5" />
+          <polygon className="ring-play" points="17,14.937 27.5,21 17,27.063" />
+        </svg>
+      </div>
+
+      {/* SOULSCRIBE outline text draw */}
+      <svg viewBox="0 0 400 100" className="loading-svg" aria-label="SoulScribe loading">
         <defs>
           <linearGradient id="soulscribe-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" className="gradient-start" />
             <stop offset="100%" className="gradient-end" />
           </linearGradient>
         </defs>
-        <text 
-          className="loading-text" 
-          x="50%" 
-          y="50%" 
-          dy=".35em" 
-          textAnchor="middle"
-        >
-          SOULSCRIBE
-        </text>
-      </svg>
-      
-      {/* NEW: Pulsing Ring Loader Animation */}
-      <svg className="pl" viewBox="0 0 240 240">
-        <circle className="pl__ring pl__ring--a" cx="120" cy="120" r="105" transform="rotate(-90,120,120)"></circle>
-        <circle className="pl__ring pl__ring--b" cx="120" cy="120" r="35" transform="rotate(-90,120,120)"></circle>
-        <circle className="pl__ring pl__ring--c" cx="85" cy="120" r="70" transform="rotate(-90,120,120)"></circle>
-        <circle className="pl__ring pl__ring--d" cx="155" cy="120" r="70" transform="rotate(-90,120,120)"></circle>
+        <text className="loading-text" x="50%" y="50%" dy=".35em" textAnchor="middle">SOULSCRIBE</text>
       </svg>
     </div>
   );
