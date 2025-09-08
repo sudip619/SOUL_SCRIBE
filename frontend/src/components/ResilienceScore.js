@@ -101,7 +101,7 @@ export default function ResilienceScore({ windowSize = 7 }) {
 
   return (
     <>
-      <div className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={() => setIsModalOpen(true)}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={openModal}>
         <h3 className="text-xl font-semibold text-[#F0F0F0] text-center mb-4">Resilience Score</h3>
         <div style={{ height: 220 }}>
           <canvas ref={canvasRef} />
@@ -109,11 +109,15 @@ export default function ResilienceScore({ windowSize = 7 }) {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50" onClick={() => setIsModalOpen(false)}>
-          <div className="relative glass-panel p-8 w-[96%] max-w-[1400px] h-[88%] max-h-[900px] flex flex-col" onClick={(e) => e.stopPropagation()}>
-            <button onClick={() => setIsModalOpen(false)} className="absolute top-3 right-5 text-4xl">&times;</button>
-            <div className="flex-grow w-full h-full overflow-x-auto p-4">
-              <canvas ref={expandedRef} id="resilienceExpanded" className="min-w-[1200px] h-full rounded-md p-4 panel-surface" />
+        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start z-50" onClick={closeModal}>
+          <div
+            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+            style={anchorRect ? { position: 'fixed', left: Math.max(8, anchorRect.left) + 'px', top: Math.max(8, anchorRect.top) + 'px', transform: 'none' } : {}}
+          >
+            <button onClick={closeModal} className="absolute top-3 right-5 text-4xl">&times;</button>
+            <div className="flex-grow w-full h-full overflow-x-auto p-4" id="resilienceModalContainer">
+              <canvas ref={expandedRef} id="resilienceExpanded" className="min-w-[800px] h-full rounded-md p-4 panel-surface" />
             </div>
           </div>
         </div>
