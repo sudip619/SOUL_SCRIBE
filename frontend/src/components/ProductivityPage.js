@@ -1,42 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { makeAuthenticatedRequest } from '../services/api';
+import { prepareProductivityData } from './ProductivityChart';
 Chart.register(...registerables);
-
-const WEIGHTS = {
-  happy: 2,
-  energized: 2,
-  calm: 2,
-  neutral: 0.5,
-  sad: -2,
-  tired: -2,
-  anxious: -3,
-  frustrated: -3,
-  overwhelmed: -3,
-  angry: -3
-};
-
-function prepareProductivityIndex(logs) {
-  const daily = {};
-  logs.forEach(log => {
-    const date = new Date(log.timestamp);
-    const key = date.toISOString().split('T')[0];
-    const mood = log.mood_name;
-    const weight = WEIGHTS[mood] !== undefined ? WEIGHTS[mood] : 0;
-    if (!daily[key]) daily[key] = { sum: 0, count: 0 };
-    daily[key].sum += weight;
-    daily[key].count += 1;
-  });
-
-  const labels = Object.keys(daily).sort();
-  const values = labels.map(k => {
-    const entry = daily[k];
-    const avg = entry.count ? (entry.sum / entry.count) : 0;
-    // clamp to -5..5
-    return Math.max(-5, Math.min(5, +avg.toFixed(2)));
-  });
-  return { labels, values };
-}
 
 export default function ProductivityPage() {
   const canvasRef = useRef(null);
