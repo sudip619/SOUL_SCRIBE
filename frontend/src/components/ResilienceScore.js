@@ -57,18 +57,19 @@ export default function ResilienceScore({ windowSize = 7 }) {
       const desiredWidth = Math.min(Math.round(rect.width * 1.05), availW);
       const width = Math.max(320, desiredWidth);
       const height = Math.min(Math.max(Math.round(rect.height * 1.6), 360), availH);
-      let left = Math.round(rect.left + (rect.width / 2) - (width / 2));
       let top = Math.round(rect.top);
+      const halfWidth = Math.round(width / 2);
+      let centerX = Math.round(rect.left + rect.width / 2);
       if (window.innerWidth < 800) {
-        left = Math.round((window.innerWidth - width) / 2);
+        centerX = Math.round(window.innerWidth / 2);
         top = Math.round((window.innerHeight - height) / 2);
       } else {
-        left = Math.max(8, Math.min(left, Math.max(8, window.innerWidth - width - 8)));
-        top = Math.max(8, Math.min(top, Math.max(8, window.innerHeight - height - 8)));
+        centerX = Math.max(8 + halfWidth, Math.min(centerX, Math.max(8 + halfWidth, (window.innerWidth || availW) - halfWidth - 8)));
+        top = Math.max(8, Math.min(top, Math.max(8, (window.innerHeight || availH) - height - 8)));
       }
 
-      const startStyle = { position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
-      const targetStyle = { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
+      const startStyle = { position: 'fixed', left: `${Math.round(rect.left + rect.width / 2)}px`, transform: 'translateX(-50%)', top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
+      const targetStyle = { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
 
       setModalStyle(startStyle);
       setIsModalOpen(true);
