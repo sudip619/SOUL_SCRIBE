@@ -447,25 +447,36 @@ function MoodTrendsView({ showAlert }) {
       return;
     }
 
-  const availW = window.innerWidth - 16;
-  const availH = window.innerHeight - 16;
-  const desiredWidth = Math.min(Math.round(rect.width * 1.05), availW);
-  const width = Math.max(320, desiredWidth);
-  const height = Math.min(Math.max(Math.round(rect.height * 1.6), 400), availH);
-  let top = Math.round(rect.top);
-  const halfWidth = Math.round(width / 2);
-  let centerX = Math.round(rect.left + rect.width / 2);
-  // On small viewports, center the modal in the viewport
-  if (window.innerWidth < 800) {
-    centerX = Math.round(window.innerWidth / 2);
-    top = Math.round((window.innerHeight - height) / 2);
-  } else {
-     centerX = Math.max(8 + halfWidth, Math.min(centerX, Math.max(8 + halfWidth, (window.innerWidth || availW) - halfWidth - 8)));
-    top = Math.max(8, Math.min(top, Math.max(8, window.innerHeight - height - 8)));
-  }
+  const targetWidth = Math.min(window.innerWidth * 0.9, 1200); // 90% of viewport width, up to a max of 1200px
+  const targetHeight = Math.min(window.innerHeight * 0.8, 800); // 80% of viewport height, up to a max of 800px
 
- const startStyle = { position: 'fixed', left: `${Math.round(rect.left + rect.width / 2)}px`, transform: 'translateX(-50%)', top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
- const targetStyle = { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
+  // Calculate the centered position
+  const targetTop = (window.innerHeight - targetHeight) / 2;
+  const targetCenterX = window.innerWidth / 2;
+
+  // The animation starts from the original chart's position and size
+  const startStyle = {
+   position: 'fixed',
+   left: `${Math.round(rect.left + rect.width / 2)}px`,
+   top: `${rect.top}px`,
+   width: `${rect.width}px`,
+   height: `${rect.height}px`,
+   transform: 'translateX(-50%)',
+   transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)',
+   overflow: 'hidden'
+  };
+
+  // The animation ends at the new centered position and target size
+  const targetStyle = {
+     position: 'fixed',
+     left: `${targetCenterX}px`,
+     top: `${targetTop}px`,
+     width: `${targetWidth}px`,
+     height: `${targetHeight}px`,
+     transform: 'translateX(-50%)',
+     overflow: 'hidden'
+     transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)',
+  }; 
  
 
     setModalStyle(startStyle);
