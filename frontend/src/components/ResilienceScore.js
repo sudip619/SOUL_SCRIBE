@@ -35,56 +35,11 @@ function prepareResilienceData(logs, windowSize = 7) {
   return { labels, values: rolled };
 }
 
-export default function ResilienceScore({ windowSize = 7 }) {
+export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
   const canvasRef = useRef(null);
-  const expandedRef = useRef(null);
   const chartInstance = useRef(null);
-  const expandedInstance = useRef(null);
   const [logs, setLogs] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [anchorRect, setAnchorRect] = useState(null);
-  const [modalStyle, setModalStyle] = useState(null);
-  const modalRef = useRef(null);
   const wrapperRef = useRef(null);
-
-  const openModal = () => {
-    if (wrapperRef.current) {
-      const rect = wrapperRef.current.getBoundingClientRect();
-      setAnchorRect(rect);
-
-      const availW = window.innerWidth - 16;
-      const availH = window.innerHeight - 16;
-      const desiredWidth = Math.min(Math.round(rect.width * 1.05), availW);
-      const width = Math.max(320, desiredWidth);
-      const height = Math.min(Math.max(Math.round(rect.height * 1.6), 360), availH);
-      let top = Math.round(rect.top);
-      const halfWidth = Math.round(width / 2);
-      let centerX = Math.round(rect.left + rect.width / 2);
-      if (window.innerWidth < 800) {
-        centerX = Math.round(window.innerWidth / 2);
-        top = Math.round((window.innerHeight - height) / 2);
-      } else {
-        centerX = Math.max(8 + halfWidth, Math.min(centerX, Math.max(8 + halfWidth, (window.innerWidth || availW) - halfWidth - 8)));
-        top = Math.max(8, Math.min(top, Math.max(8, (window.innerHeight || availH) - height - 8)));
-      }
-
-      const startStyle = { position: 'fixed', left: `${Math.round(rect.left + rect.width / 2)}px`, transform: 'translateX(-50%)', top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
-      const targetStyle = { position: 'fixed', left: `${centerX}px`, transform: 'translateX(-50%)', top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
-
-      setModalStyle(startStyle);
-      setIsModalOpen(true);
-      setTimeout(() => setModalStyle(targetStyle), 20);
-    } else {
-      setIsModalOpen(true);
-    }
-  };
-  const closeModal = () => {
-    if (anchorRect && modalStyle) {
-      const reverseStyle = { position: 'fixed', left: `${Math.round(anchorRect.left + anchorRect.width/2)}px`, transform: 'translateX(-50%)', top: `${anchorRect.top}px`, width: `${anchorRect.width}px`, height: `${anchorRect.height}px`, transition: 'all 260ms cubic-bezier(0.2,0.8,0.2,1)' };
-      setModalStyle(reverseStyle);
-      setTimeout(() => { setIsModalOpen(false); setAnchorRect(null); setModalStyle(null); }, 280);
-    } else { setIsModalOpen(false); setAnchorRect(null); setModalStyle(null); }
-  };
 
   const render = useCallback((canvas, instanceRef, labels, data) => {
     if (!canvas) return null;
