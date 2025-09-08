@@ -1,5 +1,6 @@
 // src/components/LoadingScreen.js
 import React, { useEffect, useState } from 'react';
+import AOS from 'aos';
 
 function LoadingScreen({ onContinue }) {
   const [showButton, setShowButton] = useState(false);
