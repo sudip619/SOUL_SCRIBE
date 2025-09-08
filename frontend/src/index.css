@@ -464,28 +464,53 @@ body[class*="theme-"] .select-like {
 /* Target the ProfileView main concern select specifically to ensure contrast */
 .profile-main-concern,
 #main-concern {
-  /* Translucent, slightly darker glass similar to the sidebar */
+  /* Use a solid translucent background as a reliable fallback for iframe contexts
+     where backdrop-filter may not be supported. Slightly darker than the page bg. */
   background: linear-gradient(135deg,
-    color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
-    color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%) !important;
+    rgba(7,15,18,0.72) 0%,
+    rgba(7,15,18,0.82) 100%) !important;
+  /* Fallback plain color */
+  background-color: rgba(7,15,18,0.82) !important;
   color: var(--text-primary) !important;
-  border: 1px solid color-mix(in srgb, var(--border-color, rgba(255,255,255,0.06)) 40%, transparent) !important;
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
-  padding: .75rem;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  /* keep a subtle hint of blur if available but don't rely on it */
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  padding: .75rem 2.25rem .75rem .75rem; /* room for custom arrow */
   border-radius: .6rem;
-  box-shadow: 0 8px 30px rgba(2,6,10,0.45); /* subtle depth */
+  box-shadow: 0 8px 24px rgba(2,6,10,0.45); /* subtle depth */
   appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
+
+/* Custom arrow using SVG data URI to ensure consistent display across contexts */
+.profile-main-concern {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A5C6C8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center, right 12px center;
+}
+
+/* Hide native dropdown arrow in IE/Edge */
+.profile-main-concern::-ms-expand { display: none; }
+
+/* Style the options (best-effort; some browsers limit custom styling) */
 .profile-main-concern option,
-#main-concern option { color: var(--text-primary, #000); background: transparent; }
+#main-concern option {
+  color: var(--text-primary, #fff) !important;
+  background-color: rgba(6,10,12,0.98) !important;
+}
 
 /* Ensure focus/hover states match auth inputs */
 .profile-main-concern:focus,
 #main-concern:focus {
   outline: none;
-  box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--accent-primary) 18%, transparent);
-  border-color: color-mix(in srgb, var(--accent-primary) 40%, transparent) !important;
+  box-shadow: 0 0 0 .12vw rgba(34,211,238,0.12);
+  border-color: rgba(34,211,238,0.45) !important;
 }
 .send-fly-button span {
   display: block;
