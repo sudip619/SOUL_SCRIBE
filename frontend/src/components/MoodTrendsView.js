@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 
 import { makeAuthenticatedRequest } from '../services/api';
+import ProductivityChart from './ProductivityChart';
+import EmotionalVolatility from './EmotionalVolatility';
+import ResilienceScore from './ResilienceScore';
 
 // Register all necessary Chart.js components once outside the component
 Chart.register(...registerables);
@@ -86,35 +89,26 @@ const prepareStackedBarData = (logs) => {
 };
 
 
-function MoodTrendsView({ showAlert }) {
-  const chartRef = useRef(null); // Canvas DOM element ref
-  const stackedBarChartRef = useRef(null); // Ref for Stacked Bar Chart
-  const expandedChartRef = useRef(null); // Expanded Canvas DOM element ref
+function MoodTrendsView({ showAlert, onOpenGraph }) {
+  const chartRef = useRef(null);
+  const stackedBarChartRef = useRef(null);
 
-  const myMoodChartInstance = useRef(null); // Ref to hold the Chart.js instance for line chart
-  const myExpandedMoodChartInstance = useRef(null); // Ref to hold the Chart.js instance for expanded line chart
-  const myStackedBarChartInstance = useRef(null); // Ref to hold the Chart.js instance for stacked bar chart
+  const myMoodChartInstance = useRef(null);
+  const myStackedBarChartInstance = useRef(null);
 
   const [moodLogs, setMoodLogs] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // NEW: renderChart function wrapped with useCallback and moved inside component
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
     if (!canvasElement) return null;
-
     const ctx = canvasElement.getContext('2d');
-
     if (chartRefObject.current) {
       chartRefObject.current.destroy();
     }
-
     const allDataPoints = [...wellbeingDataPoints, ...energyDataPoints];
     const minDataValue = allDataPoints.length > 0 ? Math.min(...allDataPoints) : 0;
     const maxDataValue = allDataPoints.length > 0 ? Math.max(...allDataPoints) : 10;
-
     const yAxisMinAdjusted = Math.max(0, minDataValue - (minDataValue > 0 ? 0.3 : 0));
     const yAxisMaxAdjusted = Math.min(10, maxDataValue + (maxDataValue < 10 ? 0.3 : 0));
-
     const newChartInstance = new Chart(ctx, {
       type: 'line',
       data: {
@@ -155,25 +149,13 @@ function MoodTrendsView({ showAlert }) {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        layout: {
-          padding: {
-            left: 20, right: 20, top: 10, bottom: 10
-          }
-        },
+        layout: { padding: { left: 20, right: 20, top: 10, bottom: 10 } },
         scales: {
           y: {
             beginAtZero: false,
             min: yAxisMinAdjusted,
             max: yAxisMaxAdjusted,
-            suggestedMin: 0,
-            suggestedMax: 10,
-
-            title: {
-              display: true,
-              text: 'Score (0-10)',
-              color: '#E0E0E0',
-              font: { size: 16, weight: 'bold' }
-            },
+            title: { display: true, text: 'Score (0-10)', color: '#E0E0E0', font: { size: 16, weight: 'bold' } },
             ticks: {
               stepSize: 0.5,
               color: '#E0E0E0',
@@ -187,168 +169,36 @@ function MoodTrendsView({ showAlert }) {
                 return '';
               }
             },
-            grid: {
-              color: 'rgba(136,136,136,0.2)',
-              drawBorder: false
-            }
+            grid: { color: 'rgba(136,136,136,0.2)', drawBorder: false }
           },
           x: {
             type: 'category',
-            title: {
-              display: true,
-              text: 'Date',
-              color: '#E0E0E0',
-              font: { size: 16, weight: 'bold' }
-            },
+            title: { display: true, text: 'Date', color: '#E0E0E0', font: { size: 16, weight: 'bold' } },
             ticks: {
               color: '#E0E0E0',
               autoSkip: true,
               maxRotation: 45,
               minRotation: 0,
               callback: function(val, index) {
-                  const dateStr = labels[index];
-                  if (labels.length <= 5) {
-                      return dateStr;
-                  } else {
-                      const date = new Date(dateStr);
-                      if (index % 2 === 0) return `${date.getMonth() + 1}-${date.getDate()}`;
-                      return '';
-                  }
+                const dateStr = labels[index];
+                if (!dateStr) return '';
+                if (labels.length <= 5) return dateStr;
+                const date = new Date(dateStr);
+                if (index % 2 === 0) return `${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+                return '';
               }
             },
-            grid: {
-              color: 'rgba(136,136,136,0.2)',
-              drawBorder: false
-            }
+            grid: { color: 'rgba(136,136,136,0.2)', drawBorder: false }
           }
         },
         plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-            align: 'start',
-            labels: {
-              color: '#F0F0F0',
-              padding: 20
-            }
-          },
+          legend: { display: true, position: 'top', align: 'start', labels: { color: '#F0F0F0', padding: 20 } },
           tooltip: {
             callbacks: {
               label: function(context) {
                 let label = context.dataset.label || '';
-                if (label) {
-                  label += ': ';
-                }
+                if (label) { label += ': '; }
                 return label + context.raw.toFixed(1);
-              }
-            }
-          }
-        }
-      }
-    }); // This curly brace closes the options object
-    return newChartInstance; // This is the ONLY return statement for renderChart
-  }, []); // Dependencies for useCallback: None, as all external data is passed via arguments or is static
-
-  // NEW: renderStackedBarChart function wrapped with useCallback and moved inside component
-  const renderStackedBarChart = useCallback((canvasElement, chartRefObject, labels, datasets) => {
-    if (!canvasElement) return null;
-
-    const ctx = canvasElement.getContext('2d');
-
-    if (chartRefObject.current) {
-      chartRefObject.current.destroy();
-    }
-
-    const newChartInstance = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: datasets,
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        layout: {
-          padding: {
-            left: 20, right: 20, top: 10, bottom: 10
-          }
-        },
-        scales: {
-          x: {
-            stacked: true,
-            title: {
-              display: true,
-              text: 'Date',
-              color: '#E0E0E0',
-              font: { size: 16, weight: 'bold' }
-            },
-            ticks: {
-              color: '#E0E0E0',
-              autoSkip: true,
-              maxRotation: 45,
-              minRotation: 0,
-              callback: function(val, index) {
-                  const dateStr = labels[index];
-                  if (labels.length <= 7) {
-                      return dateStr;
-                  } else {
-                      const date = new Date(dateStr);
-                      if (index % 2 === 0) return `${date.getMonth() + 1}-${date.getDate()}`;
-                      return '';
-                  }
-              }
-            },
-            grid: {
-              color: 'rgba(136,136,136,0.2)',
-              drawBorder: false
-            }
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: 'Number of Moods Logged',
-              color: '#E0E0E0',
-              font: { size: 16, weight: 'bold' }
-            },
-            ticks: {
-              stepSize: 1,
-              color: '#E0E0E0',
-              padding: 10,
-            },
-            grid: {
-              color: 'rgba(136,136,136,0.2)',
-              drawBorder: false
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top',
-            align: 'start',
-            labels: {
-              color: '#F0F0F0',
-              padding: 10,
-              boxWidth: 20
-            }
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-            callbacks: {
-              label: function(context) {
-                let label = context.dataset.label || '';
-                if (label) {
-                  label += ': ';
-                }
-                return label + context.formattedValue + ' log(s)';
-              },
-              title: function(context) {
-                  const dateLabel = context[0].label;
-                  const totalLogs = context.reduce((sum, item) => sum + item.parsed.y, 0);
-                  return `${dateLabel} (Total: ${totalLogs} logs)`;
               }
             }
           }
@@ -356,45 +206,85 @@ function MoodTrendsView({ showAlert }) {
       }
     });
     return newChartInstance;
-  }, []); // Dependencies for useCallback: None, as all external data is passed via arguments or is static
+  }, []);
 
+  const renderStackedBarChart = useCallback((canvasElement, chartRefObject, labels, datasets) => {
+    if (!canvasElement) return null;
+    const ctx = canvasElement.getContext('2d');
+    if (chartRefObject.current) {
+      chartRefObject.current.destroy();
+    }
+    const newChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets, },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { left: 20, right: 20, top: 10, bottom: 10 } },
+        scales: {
+          x: {
+            stacked: true,
+            title: { display: true, text: 'Date', color: '#E0E0E0', font: { size: 16, weight: 'bold' } },
+            ticks: {
+              color: '#E0E0E0',
+              autoSkip: true,
+              maxRotation: 45,
+              minRotation: 0,
+              callback: function(val, index) {
+                const dateStr = labels[index];
+                if (!dateStr) return '';
+                if (labels.length <= 7) return dateStr;
+                const date = new Date(dateStr);
+                if (index % 2 === 0) return `${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+                return '';
+              }
+            },
+            grid: { color: 'rgba(136,136,136,0.2)', drawBorder: false }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            title: { display: true, text: 'Number of Moods Logged', color: '#E0E0E0', font: { size: 16, weight: 'bold' } },
+            ticks: { stepSize: 1, color: '#E0E0E0', padding: 10, },
+            grid: { color: 'rgba(136,136,136,0.2)', drawBorder: false }
+          }
+        },
+        plugins: {
+          legend: { display: true, position: 'top', align: 'start', labels: { color: '#F0F0F0', padding: 10, boxWidth: 20 } },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) { label += ': '; }
+                return label + context.formattedValue + ' log(s)';
+              },
+              title: function(context) {
+                const dateLabel = context[0].label;
+                const totalLogs = context.reduce((sum, item) => sum + item.parsed.y, 0);
+                return `${dateLabel} (Total: ${totalLogs} logs)`;
+              }
+            }
+          }
+        }
+      }
+    });
+    return newChartInstance;
+  }, []);
 
   useEffect(() => {
     const loadMoodTrends = async () => {
       try {
         const response = await makeAuthenticatedRequest('/mood/history', 'GET');
         const data = await response.json();
-
         if (response.ok) {
           if (data.length === 0) {
             showAlert('No mood logs yet. Log some moods to see your trends!', false);
             setMoodLogs([]);
-            if (myMoodChartInstance.current) myMoodChartInstance.current.destroy();
-            if (myStackedBarChartInstance.current) myStackedBarChartInstance.current.destroy();
             return;
           }
           setMoodLogs(data);
-
-          const lineChartData = prepareChartData(data);
-          console.log('Processed Chart Data (Line Chart):', lineChartData);
-          const lineChartInstance = renderChart(chartRef.current, myMoodChartInstance,
-                                                lineChartData.labels, lineChartData.wellbeingDataPoints, lineChartData.energyDataPoints);
-          myMoodChartInstance.current = lineChartInstance;
-
-          const stackedBarChartData = prepareStackedBarData(data);
-          console.log('Processed Chart Data (Stacked Bar Chart):', stackedBarChartData);
-          const stackedBarChartInstance = renderStackedBarChart(stackedBarChartRef.current, myStackedBarChartInstance,
-                                                                stackedBarChartData.labels, stackedBarChartData.datasets);
-          myStackedBarChartInstance.current = stackedBarChartInstance;
-
-
-          setTimeout(() => {
-            const chartWrapper = document.getElementById('moodChartWrapper');
-            if (chartWrapper) {
-              chartWrapper.scrollLeft = chartWrapper.scrollWidth;
-            }
-          }, 100);
-
         } else {
           showAlert(data.message || 'Failed to load mood trends.', false);
         }
@@ -403,124 +293,56 @@ function MoodTrendsView({ showAlert }) {
         showAlert('Network error or failed to load mood trends.', false);
       }
     };
-
     loadMoodTrends();
-
-    return () => {
-      if (myMoodChartInstance.current) {
-        myMoodChartInstance.current.destroy();
-        myMoodChartInstance.current = null;
-      }
-      if (myStackedBarChartInstance.current) {
-        myStackedBarChartInstance.current.destroy();
-        myStackedBarChartInstance.current = null;
-      }
-    };
   }, [showAlert]);
 
-
-  const openChartModal = () => {
-    if (!moodLogs.length) {
-      showAlert('No chart data to expand. Please log some moods first.', false);
-      return;
-    }
-    setIsModalOpen(true);
-  };
-
-  const closeChartModal = () => {
-    setIsModalOpen(false);
-  };
-
   useEffect(() => {
-    if (isModalOpen && expandedChartRef.current && moodLogs.length) {
-      const chartData = prepareChartData(moodLogs);
-      const chartInstance = renderChart(expandedChartRef.current, myExpandedMoodChartInstance,
-                                       chartData.labels, chartData.wellbeingDataPoints, chartData.energyDataPoints);
-      myExpandedMoodChartInstance.current = chartInstance;
-
-      setTimeout(() => {
-        const modalChartContainer = document.getElementById('modalChartContainer');
-        if (modalChartContainer) {
-          modalChartContainer.scrollLeft = modalChartContainer.scrollWidth;
-        }
-      }, 150);
+    if (moodLogs.length > 0) {
+      const lineChartData = prepareChartData(moodLogs);
+      myMoodChartInstance.current = renderChart(chartRef.current, myMoodChartInstance, lineChartData.labels, lineChartData.wellbeingDataPoints, lineChartData.energyDataPoints);
+      const stackedBarChartData = prepareStackedBarData(moodLogs);
+      myStackedBarChartInstance.current = renderStackedBarChart(stackedBarChartRef.current, myStackedBarChartInstance, stackedBarChartData.labels, stackedBarChartData.datasets);
     }
-
     return () => {
-      if (myExpandedMoodChartInstance.current) {
-        myExpandedMoodChartInstance.current.destroy();
-        myExpandedMoodChartInstance.current = null;
-      }
+      if (myMoodChartInstance.current) { myMoodChartInstance.current.destroy(); myMoodChartInstance.current = null; }
+      if (myStackedBarChartInstance.current) { myStackedBarChartInstance.current.destroy(); myStackedBarChartInstance.current = null; }
     };
-  }, [isModalOpen, moodLogs]);
+  }, [moodLogs, renderChart, renderStackedBarChart]);
+
+
+
 
   const textMuted = "#888888";
-
 
   return (
     <div className="w-full glass-panel p-8">
       <h2 className="text-3xl font-bold text-center text-accent-primary mb-8">Your Mood Trends</h2>
-
       {moodLogs.length === 0 ? (
         <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
       ) : (
         <>
-          {/* Line Chart: Wellbeing & Energy */}
-          <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
+          <ProductivityChart onOpenGraph={onOpenGraph} />
+          <EmotionalVolatility onOpenGraph={onOpenGraph} />
+          <ResilienceScore onOpenGraph={onOpenGraph} />
+
+          <h3 className="text-xl font-semibold text-center mt-8 mb-4">Daily Average: Wellbeing & Energy</h3>
           <div
             id="moodChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface"
-            onClick={openChartModal}
+            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
           >
-            <canvas
-              id="moodChart"
-              ref={chartRef}
-              className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}
-            ></canvas>
+            <canvas ref={chartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
           </div>
 
-          {/* NEW: Stacked Bar Chart: Daily Mood Distribution */}
           <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
           <div
             id="stackedBarChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface"
+            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
           >
-            <canvas
-              id="stackedBarChart"
-              ref={stackedBarChartRef}
-              className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}
-            ></canvas>
+            <canvas ref={stackedBarChartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
           </div>
         </>
       )}
 
-      {/* Fullscreen Modal for Expanded Chart */}
-      {isModalOpen && (
-        <div
-          id="chart-modal"
-          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 transition-opacity duration-300 ease-out"
-          onClick={closeChartModal}
-        >
-          <div
-            className="relative glass-panel p-8 w-[90%] max-w-[1200px] h-[80%] max-h-[800px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={closeChartModal}
-              className={`absolute top-3 right-5 text-4xl font-bold text-[${textMuted}] hover:text-accent-teal transition-colors duration-200 focus:outline-none`}
-            >
-              &times;
-            </button>
-            <div id="modalChartContainer" className="flex-grow w-full h-full overflow-x-auto p-4">
-              <canvas
-                id="expandedMoodChart"
-                ref={expandedChartRef}
-                className="min-w-[1000px] h-full rounded-md p-4 panel-surface"
-              ></canvas>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -1,6 +1,58 @@
 // frontend/src/components/ProfileView.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeAuthenticatedRequest } from '../services/api';
+
+// Small accessible dropdown that uses sidebar-like styling for options
+function Dropdown({ id, value, onChange, options = [] }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function onDocClick(e) {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, []);
+
+  const selected = options.find((o) => o.value === value) || options[0] || { label: '' };
+
+  return (
+    <div className="profile-dropdown" ref={ref}>
+      <div
+        id={id}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((s) => !s)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen((s) => !s); } if (e.key === 'Escape') setOpen(false); }}
+        className={`sidebar-item ${open ? 'is-active' : ''}`}
+        style={{ width: '100%' }}
+      >
+        <span className="sidebar-label" style={{ opacity: 1, transform: 'translateX(0)' }}>{selected.label}</span>
+      </div>
+
+      {open && (
+        <div className="profile-dropdown-menu" role="listbox" aria-label="Main concern options">
+          {options.map((opt) => (
+            <button
+              type="button"
+              key={opt.value || '__empty'}
+              role="option"
+              aria-selected={String(opt.value) === String(value)}
+              className="sidebar-item"
+              onClick={() => { onChange(opt.value); setOpen(false); }}
+              style={{ width: '100%', textAlign: 'left' }}
+            >
+              <span className="sidebar-label" style={{ opacity: 1, transform: 'translateX(0)' }}>{opt.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function ProfileView({ username, showAlert }) {
   const [mainConcern, setMainConcern] = useState('');
@@ -68,22 +120,23 @@ function ProfileView({ username, showAlert }) {
       <h3 className="text-2xl font-semibold text-center text-dark-text-light mb-6">Your Preferences & Goals</h3>
       <form onSubmit={handleSavePreferences} className="flex flex-col gap-6">
         <div>
-          <label htmlFor="main-concern" className="block text-dark-text-light text-lg font-medium mb-2">My primary concern is:</label>
-          <select
+          <label className="block text-dark-text-light text-lg font-medium mb-2">My primary concern is:</label>
+
+          {/* Custom dropdown matching sidebar styling */}
+          <Dropdown
             id="main-concern"
-            name="main_concern"
             value={mainConcern}
-            onChange={(e) => setMainConcern(e.target.value)}
-            className="w-full p-3 bg-dark-bg-primary/30 text-dark-text-light border border-dark-text-muted/40 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-pink focus:border-accent-pink transition duration-300"
-          >
-            <option value="">Select...</option>
-            <option value="stress">Stress</option>
-            <option value="anxiety">Anxiety</option>
-            <option value="motivation">Motivation</option>
-            <option value="relationships">Relationships</option>
-            <option value="sleep">Sleep</option>
-            <option value="grief">Grief</option>
-          </select>
+            onChange={(val) => setMainConcern(val)}
+            options={[
+              { value: '', label: 'Select...' },
+              { value: 'stress', label: 'Stress' },
+              { value: 'anxiety', label: 'Anxiety' },
+              { value: 'motivation', label: 'Motivation' },
+              { value: 'relationships', label: 'Relationships' },
+              { value: 'sleep', label: 'Sleep' },
+              { value: 'grief', label: 'Grief' },
+            ]}
+          />
         </div>
 
         <div>
@@ -127,9 +180,9 @@ function ProfileView({ username, showAlert }) {
 
         <button
           type="submit"
-          className="send-fly-button mt-6"
+          className="send-fly-button mt-6 save-preferences-button"
         >
-          Save Preferences
+          <span>Save Preferences</span>
         </button>
       </form>
     </div>

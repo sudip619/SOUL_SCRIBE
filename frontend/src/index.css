@@ -9,7 +9,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 :root {
   --bg-primary: #0a1a1f;
-  --bg-secondary: #10242c;
+  --bg-secondary: #070F12;
   --text-primary: #e7fffb;
   --text-secondary: #a5c6c8;
   --accent-primary: #22d3ee; /* sky cyan */
@@ -462,17 +462,82 @@ body[class*="theme-"] .select-like {
 }
 
 /* Target the ProfileView main concern select specifically to ensure contrast */
+.profile-main-concern,
 #main-concern {
-  background: var(--send-button-bg, var(--accent-primary));
-  color: white;
-  border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
+  /* Use a solid translucent background as a reliable fallback for iframe contexts
+     where backdrop-filter may not be supported. Slightly darker than the page bg. */
+  background: linear-gradient(135deg,
+    rgba(7,15,18,0.72) 0%,
+    rgba(7,15,18,0.82) 100%) !important;
+  /* Fallback plain color */
+  background-color: rgba(7,15,18,0.82) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  /* keep a subtle hint of blur if available but don't rely on it */
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  padding: .75rem 2.25rem .75rem .75rem; /* room for custom arrow */
+  border-radius: .6rem;
+  box-shadow: 0 8px 24px rgba(2,6,10,0.45); /* subtle depth */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
-#main-concern option { color: var(--text-primary, #000); }
+
+/* Custom arrow using SVG data URI to ensure consistent display across contexts */
+.profile-main-concern {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A5C6C8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center, right 12px center;
+}
+
+/* Hide native dropdown arrow in IE/Edge */
+.profile-main-concern::-ms-expand { display: none; }
+
+/* Style the options (best-effort; some browsers limit custom styling) */
+.profile-main-concern option,
+#main-concern option {
+  color: var(--text-primary, #fff) !important;
+  background-color: rgba(6,10,12,0.98) !important;
+}
+
+/* Ensure focus/hover states match auth inputs */
+.profile-main-concern:focus,
+#main-concern:focus {
+  outline: none;
+  box-shadow: 0 0 0 .12vw rgba(34,211,238,0.12);
+  border-color: rgba(34,211,238,0.45) !important;
+}
+
+/* Match the sidebar hover effect for the profile dropdown */
+.profile-main-concern:hover,
+.profile-main-concern:focus,
+#main-concern:hover,
+#main-concern:focus {
+  background: var(--sidebar-hover-bg) !important;
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border) !important;
+  color: var(--text-primary) !important;
+  transform: translateX(2px);
+}
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
   transition: all 0.3s ease-in-out;
 }
+
+/* Specific style to center Save Preferences text (profile page) */
+.save-preferences-button {
+  width: 100%;
+  justify-content: center; /* center text and any inline content */
+}
+.save-preferences-button span { margin-left: 0; }
+/* Prevent large translate on hover for this specific button */
+.save-preferences-button:hover span { transform: none; }
+.save-preferences-button:hover svg { transform: none; }
 .send-fly-button svg {
   display: block;
   transform-origin: center center;
@@ -690,15 +755,26 @@ body[class*="theme-"] .select-like {
   position: fixed;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #0B1A31;
+  background: transparent;
   z-index: 100;
 }
+.loading-header { display: flex; align-items: center; justify-content: center; gap: 2.5rem; }
 .loading-svg {
-  width: 80%;
-  max-width: 400px;
+  width: clamp(280px, 48vw, 640px);
+  max-width: 640px;
   height: auto;
+  display: block;
+  margin: 0; /* spacing handled by header gap */
+}
+.pl { order: 2; }
+.pl { width: 3.2rem; height: 3.2rem; }
+
+@media (max-width: 640px) {
+  .loading-header { flex-direction: column; gap: 1.25rem; }
+  .pl { order: 2; }
 }
 .loading-text {
   font-family: 'Poppins', sans-serif;
@@ -1240,8 +1316,8 @@ body.theme-frustrated .sidebar-item:hover { background-color: rgba(30,31,46,0.5)
 /* Emotion cards & buttons */
 body.theme-frustrated .emotion-card-stack .emotion-card,
 body.theme-frustrated .card-stack-item {
-  /* Darker gradient for Frustrated theme using #2a2e4c */
-  background: linear-gradient(180deg, #2a2e4c 0%, color-mix(in srgb, #2a2e4c 85%, black 15%));
+  /* Frustrated theme emotion cards: gradient from #302851 to #140F26 */
+  background: linear-gradient(180deg, #302851 0%, #140F26 100%);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
 }
@@ -1487,6 +1563,29 @@ body[class*="theme-"] .select-like {
   border-radius: 8px;
   padding: .65rem .75rem;
 }
+
+/* Custom dropdown menu that mirrors sidebar styling */
+.profile-dropdown { position: relative; }
+.profile-dropdown-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: .5rem;
+  z-index: 60;
+  padding: .4rem;
+  border-radius: 12px;
+  /* Less translucent: use stronger, more opaque layered background */
+  background: linear-gradient(to bottom, rgba(7,15,18,0.92) 0%, rgba(12,18,22,0.98) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 14px 50px rgba(2,6,10,0.6);
+  max-height: 260px;
+  overflow: auto;
+}
+.profile-dropdown-menu .sidebar-item { padding: .6rem .8rem; border-radius: 8px; margin-bottom: .35rem; }
+.profile-dropdown-menu .sidebar-item:last-child { margin-bottom: 0; }
+.profile-dropdown-menu .sidebar-item:hover { transform: none; }
 
 body[class*="theme-"] select:hover,
 body[class*="theme-"] select:focus,

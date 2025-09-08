@@ -4,6 +4,9 @@ import AuthForm from './components/AuthForm';
 import ProfileView from './components/ProfileView';
 import MoodTrendsView from './components/MoodTrendsView';
 import ChatView from './components/ChatView';
+import ProductivityPage from './components/ProductivityPage';
+import EmotionalVolatilityPage from './components/EmotionalVolatilityPage';
+import ResiliencePage from './components/ResiliencePage';
 import Sidebar from './components/Sidebar';
 import HomeView from './components/HomeView';
 import LiveBackground from './components/LiveBackground';
@@ -30,6 +33,7 @@ const AppContent = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [currentView, setCurrentView] = useState('auth');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [pendingAuth, setPendingAuth] = useState(null);
 
   useEffect(() => {
     AOS.init({
@@ -81,16 +85,9 @@ const AppContent = () => {
   }, []);
 
   const handleLoginSuccess = (username, userId) => {
+    // Show the loading screen and wait for user to click "Get Started"
+    setPendingAuth({ username, userId });
     setIsAuthenticating(true);
-    // MODIFIED: Changed duration from 3000ms to 2000ms
-    setTimeout(() => {
-      setIsLoggedIn(true);
-      setCurrentUsername(username);
-      setCurrentUserId(userId);
-      setCurrentView('home');
-      showAlert(`Welcome back, ${username}!`, true);
-      setIsAuthenticating(false);
-    }, 2000); // 2-second delay
   };
 
   const handleLogout = () => {
@@ -111,6 +108,20 @@ const AppContent = () => {
     }
   };
 
+  // Expose a simple global navigation helper so pages/components can navigate back
+  useEffect(() => {
+    window.navigateToView = (view) => {
+      if (isLoggedIn) setCurrentView(view);
+    };
+  }, [isLoggedIn]);
+
+  const handleOpenGraphPage = (key) => {
+    if (!isLoggedIn) return;
+    if (key === 'productivity') setCurrentView('productivity');
+    if (key === 'volatility') setCurrentView('volatility');
+    if (key === 'resilience') setCurrentView('resilience');
+  };
+
   const renderView = () => {
     switch (currentView) {
       case 'auth':
@@ -122,7 +133,13 @@ const AppContent = () => {
       case 'profile':
         return <ProfileView username={currentUsername} showAlert={showAlert} />;
       case 'moodTrends':
-        return <MoodTrendsView showAlert={showAlert} />;
+        return <MoodTrendsView showAlert={showAlert} onOpenGraph={handleOpenGraphPage} />;
+      case 'productivity':
+        return <ProductivityPage />;
+      case 'volatility':
+        return <EmotionalVolatilityPage />;
+      case 'resilience':
+        return <ResiliencePage />;
       default:
         return <AuthForm onLoginSuccess={handleLoginSuccess} showAlert={showAlert} />;
     }
@@ -137,7 +154,22 @@ const AppContent = () => {
       </svg>
       <Toaster position="bottom-left" toastOptions={{ duration: 5000, style: { background: '#363636', color: '#fff' }, success: { duration: 3000 } }} />
 
-      {isAuthenticating && <LoadingScreen />}
+      {isAuthenticating && (
+        <LoadingScreen onContinue={() => {
+          const pa = pendingAuth;
+          if (!pa) {
+            setIsAuthenticating(false);
+            return;
+          }
+          setIsLoggedIn(true);
+          setCurrentUsername(pa.username);
+          setCurrentUserId(pa.userId);
+          setCurrentView('home');
+          showAlert(`Welcome back, ${pa.username}!`, true);
+          setIsAuthenticating(false);
+          setPendingAuth(null);
+        }} />
+      )}
 
       {!isAuthenticating && (
         <>
