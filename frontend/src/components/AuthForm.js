@@ -39,22 +39,21 @@ function AuthForm({ onLoginSuccess, showAlert }) {
     }
   };
 
-  // New handleLogin function
-  const handleLogin = async (username, password) => {
-    try {
-      const email = `${username}@example.com`;
+const handleLogin = async (username, password) => {
+  try {
+    const email = `${username}@example.com`;
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-      });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-      if (error) throw error;
-      console.log('Login successful!', data);
+    if (error) throw error;
+    console.log('Login successful!', data);
 
-    } catch (error){
+  } catch (error) { // The missing '{' is added here
     alert('Error during login: ' + error.message);
-  ``}
+  }
 };
 
   return (
