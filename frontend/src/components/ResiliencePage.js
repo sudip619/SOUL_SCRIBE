@@ -1,47 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { makeAuthenticatedRequest } from '../services/api';
+import { prepareResilienceData } from './ResilienceScore';
 Chart.register(...registerables);
-
-const POSITIVE = new Set(['happy','calm','energized']);
-const NEUTRAL = new Set(['neutral']);
-const NEGATIVE = new Set(['sad','anxious','frustrated','overwhelmed','angry','tired']);
-
-function prepareResilience(logs) {
-  // group logs by day but also keep sequence timestamps
-  const byDay = {};
-  const sorted = [...logs].sort((a,b)=> new Date(a.timestamp)-new Date(b.timestamp));
-  sorted.forEach((log,i)=>{
-    const date = new Date(log.timestamp);
-    const dayKey = date.toISOString().split('T')[0];
-    if (!byDay[dayKey]) byDay[dayKey]=[];
-    byDay[dayKey].push({ ...log, idx: i });
-  });
-
-  const labels = Object.keys(byDay).sort();
-  const values = labels.map(day => {
-    const arr = byDay[day];
-    if (!arr || arr.length === 0) return 100;
-    let negatives = 0; let rebounds = 0;
-    arr.forEach((entry, idx)=>{
-      const mood = entry.mood_name;
-      if (NEGATIVE.has(mood)) {
-        negatives++;
-        // find next log within 24h across sorted array
-        for (let j = entry.idx+1; j < sorted.length; j++) {
-          const next = sorted[j];
-          const dt = new Date(next.timestamp) - new Date(entry.timestamp);
-          if (dt > 24*60*60*1000) break;
-          if (POSITIVE.has(next.mood_name) || NEUTRAL.has(next.mood_name)) { rebounds++; break; }
-        }
-      }
-    });
-    if (negatives === 0) return 100;
-    return +((rebounds / negatives) * 100).toFixed(1);
-  });
-
-  return { labels, values };
-}
 
 export default function ResiliencePage(){
   const canvasRef = useRef(null);
