@@ -521,12 +521,13 @@ function MoodTrendsView({ showAlert }) {
       {isModalOpen && (
         <div
           id="chart-modal"
-          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 transition-opacity duration-300 ease-out"
+          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start z-50 transition-opacity duration-300 ease-out"
           onClick={closeChartModal}
         >
           <div
-            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
+            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col transform translate-y-0 scale-100 transition-transform duration-200 ease-in-out"
             onClick={(e) => e.stopPropagation()}
+            style={anchorRect ? { position: 'fixed', left: Math.max(8, anchorRect.left) + 'px', top: Math.max(8, anchorRect.top) + 'px', transform: 'none' } : {}}
           >
             <button
               onClick={closeChartModal}
@@ -535,11 +536,20 @@ function MoodTrendsView({ showAlert }) {
               &times;
             </button>
             <div id="modalChartContainer" className="flex-grow w-full h-full overflow-x-auto p-4">
-              <canvas
-                id="expandedMoodChart"
-                ref={expandedChartRef}
-                className="min-w-[800px] h-full rounded-md p-4 panel-surface"
-              ></canvas>
+              {activeChart === 'daily' && (
+                <canvas
+                  id="expandedMoodChart"
+                  ref={expandedChartRef}
+                  className="min-w-[800px] h-full rounded-md p-4 panel-surface"
+                ></canvas>
+              )}
+              {activeChart === 'stacked' && (
+                <canvas
+                  id="expandedStackedChart"
+                  ref={expandedStackedRef}
+                  className="min-w-[800px] h-full rounded-md p-4 panel-surface"
+                ></canvas>
+              )}
             </div>
           </div>
         </div>
