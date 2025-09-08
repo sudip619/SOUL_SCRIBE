@@ -108,6 +108,13 @@ const AppContent = () => {
     }
   };
 
+  // Expose a simple global navigation helper so pages/components can navigate back
+  useEffect(() => {
+    window.navigateToView = (view) => {
+      if (isLoggedIn) setCurrentView(view);
+    };
+  }, [isLoggedIn]);
+
   const handleOpenGraphPage = (key) => {
     if (!isLoggedIn) return;
     if (key === 'productivity') setCurrentView('productivity');
