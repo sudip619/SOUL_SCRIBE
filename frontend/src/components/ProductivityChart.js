@@ -108,7 +108,6 @@ export default function ProductivityChart({ onOpenGraph }) {
     load();
     return () => {
       if (chartInstance.current) chartInstance.current.destroy();
-      if (expandedInstance.current) expandedInstance.current.destroy();
     };
   }, [render]);
 
