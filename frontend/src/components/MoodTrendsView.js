@@ -468,9 +468,23 @@ function MoodTrendsView({ showAlert }) {
   };
 
   const closeChartModal = () => {
-    setIsModalOpen(false);
-    setAnchorRect(null);
-    setActiveChart('daily');
+    // reverse animate back to anchorRect then close
+    if (anchorRect && modalStyle) {
+      const reverseStyle = { position: 'fixed', left: `${anchorRect.left}px`, top: `${anchorRect.top}px`, width: `${anchorRect.width}px`, height: `${anchorRect.height}px`, transition: 'all 260ms cubic-bezier(0.2,0.8,0.2,1)' };
+      setModalStyle(reverseStyle);
+      // wait for animation to finish then close
+      setTimeout(() => {
+        setIsModalOpen(false);
+        setAnchorRect(null);
+        setActiveChart('daily');
+        setModalStyle(null);
+      }, 280);
+    } else {
+      setIsModalOpen(false);
+      setAnchorRect(null);
+      setActiveChart('daily');
+      setModalStyle(null);
+    }
   };
 
   useEffect(() => {
