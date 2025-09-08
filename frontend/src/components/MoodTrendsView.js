@@ -104,7 +104,6 @@ function MoodTrendsView({ showAlert }) {
   const [activeChart, setActiveChart] = useState('daily');
 
   const [moodLogs, setMoodLogs] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // NEW: renderChart function wrapped with useCallback and moved inside component
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
