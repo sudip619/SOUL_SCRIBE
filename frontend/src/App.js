@@ -131,7 +131,22 @@ const AppContent = () => {
       </svg>
       <Toaster position="bottom-left" toastOptions={{ duration: 5000, style: { background: '#363636', color: '#fff' }, success: { duration: 3000 } }} />
 
-      {isAuthenticating && <LoadingScreen />}
+      {isAuthenticating && (
+        <LoadingScreen onContinue={() => {
+          const pa = pendingAuth;
+          if (!pa) {
+            setIsAuthenticating(false);
+            return;
+          }
+          setIsLoggedIn(true);
+          setCurrentUsername(pa.username);
+          setCurrentUserId(pa.userId);
+          setCurrentView('home');
+          showAlert(`Welcome back, ${pa.username}!`, true);
+          setIsAuthenticating(false);
+          setPendingAuth(null);
+        }} />
+      )}
 
       {!isAuthenticating && (
         <>
