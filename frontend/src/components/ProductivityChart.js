@@ -4,7 +4,7 @@ import { makeAuthenticatedRequest } from '../services/api';
 
 Chart.register(...registerables);
 
-function prepareProductivityData(logs) {
+export function prepareProductivityData(logs) {
   const daily = {};
   logs.forEach(log => {
     const date = new Date(log.timestamp);
