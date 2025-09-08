@@ -17,7 +17,7 @@ export default function EmotionalVolatilityPage(){
         const data = await res.json();
         if (res.ok) {
           setLogs(data);
-          const prepared = prepareVolatility(data);
+          const prepared = prepareVolatilityData(data);
           if (canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
             if (chartRef.current) chartRef.current.destroy();
