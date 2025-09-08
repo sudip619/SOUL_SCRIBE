@@ -1,43 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { makeAuthenticatedRequest } from '../services/api';
+import { prepareVolatilityData } from './EmotionalVolatility';
 Chart.register(...registerables);
-
-const VOL_WEIGHTS = {
-  neutral: 0,
-  calm: 1,
-  sad: 1,
-  tired: 1,
-  happy: 2,
-  anxious: 2,
-  frustrated: 2,
-  energized: 3,
-  overwhelmed: 3,
-  angry: 3
-};
-
-function prepareVolatility(logs) {
-  const daily = {};
-  logs.forEach(log => {
-    const date = new Date(log.timestamp);
-    const key = date.toISOString().split('T')[0];
-    const mood = log.mood_name;
-    const w = VOL_WEIGHTS[mood] !== undefined ? VOL_WEIGHTS[mood] : 0;
-    if (!daily[key]) daily[key] = [];
-    daily[key].push(w);
-  });
-
-  const labels = Object.keys(daily).sort();
-  const values = labels.map(k => {
-    const arr = daily[k];
-    if (!arr || arr.length === 0) return 0;
-    const mean = arr.reduce((a,b)=>a+b,0)/arr.length;
-    const variance = arr.reduce((a,b)=>a + Math.pow(b-mean,2),0)/arr.length;
-    const std = Math.sqrt(variance);
-    return +std.toFixed(2);
-  });
-  return { labels, values };
-}
 
 export default function EmotionalVolatilityPage(){
   const canvasRef = useRef(null);
