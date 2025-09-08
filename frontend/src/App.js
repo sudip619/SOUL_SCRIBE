@@ -30,6 +30,7 @@ const AppContent = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [currentView, setCurrentView] = useState('auth');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [pendingAuth, setPendingAuth] = useState(null);
 
   useEffect(() => {
     AOS.init({
@@ -81,16 +82,9 @@ const AppContent = () => {
   }, []);
 
   const handleLoginSuccess = (username, userId) => {
+    // Show the loading screen and wait for user to click "Get Started"
+    setPendingAuth({ username, userId });
     setIsAuthenticating(true);
-    // MODIFIED: Changed duration from 3000ms to 2000ms
-    setTimeout(() => {
-      setIsLoggedIn(true);
-      setCurrentUsername(username);
-      setCurrentUserId(userId);
-      setCurrentView('home');
-      showAlert(`Welcome back, ${username}!`, true);
-      setIsAuthenticating(false);
-    }, 2000); // 2-second delay
   };
 
   const handleLogout = () => {
