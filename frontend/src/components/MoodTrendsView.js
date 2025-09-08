@@ -502,7 +502,7 @@ function MoodTrendsView({ showAlert }) {
           onClick={closeChartModal}
         >
           <div
-            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[900px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
+            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col transform translate-y-5 scale-95 transition-transform duration-300 ease-in-out"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -515,7 +515,7 @@ function MoodTrendsView({ showAlert }) {
               <canvas
                 id="expandedMoodChart"
                 ref={expandedChartRef}
-                className="min-w-[1400px] h-full rounded-md p-4 panel-surface"
+                className="min-w-[800px] h-full rounded-md p-4 panel-surface"
               ></canvas>
             </div>
           </div>
