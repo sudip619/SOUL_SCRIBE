@@ -723,24 +723,6 @@ body[class*="theme-"] .select-like {
   }
 }
 
-/* --- AROCK-inspired: top sweep bar and circular progress badge --- */
-.loading-topbar { position: absolute; top: 0; left: 0; width: 100%; height: 3px; overflow: hidden; }
-.loading-topbar-fill { width: 28%; height: 100%; background: linear-gradient(90deg, transparent, var(--text-primary), transparent); filter: drop-shadow(0 0 6px rgba(255,255,255,0.3)); animation: topbarMove 2.8s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
-@keyframes topbarMove { from { transform: translateX(-40%); } 60% { transform: translateX(120%); } to { transform: translateX(120%); } }
-
-.loading-badge { width: clamp(64px, 12vw, 120px); aspect-ratio: 1 / 1; display: grid; place-items: center; margin-bottom: 8px; }
-.loading-ring { width: 100%; height: 100%; }
-.ring-trail { fill: none; stroke: color-mix(in srgb, var(--text-primary) 20%, transparent); stroke-width: 1.5; }
-.ring-progress { fill: none; stroke: var(--accent-primary); stroke-linecap: round; stroke-width: 2; stroke-dasharray: 122.522; stroke-dashoffset: 122.522; transform-origin: 50% 50%; animation: ringSpin 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
-.ring-play { fill: var(--text-primary); opacity: 0.9; }
-@keyframes ringSpin {
-  0% { stroke-dasharray: 0 122.522; stroke-dashoffset: 0; transform: rotate(-90deg); }
-  20% { stroke-dasharray: 24 122.522; stroke-width: 2.6; }
-  50% { stroke-dasharray: 58 122.522; stroke-dashoffset: -62; stroke-width: 3.1; }
-  70% { stroke-dasharray: 24 122.522; stroke-dashoffset: -100; stroke-width: 2.6; }
-  100% { stroke-dasharray: 0 122.522; stroke-dashoffset: -122.522; stroke-width: 2; transform: rotate(-90deg); }
-}
-
 /* --- NEW: Pulsing Ring Loader Animation --- */
 .pl {
   width: 3em;
