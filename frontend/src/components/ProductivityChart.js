@@ -179,9 +179,10 @@ export default function ProductivityChart() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start z-50" onClick={closeModal}>
           <div
+            ref={modalRef}
             className="relative glass-panel p-8 flex flex-col"
             onClick={(e) => e.stopPropagation()}
-            style={(() => {
+            style={modalStyle || (() => {
               if (!anchorRect) return {};
               try {
                 const availW = (typeof window !== 'undefined') ? window.innerWidth - 16 : anchorRect.width;
