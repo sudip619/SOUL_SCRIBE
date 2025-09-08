@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { postJSON } from '../services/api';
+import { supabase } from '../supabaseClient';
 
 function AuthForm({ onLoginSuccess, showAlert }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -16,45 +17,45 @@ function AuthForm({ onLoginSuccess, showAlert }) {
     }
   };
 
-  const handleRegister = async () => {
-    if (password !== confirmPassword) {
-      showAlert('Passwords do not match.', false);
-      return;
-    }
+  // New handleRegister function
+  const handleRegister = async (username, password) => {
     try {
-      const response = await postJSON('/api/register', { username, password });
-      let data = null;
-      try { data = await response.json(); } catch (_) { data = null; }
-      if (response.ok) {
-        showAlert('Registration successful! Please log in.', true);
-        setIsRegistering(false);
-      } else {
-        showAlert((data && data.message) || 'Registration failed.', false);
-      }
+      // Supabase uses email for registration. We'll create a dummy email from the username.
+      const email = `${username}@example.com`;
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+          data: { username: username } // Stores the username in user metadata
+        }
+      });
+
+      if (error) throw error;
+      alert('Registration successful! Check your email for a verification link.');
+
     } catch (error) {
-      console.error('Registration error:', error);
-      showAlert(error.message || 'Network error during registration.', false);
+      alert('Error during registration: ' + error.message);
     }
   };
 
-  const handleLogin = async () => {
+  // New handleLogin function
+  const handleLogin = async (username, password) => {
     try {
-      const response = await postJSON('/api/login', { username, password });
-      let data = null;
-      try { data = await response.json(); } catch (_) { data = null; }
-      if (response.ok) {
-        localStorage.setItem('authToken', data.token);
-        localStorage.setItem('username', data.username);
-        localStorage.setItem('userId', data.user_id);
-        onLoginSuccess(data.username, data.user_id);
-      } else {
-        showAlert((data && data.message) || 'Login failed.', false);
-      }
-    } catch (error) {
-      console.error('Login error:', error);
-      showAlert(error.message || 'Network error during login.', false);
-    }
-  };
+      const email = `${username}@example.com`;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+      if (error) throw error;
+      console.log('Login successful!', data);
+
+    } catch (error)
+    alert('Error during login: ' + error.message);
+  }
+};
 
   return (
     <div className="auth-page-wrapper">
