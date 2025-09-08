@@ -151,11 +151,16 @@ export async function postJSON(path, data, options = {}) {
   }
 }
 
-export async function makeAuthenticatedRequest(url, method = 'GET', data = null) {
+export async function makeAuthenticatedRequest(url, method = 'GET', data = null, options = {}) {
   const token = localStorage.getItem('authToken');
   if (!token) {
     alert('You are not logged in.');
     throw new Error('No authentication token found.');
+  }
+
+  // Fast fail when offline
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    throw new Error('You appear to be offline. Please check your network connection and try again.');
   }
 
   // Normalize path: ensure it starts with /api
@@ -166,6 +171,7 @@ export async function makeAuthenticatedRequest(url, method = 'GET', data = null)
   const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
+    ...(options.headers || {}),
   };
 
   const config = { method, headers };
@@ -173,13 +179,22 @@ export async function makeAuthenticatedRequest(url, method = 'GET', data = null)
 
   const fullUrl = `${API_BASE_URL}${path}`;
 
+  // Use AbortController to enforce timeout
+  const timeoutMs = options.timeout || 30000;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => { try { controller.abort(); } catch (_) {} }, timeoutMs);
+
   let response;
   try {
-    response = await fetch(fullUrl, config);
+    response = await fetch(fullUrl, { ...config, signal: controller.signal });
   } catch (err) {
-    // Network-level error (CORS, DNS, refused connection, offline, etc.)
+    if (err && err.name === 'AbortError') {
+      throw new Error(`Request timed out when calling ${fullUrl}`);
+    }
     console.error('Network error during API request:', err);
     throw new Error('Failed to reach the server. Please check your connection or try again later.');
+  } finally {
+    clearTimeout(timeoutId);
   }
 
   if (response.status === 401 || response.status === 403) {
