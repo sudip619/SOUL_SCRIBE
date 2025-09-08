@@ -343,37 +343,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         </>
       )}
 
-      {isModalOpen && (
-        <div
-          id="chart-modal"
-          // --- THIS IS THE FIX ---
-          // The flexbox classes (flex, justify-center, items-center) were removed to prevent conflicting with the inline style positioning.
-          className="fixed inset-0 bg-black bg-opacity-60 z-50 transition-opacity duration-300 ease-out"
-          onClick={closeChartModal}
-        >
-          <div
-            ref={modalRef}
-            className="relative glass-panel p-8 flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-            style={modalStyle}
-          >
-            <button
-              onClick={closeChartModal}
-              className={`absolute top-3 right-5 text-4xl font-bold text-[${textMuted}] hover:text-accent-teal transition-colors duration-200 focus:outline-none`}
-            >
-              &times;
-            </button>
-            <div id="modalChartContainer" className="flex-grow w-full h-full overflow-x-auto p-4">
-              {activeChart === 'daily' && (
-                <canvas ref={expandedChartRef} className="min-w-[800px] h-full rounded-md p-4 panel-surface"></canvas>
-              )}
-              {activeChart === 'stacked' && (
-                <canvas ref={expandedStackedRef} className="min-w-[800px] h-full rounded-md p-4 panel-surface"></canvas>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
