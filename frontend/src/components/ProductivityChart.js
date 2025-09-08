@@ -111,12 +111,6 @@ export default function ProductivityChart({ onOpenGraph }) {
     };
   }, [render]);
 
-  useEffect(() => {
-    if (isModalOpen && expandedRef.current && logs.length) {
-      const prepared = prepareProductivityData(logs);
-      render(expandedRef.current, expandedInstance, prepared.labels, prepared.values);
-    }
-  }, [isModalOpen, logs, render]);
 
   return (
     <>
