@@ -4,7 +4,7 @@ import { makeAuthenticatedRequest } from '../services/api';
 
 Chart.register(...registerables);
 
-function prepareVolatilityData(logs) {
+export function prepareVolatilityData(logs) {
   const daily = {};
   const mapping = {
     happy: { wellbeing: 9, energy: 8 }, energized: { wellbeing: 8, energy: 9 }, calm: { wellbeing: 8, energy: 4 }, neutral: { wellbeing: 5, energy: 5 }, frustrated: { wellbeing: 3, energy: 6 }, anxious: { wellbeing: 3, energy: 7 }, sad: { wellbeing: 2, energy: 3 }, overwhelmed: { wellbeing: 2, energy: 4 }, angry: { wellbeing: 1, energy: 8 }, tired: { wellbeing: 1, energy: 1 }
