@@ -449,18 +449,34 @@ function MoodTrendsView({ showAlert }) {
   };
 
   useEffect(() => {
-    if (isModalOpen && expandedChartRef.current && moodLogs.length) {
-      const chartData = prepareChartData(moodLogs);
-      const chartInstance = renderChart(expandedChartRef.current, myExpandedMoodChartInstance,
-                                       chartData.labels, chartData.wellbeingDataPoints, chartData.energyDataPoints);
-      myExpandedMoodChartInstance.current = chartInstance;
+    if (isModalOpen && moodLogs.length) {
+      if (activeChart === 'daily' && expandedChartRef.current) {
+        const chartData = prepareChartData(moodLogs);
+        const chartInstance = renderChart(expandedChartRef.current, myExpandedMoodChartInstance,
+                                         chartData.labels, chartData.wellbeingDataPoints, chartData.energyDataPoints);
+        myExpandedMoodChartInstance.current = chartInstance;
 
-      setTimeout(() => {
-        const modalChartContainer = document.getElementById('modalChartContainer');
-        if (modalChartContainer) {
-          modalChartContainer.scrollLeft = modalChartContainer.scrollWidth;
-        }
-      }, 150);
+        setTimeout(() => {
+          const modalChartContainer = document.getElementById('modalChartContainer');
+          if (modalChartContainer) {
+            modalChartContainer.scrollLeft = modalChartContainer.scrollWidth;
+          }
+        }, 150);
+      }
+
+      if (activeChart === 'stacked' && expandedStackedRef.current) {
+        const stackedData = prepareStackedBarData(moodLogs);
+        const inst = renderStackedBarChart(expandedStackedRef.current, myExpandedStackedInstance,
+                                          stackedData.labels, stackedData.datasets);
+        myExpandedStackedInstance.current = inst;
+
+        setTimeout(() => {
+          const modalChartContainer = document.getElementById('modalChartContainer');
+          if (modalChartContainer) {
+            modalChartContainer.scrollLeft = modalChartContainer.scrollWidth;
+          }
+        }, 150);
+      }
     }
 
     return () => {
@@ -468,8 +484,12 @@ function MoodTrendsView({ showAlert }) {
         myExpandedMoodChartInstance.current.destroy();
         myExpandedMoodChartInstance.current = null;
       }
+      if (myExpandedStackedInstance.current) {
+        myExpandedStackedInstance.current.destroy();
+        myExpandedStackedInstance.current = null;
+      }
     };
-  }, [isModalOpen, moodLogs]);
+  }, [isModalOpen, moodLogs, activeChart]);
 
   const textMuted = "#888888";
 
