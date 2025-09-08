@@ -494,6 +494,11 @@ function MoodTrendsView({ showAlert }) {
               className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}
             ></canvas>
           </div>
+
+          {/* Additional Mood Analytics Components */}
+          <ProductivityChart />
+          <EmotionalVolatility />
+          <ResilienceScore />
         </>
       )}
 
