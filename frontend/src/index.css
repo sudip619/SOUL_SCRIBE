@@ -692,7 +692,7 @@ body[class*="theme-"] .select-like {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0B1A31;
+  background: transparent;
   z-index: 100;
 }
 .loading-svg {
