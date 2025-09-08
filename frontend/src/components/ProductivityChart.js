@@ -53,9 +53,14 @@ export default function ProductivityChart() {
       const width = Math.max(320, desiredWidth);
       const height = Math.min(Math.max(Math.round(rect.height * 1.6), 360), availH);
       let left = Math.round(rect.left + (rect.width / 2) - (width / 2));
-      left = Math.max(8, Math.min(left, Math.max(8, window.innerWidth - width - 8)));
       let top = Math.round(rect.top);
-      top = Math.max(8, Math.min(top, Math.max(8, window.innerHeight - height - 8)));
+      if (window.innerWidth < 800) {
+        left = Math.round((window.innerWidth - width) / 2);
+        top = Math.round((window.innerHeight - height) / 2);
+      } else {
+        left = Math.max(8, Math.min(left, Math.max(8, window.innerWidth - width - 8)));
+        top = Math.max(8, Math.min(top, Math.max(8, window.innerHeight - height - 8)));
+      }
 
       const startStyle = { position: 'fixed', left: `${rect.left}px`, top: `${rect.top}px`, width: `${rect.width}px`, height: `${rect.height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
       const targetStyle = { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transition: 'all 320ms cubic-bezier(0.2,0.8,0.2,1)', overflow: 'hidden' };
