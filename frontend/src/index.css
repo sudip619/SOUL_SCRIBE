@@ -528,6 +528,16 @@ body[class*="theme-"] .select-like {
   margin-left: 0.3em;
   transition: all 0.3s ease-in-out;
 }
+
+/* Specific style to center Save Preferences text (profile page) */
+.save-preferences-button {
+  width: 100%;
+  justify-content: center; /* center text and any inline content */
+}
+.save-preferences-button span { margin-left: 0; }
+/* Prevent large translate on hover for this specific button */
+.save-preferences-button:hover span { transform: none; }
+.save-preferences-button:hover svg { transform: none; }
 .send-fly-button svg {
   display: block;
   transform-origin: center center;
