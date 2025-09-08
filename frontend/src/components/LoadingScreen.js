@@ -10,6 +10,13 @@ function LoadingScreen({ onContinue }) {
     return () => clearTimeout(t);
   }, []);
 
+  useEffect(() => {
+    if (showButton) {
+      // ensure AOS re-evaluates new elements
+      try { AOS.refresh(); } catch (_) {}
+    }
+  }, [showButton]);
+
   return (
     <div className="loading-screen" aria-live="polite">
       {/* SOULSCRIBE Text Animation */}
