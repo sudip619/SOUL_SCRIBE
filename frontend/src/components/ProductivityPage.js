@@ -17,7 +17,7 @@ export default function ProductivityPage() {
         const data = await res.json();
         if (res.ok) {
           setLogs(data);
-          const prepared = prepareProductivityIndex(data);
+          const prepared = prepareProductivityData(data);
 
           // render chart
           if (canvasRef.current) {
