@@ -111,9 +111,20 @@ export default function ResilienceScore({ windowSize = 7 }) {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-start z-50" onClick={closeModal}>
           <div
-            className="relative glass-panel p-8 w-[96%] max-w-[1600px] h-[88%] max-h-[600px] flex flex-col"
+            className="relative glass-panel p-8 flex flex-col"
             onClick={(e) => e.stopPropagation()}
-            style={anchorRect ? { position: 'fixed', left: Math.max(8, anchorRect.left) + 'px', top: Math.max(8, anchorRect.top) + 'px', transform: 'none' } : {}}
+            style={(() => {
+              if (!anchorRect) return {};
+              try {
+                const left = Math.max(8, anchorRect.left);
+                const top = Math.max(8, anchorRect.top);
+                const availW = (typeof window !== 'undefined') ? window.innerWidth - 16 : anchorRect.width;
+                const availH = (typeof window !== 'undefined') ? window.innerHeight - 16 : anchorRect.height * 3;
+                const width = Math.min(anchorRect.width, availW);
+                const height = Math.min(Math.max(anchorRect.height * 1.6, 360), availH);
+                return { position: 'fixed', left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px`, transform: 'none' };
+              } catch (e) { return {}; }
+            })()}
           >
             <button onClick={closeModal} className="absolute top-3 right-5 text-4xl">&times;</button>
             <div className="flex-grow w-full h-full overflow-x-auto p-4" id="resilienceModalContainer">
