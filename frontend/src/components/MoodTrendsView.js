@@ -103,6 +103,10 @@ function MoodTrendsView({ showAlert }) {
   const [anchorRect, setAnchorRect] = useState(null);
   const [activeChart, setActiveChart] = useState('daily');
 
+  // animation state for modal: current style and target
+  const [modalStyle, setModalStyle] = useState(null);
+  const modalRef = useRef(null);
+
   const [moodLogs, setMoodLogs] = useState([]);
 
   // NEW: renderChart function wrapped with useCallback and moved inside component
