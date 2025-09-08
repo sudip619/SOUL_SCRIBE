@@ -39,6 +39,14 @@ export default function EmotionalVolatility() {
   const expandedInstance = useRef(null);
   const [logs, setLogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [anchorRect, setAnchorRect] = useState(null);
+  const wrapperRef = useRef(null);
+
+  const openModal = () => {
+    if (wrapperRef.current) setAnchorRect(wrapperRef.current.getBoundingClientRect());
+    setIsModalOpen(true);
+  };
+  const closeModal = () => { setIsModalOpen(false); setAnchorRect(null); };
 
   const render = useCallback((canvas, instanceRef, labels, data) => {
     if (!canvas) return null;
