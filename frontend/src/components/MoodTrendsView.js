@@ -321,25 +321,25 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
       ) : (
         <>
-          <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
-          <div
-            id="moodChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface"
-            onClick={(e) => openChartModal(e, 'daily')}
-          >
-            <canvas ref={chartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
-          </div>
-          <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
-          <div
-            id="stackedBarChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface"
-            onClick={(e) => openChartModal(e, 'stacked')}
-          >
-            <canvas ref={stackedBarChartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
-          </div>
           <ProductivityChart onOpenGraph={onOpenGraph} />
           <EmotionalVolatility onOpenGraph={onOpenGraph} />
           <ResilienceScore onOpenGraph={onOpenGraph} />
+
+          <h3 className="text-xl font-semibold text-center mt-8 mb-4">Daily Average: Wellbeing & Energy</h3>
+          <div
+            id="moodChartWrapper"
+            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
+          >
+            <canvas ref={chartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
+          </div>
+
+          <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
+          <div
+            id="stackedBarChartWrapper"
+            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
+          >
+            <canvas ref={stackedBarChartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
+          </div>
         </>
       )}
 
