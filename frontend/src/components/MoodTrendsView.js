@@ -311,21 +311,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
 
 
 
-  useEffect(() => {
-    if (isModalOpen) {
-      if (activeChart === 'daily') {
-        const chartData = prepareChartData(moodLogs);
-        myExpandedMoodChartInstance.current = renderChart(expandedChartRef.current, myExpandedMoodChartInstance, chartData.labels, chartData.wellbeingDataPoints, chartData.energyDataPoints);
-      } else if (activeChart === 'stacked') {
-        const stackedData = prepareStackedBarData(moodLogs);
-        myExpandedStackedInstance.current = renderStackedBarChart(expandedStackedRef.current, myExpandedStackedInstance, stackedData.labels, stackedData.datasets);
-      }
-    }
-    return () => {
-      if (myExpandedMoodChartInstance.current) { myExpandedMoodChartInstance.current.destroy(); myExpandedMoodChartInstance.current = null; }
-      if (myExpandedStackedInstance.current) { myExpandedStackedInstance.current.destroy(); myExpandedStackedInstance.current = null; }
-    };
-  }, [isModalOpen, activeChart, moodLogs, renderChart, renderStackedBarChart]);
 
   const textMuted = "#888888";
 
