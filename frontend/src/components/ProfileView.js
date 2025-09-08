@@ -74,7 +74,7 @@ function ProfileView({ username, showAlert }) {
             name="main_concern"
             value={mainConcern}
             onChange={(e) => setMainConcern(e.target.value)}
-            className="w-full p-3 bg-dark-bg-primary/30 text-dark-text-light border border-dark-text-muted/40 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-pink focus:border-accent-pink transition duration-300"
+            className="w-full p-3 profile-main-concern text-dark-text-light border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-pink focus:border-accent-pink transition duration-300"
           >
             <option value="">Select...</option>
             <option value="stress">Stress</option>
