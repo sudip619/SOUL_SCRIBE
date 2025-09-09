@@ -95,15 +95,15 @@ export default function ProductivityChart({ onOpenGraph }) {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareProductivityData(data);
-          render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
-        }
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareProductivityData(logsData);
+        render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
       } catch (e) {
-        // ignore here
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
       }
     };
     load();
