@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 import { prepareVolatilityData } from './EmotionalVolatility';
 Chart.register(...registerables);
 
@@ -13,21 +13,23 @@ export default function EmotionalVolatilityPage(){
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareVolatilityData(data);
-          if (canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-            if (chartRef.current) chartRef.current.destroy();
-            chartRef.current = new Chart(ctx, { type: 'bar', data: { labels: prepared.labels, datasets: [{ label: 'Volatility Score', data: prepared.values, backgroundColor: '#FF9800' }] }, options: { responsive: true, maintainAspectRatio: false } });
-          }
-
-          const avg = prepared.values.length ? (prepared.values.reduce((a,b)=>a+b,0)/prepared.values.length) : 0;
-          setInsight({ avg: +avg.toFixed(2), max: Math.max(...prepared.values,0) });
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareVolatilityData(logsData);
+        if (canvasRef.current) {
+          const ctx = canvasRef.current.getContext('2d');
+          if (chartRef.current) chartRef.current.destroy();
+          chartRef.current = new Chart(ctx, { type: 'bar', data: { labels: prepared.labels, datasets: [{ label: 'Volatility Score', data: prepared.values, backgroundColor: '#FF9800' }] }, options: { responsive: true, maintainAspectRatio: false } });
         }
-      } catch (e) {}
+
+        const avg = prepared.values.length ? (prepared.values.reduce((a,b)=>a+b,0)/prepared.values.length) : 0;
+        setInsight({ avg: +avg.toFixed(2), max: Math.max(...prepared.values,0) });
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
+      }
     };
     load();
     return () => { if (chartRef.current) chartRef.current.destroy(); };

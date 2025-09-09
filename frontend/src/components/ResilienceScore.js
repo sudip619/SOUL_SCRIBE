@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 
 Chart.register(...registerables);
 
@@ -69,14 +69,16 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareResilienceData(data, windowSize);
-          render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
-        }
-      } catch (e) {}
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareResilienceData(logsData, windowSize);
+        render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
+      }
     };
     load();
     return () => { if (chartInstance.current) chartInstance.current.destroy(); };
@@ -84,10 +86,10 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
 
   return (
     <>
-      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('resilience'); }}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-start items-center" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('resilience'); }}>
         <h3 className="text-xl font-semibold text-[#F0F0F0] text-center mb-4">Resilience Score</h3>
-        <div style={{ height: 220 }}>
-          <canvas ref={canvasRef} />
+        <div className="h-[220px] w-full flex items-center justify-start">
+          <canvas ref={canvasRef} className="w-full h-full" />
         </div>
       </div>
     </>

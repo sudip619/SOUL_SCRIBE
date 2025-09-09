@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 import { prepareProductivityData } from './ProductivityChart';
 Chart.register(...registerables);
 
@@ -13,34 +13,34 @@ export default function ProductivityPage() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareProductivityData(data);
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareProductivityData(logsData);
 
-          // render chart
-          if (canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-            if (chartRef.current) chartRef.current.destroy();
-            chartRef.current = new Chart(ctx, {
-              type: 'line',
-              data: { labels: prepared.labels, datasets: [{ label: 'Productivity & Focus Index', data: prepared.values, borderColor: '#4CAF50', backgroundColor: 'rgba(76,175,80,0.12)', tension: 0.25, fill: true }] },
-              options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: -5, max: 5, title: { display: true, text: 'Index (-5..+5)' } } } }
-            });
-          }
-
-          // basic insights
-          const vals = prepared.values;
-          const avg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : 0;
-          const latest = vals.length ? vals[vals.length-1] : null;
-          const prev = vals.length > 1 ? vals[vals.length-2] : null;
-          const trend = (latest != null && prev != null) ? (latest - prev) : null;
-
-          setInsights({ avg: +avg.toFixed(2), latest, trend });
+        // render chart
+        if (canvasRef.current) {
+          const ctx = canvasRef.current.getContext('2d');
+          if (chartRef.current) chartRef.current.destroy();
+          chartRef.current = new Chart(ctx, {
+            type: 'line',
+            data: { labels: prepared.labels, datasets: [{ label: 'Productivity & Focus Index', data: prepared.values, borderColor: '#4CAF50', backgroundColor: 'rgba(76,175,80,0.12)', tension: 0.25, fill: true }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: -5, max: 5, title: { display: true, text: 'Index (-5..+5)' } } } }
+          });
         }
+
+        // basic insights
+        const vals = prepared.values;
+        const avg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : 0;
+        const latest = vals.length ? vals[vals.length-1] : null;
+        const prev = vals.length > 1 ? vals[vals.length-2] : null;
+        const trend = (latest != null && prev != null) ? (latest - prev) : null;
+
+        setInsights({ avg: +avg.toFixed(2), latest, trend });
       } catch (e) {
-        // ignore
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
       }
     };
     load();

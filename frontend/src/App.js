@@ -182,7 +182,7 @@ const AppContent = () => {
               <div className="app-shell">
                 <Sidebar currentView={currentView} onNavigate={handleNavClick} onLogout={handleLogout} />
                 <div className="app-content">
-                  <div className="container-wide p-0">{renderView()}</div>
+                  <div className="w-full p-0">{renderView()}</div>
                 </div>
               </div>
             ) : (
