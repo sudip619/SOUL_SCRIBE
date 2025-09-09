@@ -7,6 +7,19 @@ serve(async (req) => {
   // Clone the request immediately so we can safely read the body
   // and access headers without risking the body stream being consumed.
   const clonedReq = req.clone();
+
+  // CORS preflight
+  if (clonedReq.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+        'Access-Control-Allow-Headers': 'Authorization,Content-Type',
+      },
+    });
+  }
+
   const { message, mood } = await clonedReq.json()
   const authHeader = clonedReq.headers.get('Authorization') || '';
 
@@ -18,7 +31,7 @@ serve(async (req) => {
 
   const { data: { user } } = await supabaseClient.auth.getUser()
   if (!user) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } })
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
   }
 
   try {
