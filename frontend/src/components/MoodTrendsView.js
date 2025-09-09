@@ -4,6 +4,10 @@ import { Chart, registerables } from 'chart.js';
 import { supabase } from '../supabaseClient';
 
 Chart.register(...registerables);
+import ProductivityChart from './ProductivityChart';
+import ResilienceScore from './ResilienceScore';
+import EmotionalVolatility from './EmotionalVolatility';
+
 
 const moodDimensions = {
   'happy': { wellbeing: 9, energy: 8, color: '#4CAF50' },
@@ -321,6 +325,13 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
             <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner bg-gray-800">
               <canvas ref={stackedBarChartRef} className="min-w-[700px] h-[350px]"></canvas>
             </div>
+          </div>
+
+          {/* Summary cards: productivity, resilience, volatility */}
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ProductivityChart onOpenGraph={onOpenGraph} />
+            <ResilienceScore onOpenGraph={onOpenGraph} />
+            <EmotionalVolatility onOpenGraph={onOpenGraph} />
           </div>
         </>
       )}
