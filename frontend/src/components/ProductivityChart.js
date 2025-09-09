@@ -62,8 +62,8 @@ export default function ProductivityChart({ logs, onOpenGraph }) {
   // useEffect now runs when the 'logs' prop changes, instead of fetching its own data
   useEffect(() => {
     if (logs && logs.length > 0) {
-      const prepared = prepareProductivityData(logs);
-      render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
+        const prepared = prepareProductivityData(logs);
+        render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
     }
     return () => {
       if (chartInstance.current) chartInstance.current.destroy();
