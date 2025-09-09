@@ -315,13 +315,13 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         <>
           <div className="mb-12">
             <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
-            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner bg-gray-800">
+            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface">
               <canvas ref={chartRef} className="min-w-[700px] h-[350px]"></canvas>
             </div>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
-            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner bg-gray-800">
+            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface">
               <canvas ref={stackedBarChartRef} className="min-w-[700px] h-[350px]"></canvas>
             </div>
           </div>
@@ -329,7 +329,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           {/* Summary charts stacked vertically */}
           <div className="mt-8 space-y-8">
             <div className="mb-8">
-              <ProductivityChart onOpenGraph={onOpenGraph} />
+              <ProductivityChart logs={moodLogs} onOpenGraph={onOpenGraph} />
             </div>
             <div className="mb-8">
               <ResilienceScore onOpenGraph={onOpenGraph} />
