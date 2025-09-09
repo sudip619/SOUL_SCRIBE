@@ -38,7 +38,6 @@ export function prepareResilienceData(logs, windowSize = 7) {
 export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
   const canvasRef = useRef(null);
   const chartInstance = useRef(null);
-  const [logs, setLogs] = useState([]);
   const wrapperRef = useRef(null);
 
   const render = useCallback((canvas, instanceRef, labels, data) => {
@@ -72,7 +71,6 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
         const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
         if (error) throw error;
         const logsData = data || [];
-        setLogs(logsData);
         const prepared = prepareResilienceData(logsData, windowSize);
         render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
       } catch (e) {
@@ -81,7 +79,8 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
       }
     };
     load();
-    return () => { if (chartInstance.current) chartInstance.current.destroy(); };
+    const inst = chartInstance.current;
+    return () => { if (inst) inst.destroy(); };
   }, [render, windowSize]);
 
   return (
