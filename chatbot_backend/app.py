@@ -1,32 +1,41 @@
 import os
 import json
-from flask import Flask, request, jsonify, g, Response # IMPORT 'Response'
+from flask import Flask, request, jsonify, g, Response
 from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import requests
-import time
 import jwt
+from groq import Groq # <-- IMPORT GROQ
 
-# Load environment variables from .env file
+# --- Load environment variables ---
 load_dotenv()
 
 app = Flask(__name__)
 
-# --- CONFIGURATION ---
+# --- Configuration ---
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-# --- INITIALIZE EXTENSIONS ---
+# --- Initialize extensions ---
 db = SQLAlchemy(app)
-CORS(app)
+CORS(app)  # Enable CORS globally
 
-# --- DATABASE MODELS (Corrected for Supabase) ---
+# --- Initialize Groq Client ---
+try:
+    groq_api_key = os.environ.get("GROQ_API_KEY")
+    if not groq_api_key:
+        raise ValueError("GROQ_API_KEY is missing in environment variables.")
+    groq = Groq(api_key=groq_api_key)
+except ValueError as e:
+    print(f"CRITICAL ERROR initializing Groq client: {e}")
+    groq = None
+
+# --- Database Models ---
 class User(db.Model):
-    id = db.Column(db.String(36), primary_key=True) # For Supabase UUIDs
+    id = db.Column(db.String(36), primary_key=True)  # Supabase UUID
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(512), nullable=True)
     profile_data = db.Column(db.Text, default='{}')
@@ -45,12 +54,10 @@ class MoodLog(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user = db.relationship('User', backref=db.backref('mood_logs', lazy=True))
 
-# --- MODIFIED: AUTHENTICATION & PREFLIGHT HANDLING ---
+# --- Authentication & Preflight Handling ---
 @app.before_request
 def before_request_func():
-    # --- THIS IS THE FIX for the PREFLIGHT/CORS ERROR ---
-    # This block checks if the incoming request is a preflight OPTIONS request
-    # and sends back a successful response immediately.
+    # Handle CORS preflight request
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
@@ -58,51 +65,50 @@ def before_request_func():
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         }
         return Response(status=204, headers=headers)
-    # ----------------------------------------------------
 
-    # The original authentication logic now runs for all non-OPTIONS requests
-    g.current_user = None
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return
-
-    try:
-        token_type, token_value = auth_header.split(' ', 1)
-        if token_type.lower() != 'bearer':
+    # For API routes, handle authentication
+    if request.path.startswith('/api/'):
+        g.current_user = None
+        auth_header = request.headers.get('Authorization')
+        if not auth_header:
             return
 
-        jwt_secret = os.getenv('SUPABASE_JWT_SECRET')
-        if not jwt_secret:
-            print("CRITICAL ERROR: SUPABASE_JWT_SECRET is not set on the server!")
-            return
+        try:
+            token_type, token_value = auth_header.split(' ', 1)
+            if token_type.lower() != 'bearer':
+                return
 
-        payload = jwt.decode(token_value, jwt_secret, algorithms=["HS256"])
-        user_id = payload.get('sub')
-        if not user_id:
-            return
+            jwt_secret = os.getenv('SUPABASE_JWT_SECRET')
+            if not jwt_secret:
+                print("CRITICAL ERROR: SUPABASE_JWT_SECRET is not set on the server!")
+                return
 
-        user = db.session.get(User, user_id)
-        if not user:
-            print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
-            user = User(id=user_id, username=f"user_{user_id[:8]}")
-            db.session.add(user)
-            db.session.commit()
-        
-        g.current_user = user
+            payload = jwt.decode(token_value, jwt_secret, algorithms=["HS256"])
+            user_id = payload.get('sub')
+            if not user_id:
+                return
 
-    except Exception as e:
-        print(f"JWT Authentication Error: {e}")
+            # Fetch or create user
+            user = db.session.get(User, user_id)
+            if not user:
+                print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
+                user = User(id=user_id, username=f"user_{user_id[:8]}")
+                db.session.add(user)
+                db.session.commit()
 
-# --- API ENDPOINTS ---
-# All your endpoints below this line remain the same and will now work correctly.
+            g.current_user = user
 
+        except Exception as e:
+            print(f"JWT Authentication Error: {e}")
+
+# --- API Endpoints ---
 @app.route('/api/profile', methods=['GET'])
 def get_user_profile():
     if not g.current_user:
         return jsonify({'message': 'Authentication required.'}), 401
     try:
         profile_data = json.loads(g.current_user.profile_data)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, TypeError):
         profile_data = {}
     return jsonify({
         'username': g.current_user.username,
@@ -148,18 +154,48 @@ def get_mood_history():
 def chat():
     if not g.current_user:
         return jsonify({'message': 'Authentication required.'}), 401
-
-    user_message_content = request.json.get('message')
-    if not user_message_content:
-        return jsonify({'message': 'Message content is required.'}), 400
     
-    AI_API_KEY = os.getenv('DEEPSEEK_API_KEY') # Or GROQ_API_KEY, etc.
-    if not AI_API_KEY:
-        return jsonify({'message': 'AI API key not configured on server.'}), 500
+    if not groq:
+        return jsonify({"error": "Groq AI client is not configured on the server."}), 500
 
-    # (Your context gathering and AI call logic goes here...)
-    bot_reply = f"The AI received your message: '{user_message_content}'"
-    return jsonify({'reply': bot_reply}), 200
+    data = request.get_json()
+    user_message = data.get('message')
+    current_mood = data.get('mood')
+
+    if not user_message or not current_mood:
+        return jsonify({'message': 'Message and mood are required.'}), 400
+    
+    try:
+        # --- Build the context for the AI ---
+        # 1. Get profile data
+        try:
+            profile_data = json.loads(g.current_user.profile_data)
+        except (json.JSONDecodeError, TypeError):
+            profile_data = {}
+        coping_mechanism = profile_data.get('coping_mechanism', 'Not specified')
+
+        # 2. Get recent moods
+        recent_moods = MoodLog.query.filter_by(user_id=g.current_user.id).order_by(MoodLog.timestamp.desc()).limit(5).all()
+        mood_summary = ', '.join([log.mood_name for log in recent_moods]) or 'No recent moods'
+
+        # 3. Create the system prompt
+        system_prompt = f"You are SoulScribe, an empathetic AI companion. The user is currently feeling '{current_mood}'. Their preferred coping mechanism is '{coping_mechanism}'. Their recent moods are: {mood_summary}. Tailor your response to be supportive and relevant."
+
+        # --- Call the Groq API ---
+        chat_completion = groq.chat.completions.create(
+            model='llama3-8b-8192',
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+        )
+
+        reply = chat_completion.choices[0].message.content
+        return jsonify({'reply': reply}), 200
+
+    except Exception as e:
+        print(f"Error in /api/chat: {e}")
+        return jsonify({'error': 'An internal error occurred.'}), 500
 
 
 # --- Server Start ---
