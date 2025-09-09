@@ -305,7 +305,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
   }, [moodLogs, renderChart, renderStackedBarChart]);
 
   return (
-    <div className="w-full max-w-6xl p-8">
+    <div className="w-full p-8">
       {moodLogs.length === 0 ? (
         <div className="text-center text-gray-400 p-8 bg-gray-800 rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Your Mood Trends</h2>
@@ -316,13 +316,13 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           <div className="mb-12">
             <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
             <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface flex justify-start items-center">
-              <canvas ref={chartRef} className="w-full max-w-[1400px] h-[400px]"></canvas>
+              <canvas ref={chartRef} className="w-full h-[400px]"></canvas>
             </div>
           </div>
           <div>
             <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
             <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface flex justify-start items-center">
-              <canvas ref={stackedBarChartRef} className="w-full max-w-[1400px] h-[400px]"></canvas>
+              <canvas ref={stackedBarChartRef} className="w-full h-[400px]"></canvas>
             </div>
           </div>
 
