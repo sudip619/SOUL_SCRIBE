@@ -54,13 +54,15 @@ function ChatView({ showAlert }) {
         // fall back to the backend REST API if available.
         console.warn('Supabase function invoke failed, attempting REST fallback:', fnErr.message || fnErr);
 
-        const apiBase = process.env.REACT_APP_API_BASE_URL || '';
-        if (!apiBase) throw fnErr;
+        // Fallback to local AI proxy implemented in Flask: /api/generate
+        const history = [...messages, { role: 'user', content: userMessage }]
+          .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+          .slice(-10);
 
-        const resp = await fetch(`${apiBase.replace(/\/$/, '')}/chat`, {
+        const resp = await fetch('/api/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: userMessage, mood: lastMood }),
+          body: JSON.stringify({ messages: history, mood: lastMood }),
         });
 
         if (!resp.ok) {
@@ -70,8 +72,7 @@ function ChatView({ showAlert }) {
         }
 
         const json = await resp.json();
-        // Expecting { reply: '...' } shape from the REST API
-        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: json.reply || json.data || 'No reply' }]);
+        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: json.reply || 'No reply' }]);
       }
 
     } catch (error) {
