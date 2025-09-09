@@ -86,10 +86,10 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
 
   return (
     <>
-      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-start items-center pl-6" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('resilience'); }}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-start items-center" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('resilience'); }}>
         <h3 className="text-xl font-semibold text-[#F0F0F0] text-center mb-4">Resilience Score</h3>
-        <div className="h-[220px] w-full flex items-center justify-start pl-6">
-          <canvas ref={canvasRef} className="w-full max-w-[1100px] h-full" />
+        <div className="h-[220px] w-full flex items-center justify-start">
+          <canvas ref={canvasRef} className="w-full max-w-[1400px] h-full" />
         </div>
       </div>
     </>
