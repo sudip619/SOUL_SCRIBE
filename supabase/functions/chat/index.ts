@@ -15,7 +15,10 @@ serve(async (req) => {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } })
   }
 
-  const { message, mood } = await req.json()
+  // Clone the request so we can safely read the body even if other
+  // libraries (like supabase-js) access the request stream first.
+  const clonedReq = req.clone();
+  const { message, mood } = await clonedReq.json()
 
   try {
     const { data: profile, error: profileError } = await supabaseClient
