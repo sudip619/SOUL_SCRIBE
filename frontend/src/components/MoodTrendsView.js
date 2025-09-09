@@ -3,10 +3,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { supabase } from '../supabaseClient';
 
-Chart.register(...registerables);
 import ProductivityChart from './ProductivityChart';
 import ResilienceScore from './ResilienceScore';
 import EmotionalVolatility from './EmotionalVolatility';
+
+Chart.register(...registerables);
 
 
 const moodDimensions = {
