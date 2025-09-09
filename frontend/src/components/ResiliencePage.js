@@ -14,22 +14,24 @@ export default function ResiliencePage(){
   useEffect(()=>{
     const load = async () => {
       try{
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareResilienceData(data);
-          if (canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-            if (chartRef.current) chartRef.current.destroy();
-            chartRef.current = new Chart(ctx, { type: 'line', data: { labels: prepared.labels, datasets: [{ label: 'Resilience (%)', data: prepared.values, borderColor: '#2196F3', backgroundColor: 'rgba(33,150,243,0.12)', fill: true }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100 } } } });
-          }
-
-          const vals = prepared.values;
-          const avg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : 100;
-          setInsight({ avg: +avg.toFixed(1), latest: vals.length ? vals[vals.length-1] : null });
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareResilienceData(logsData);
+        if (canvasRef.current) {
+          const ctx = canvasRef.current.getContext('2d');
+          if (chartRef.current) chartRef.current.destroy();
+          chartRef.current = new Chart(ctx, { type: 'line', data: { labels: prepared.labels, datasets: [{ label: 'Resilience (%)', data: prepared.values, borderColor: '#2196F3', backgroundColor: 'rgba(33,150,243,0.12)', fill: true }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 0, max: 100 } } } });
         }
-      } catch(e) {}
+
+        const vals = prepared.values;
+        const avg = vals.length ? (vals.reduce((a,b)=>a+b,0)/vals.length) : 100;
+        setInsight({ avg: +avg.toFixed(1), latest: vals.length ? vals[vals.length-1] : null });
+      } catch(e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
+      }
     };
     load();
     return () => { if (chartRef.current) chartRef.current.destroy(); };
