@@ -70,6 +70,8 @@ export default function ProductivityChart({ logs, onOpenGraph }) {
     };
   }, [logs, render]);
 
+  const inst = chartInstance.current;
+
   return (
     <>
       <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-start items-center" onClick={() => onOpenGraph('productivity')}>
