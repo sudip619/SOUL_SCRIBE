@@ -1,41 +1,33 @@
 // frontend/src/components/MoodTrendsView.js
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { supabase } from '../supabaseClient';
 import { Chart, registerables } from 'chart.js';
-// Removed unused component imports
-// import ProductivityChart from './ProductivityChart';
-// import EmotionalVolatility from './EmotionalVolatility';
-// import ResilienceScore from './ResilienceScore';
+import { supabase } from '../supabaseClient';
 
-// Register all necessary Chart.js components once outside the component
 Chart.register(...registerables);
 
 const moodDimensions = {
-  'happy':       { wellbeing: 9, energy: 8, color: '#4CAF50', category: 'positive-high' },
-  'energized':   { wellbeing: 8, energy: 9, color: '#00BCD4', category: 'positive-high' },
-  'calm':        { wellbeing: 8, energy: 4, color: '#8BC34A', category: 'calm-neutral' },
-  'neutral':     { wellbeing: 5, energy: 5, color: '#607D8B', category: 'calm-neutral' },
-  'frustrated':  { wellbeing: 3, energy: 6, color: '#FFC107', category: 'negative-activated' },
-  'anxious':     { wellbeing: 3, energy: 7, color: '#FF5722', category: 'negative-activated' },
-  'sad':         { wellbeing: 2, energy: 3, color: '#673AB7', category: 'low-energy-sad' },
-  'overwhelmed': { wellbeing: 2, energy: 4, color: '#795548', category: 'overwhelmed' },
-  'angry':       { wellbeing: 1, energy: 8, color: '#F44336', category: 'negative-activated' },
-  'tired':       { wellbeing: 1, energy: 1, color: '#9E9E9E', category: 'low-energy-sad' }
+  'happy': { wellbeing: 9, energy: 8, color: '#4CAF50' },
+  'energized': { wellbeing: 8, energy: 9, color: '#00BCD4' },
+  'calm': { wellbeing: 8, energy: 4, color: '#8BC34A' },
+  'neutral': { wellbeing: 5, energy: 5, color: '#607D8B' },
+  'frustrated': { wellbeing: 3, energy: 6, color: '#FFC107' },
+  'anxious': { wellbeing: 3, energy: 7, color: '#FF5722' },
+  'sad': { wellbeing: 2, energy: 3, color: '#673AB7' },
+  'overwhelmed': { wellbeing: 2, energy: 4, color: '#795548' },
+  'angry': { wellbeing: 1, energy: 8, color: '#F44336' },
+  'tired': { wellbeing: 1, energy: 1, color: '#9E9E9E' }
 };
 
-// This function remains the same and works with the new data structure
 const prepareChartData = (logs) => {
   const labels = [];
   const wellbeingDataPoints = [];
   const energyDataPoints = [];
   const dailyAggregates = {};
-
   logs.forEach(log => {
     const date = new Date(log.timestamp);
     const dateKey = date.toISOString().split('T')[0];
     const mood = log.mood_name;
     const dimensions = moodDimensions[mood] || moodDimensions['neutral'];
-
     if (!dailyAggregates[dateKey]) {
       dailyAggregates[dateKey] = { sumWellbeing: 0, sumEnergy: 0, count: 0 };
     }
@@ -43,62 +35,50 @@ const prepareChartData = (logs) => {
     dailyAggregates[dateKey].sumEnergy += dimensions.energy;
     dailyAggregates[dateKey].count += 1;
   });
-
   const sortedDates = Object.keys(dailyAggregates).sort();
-
   sortedDates.forEach(dateKey => {
     const dailyData = dailyAggregates[dateKey];
     labels.push(dateKey);
     wellbeingDataPoints.push(dailyData.sumWellbeing / dailyData.count);
     energyDataPoints.push(dailyData.sumEnergy / dailyData.count);
   });
-
   return { labels, wellbeingDataPoints, energyDataPoints };
 };
 
-// This function also remains the same
 const prepareStackedBarData = (logs) => {
   const labels = [];
   const dailyMoodCounts = {};
   const allMoodNames = Object.keys(moodDimensions);
-
   logs.forEach(log => {
     const date = new Date(log.timestamp);
     const dateKey = date.toISOString().split('T')[0];
     const mood = log.mood_name;
-
     if (!dailyMoodCounts[dateKey]) {
       dailyMoodCounts[dateKey] = {};
       allMoodNames.forEach(m => dailyMoodCounts[dateKey][m] = 0);
     }
     dailyMoodCounts[dateKey][mood] = (dailyMoodCounts[dateKey][mood] || 0) + 1;
   });
-
   const sortedDates = Object.keys(dailyMoodCounts).sort();
   sortedDates.forEach(dateKey => labels.push(dateKey));
-
   const datasets = allMoodNames.map(moodName => {
     return {
       label: moodName.charAt(0).toUpperCase() + moodName.slice(1),
       data: sortedDates.map(dateKey => dailyMoodCounts[dateKey][moodName] || 0),
       backgroundColor: moodDimensions[moodName].color,
-      borderColor: moodDimensions[moodName].color,
-      borderWidth: 1,
     };
   });
-
   return { labels, datasets };
 };
 
 
-function MoodTrendsView({ showAlert, onOpenGraph }) {
+function MoodTrendsView({ showAlert }) {
+  const [moodLogs, setMoodLogs] = useState([]);
   const chartRef = useRef(null);
   const stackedBarChartRef = useRef(null);
   const myMoodChartInstance = useRef(null);
   const myStackedBarChartInstance = useRef(null);
-  const [moodLogs, setMoodLogs] = useState([]);
 
-  // Chart rendering functions remain the same
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
     if (!canvasElement) return null;
     const ctx = canvasElement.getContext('2d');
@@ -161,7 +141,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
               stepSize: 0.5,
               color: '#E0E0E0',
               padding: 10,
-              callback: function(value) {
+              callback: function (value) {
                 if (value === 0) return 'Very Low';
                 if (value === 5) return 'Neutral';
                 if (value === 10) return 'Very High';
@@ -180,7 +160,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
               autoSkip: true,
               maxRotation: 45,
               minRotation: 0,
-              callback: function(val, index) {
+              callback: function (val, index) {
                 const dateStr = labels[index];
                 if (!dateStr) return '';
                 if (labels.length <= 5) return dateStr;
@@ -196,7 +176,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           legend: { display: true, position: 'top', align: 'start', labels: { color: '#F0F0F0', padding: 20 } },
           tooltip: {
             callbacks: {
-              label: function(context) {
+              label: function (context) {
                 let label = context.dataset.label || '';
                 if (label) { label += ': '; }
                 return label + context.raw.toFixed(1);
@@ -231,7 +211,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
               autoSkip: true,
               maxRotation: 45,
               minRotation: 0,
-              callback: function(val, index) {
+              callback: function (val, index) {
                 const dateStr = labels[index];
                 if (!dateStr) return '';
                 if (labels.length <= 7) return dateStr;
@@ -256,12 +236,12 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
             mode: 'index',
             intersect: false,
             callbacks: {
-              label: function(context) {
+              label: function (context) {
                 let label = context.dataset.label || '';
                 if (label) { label += ': '; }
                 return label + context.formattedValue + ' log(s)';
               },
-              title: function(context) {
+              title: function (context) {
                 const dateLabel = context[0].label;
                 const totalLogs = context.reduce((sum, item) => sum + item.parsed.y, 0);
                 return `${dateLabel} (Total: ${totalLogs} logs)`;
@@ -274,32 +254,32 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
     return newChartInstance;
   }, []);
 
-  // --- MODIFIED useEffect HOOK ---
   useEffect(() => {
     const loadMoodTrends = async () => {
       try {
         const { data, error } = await supabase
           .from('mood_logs')
-          .select('mood_name, timestamp'); // Fetching directly from the timestamp column
+          .select('mood_name, timestamp')
+          .order('timestamp', { ascending: true });
 
         if (error) throw error;
 
-        if (data.length === 0) {
-          showAlert('No mood logs yet. Log some moods to see your trends!', false);
+        if (!data || data.length === 0) {
           setMoodLogs([]);
-        } else {
-          setMoodLogs(data);
+          return;
         }
+
+        setMoodLogs(data);
+
       } catch (error) {
         console.error('Error loading mood trends:', error);
-        showAlert('Network error or failed to load mood trends.', false);
+        showAlert(error.message || 'Failed to load mood trends.', false);
       }
     };
+
     loadMoodTrends();
   }, [showAlert]);
 
-  // This separate useEffect handles chart rendering whenever moodLogs data changes.
-  // This is a better practice than rendering inside the data fetching function.
   useEffect(() => {
     if (moodLogs.length > 0) {
       const lineChartData = prepareChartData(moodLogs);
@@ -308,8 +288,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
       const stackedBarChartData = prepareStackedBarData(moodLogs);
       myStackedBarChartInstance.current = renderStackedBarChart(stackedBarChartRef.current, myStackedBarChartInstance, stackedBarChartData.labels, stackedBarChartData.datasets);
     }
-    
-    // Cleanup function to destroy charts when the component unmounts
+
     return () => {
       if (myMoodChartInstance.current) {
         myMoodChartInstance.current.destroy();
@@ -323,31 +302,25 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
   }, [moodLogs, renderChart, renderStackedBarChart]);
 
   return (
-    <div className="w-full glass-panel p-8">
-      <h2 className="text-3xl font-bold text-center text-accent-primary mb-8">Your Mood Trends</h2>
+    <div className="w-full max-w-4xl p-8">
       {moodLogs.length === 0 ? (
-        <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
+        <div className="text-center text-gray-400 p-8 bg-gray-800 rounded-lg">
+          <h2 className="text-2xl font-bold mb-4">Your Mood Trends</h2>
+          <p>No mood logs yet. Log some moods in the chat view to see your trends!</p>
+        </div>
       ) : (
         <>
-          {/* These components are for other pages and should not be here */}
-          {/* <ProductivityChart onOpenGraph={onOpenGraph} /> */}
-          {/* <EmotionalVolatility onOpenGraph={onOpenGraph} /> */}
-          {/* <ResilienceScore onOpenGraph={onOpenGraph} /> */}
-
-          <h3 className="text-xl font-semibold text-center mt-8 mb-4">Daily Average: Wellbeing & Energy</h3>
-          <div
-            id="moodChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
-          >
-            <canvas ref={chartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
+          <div className="mb-12">
+            <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
+            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner bg-gray-800">
+              <canvas ref={chartRef} className="min-w-[700px] h-[350px]"></canvas>
+            </div>
           </div>
-
-          <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
-          <div
-            id="stackedBarChartWrapper"
-            className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner panel-surface"
-          >
-            <canvas ref={stackedBarChartRef} className={`min-w-[700px] h-[350px] rounded-md p-4 panel-surface`}></canvas>
+          <div>
+            <h3 className="text-xl font-semibold text-center mb-4">Daily Mood Distribution</h3>
+            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner bg-gray-800">
+              <canvas ref={stackedBarChartRef} className="min-w-[700px] h-[350px]"></canvas>
+            </div>
           </div>
         </>
       )}
