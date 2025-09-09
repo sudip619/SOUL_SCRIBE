@@ -37,7 +37,7 @@ body.theme-smooth-transition .bg-scene .blob { transition: background .7s ease, 
 @keyframes reveal-up { to { opacity:1; transform: translateY(0);} }
 
 /* Utilities */
-.container-wide { width: 100%; max-width: 1100px; margin: 0 auto; }
+.container-wide { width: 100%; max-width: 1600px; margin: 0 auto; }
 .panel-surface { background: color-mix(in srgb, var(--bg-secondary) 78%, transparent); border: 1px solid color-mix(in srgb, var(--border-color) 60%, transparent); } /* slightly more translucent for charts */
 
 /* Ensure chart-wrapper specifically has a subtle translucent background and centered content */
