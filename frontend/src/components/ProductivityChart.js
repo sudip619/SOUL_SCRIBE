@@ -72,10 +72,10 @@ export default function ProductivityChart({ logs, onOpenGraph }) {
 
   return (
     <>
-      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={() => onOpenGraph('productivity')}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-center items-center" onClick={() => onOpenGraph('productivity')}>
         <h3 className="text-lg font-semibold mb-2">Productivity & Focus Index</h3>
-        <div className="h-40">
-          <canvas ref={canvasRef}></canvas>
+        <div className="h-40 w-full flex items-center justify-center">
+          <canvas ref={canvasRef} className="w-full h-full" />
         </div>
       </div>
     </>
