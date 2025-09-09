@@ -84,10 +84,10 @@ export default function EmotionalVolatility({ onOpenGraph }) {
 
   return (
     <>
-      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('volatility'); }}>
+      <div ref={wrapperRef} className="chart-wrapper w-full overflow-x-auto p-4 mb-8 rounded-lg shadow-inner cursor-pointer panel-surface flex justify-center items-center" onClick={() => { if (typeof onOpenGraph === 'function') onOpenGraph('volatility'); }}>
         <h3 className="text-xl font-semibold text-[#F0F0F0] text-center mb-4">Emotional Volatility</h3>
-        <div style={{ height: 220 }}>
-          <canvas ref={canvasRef} />
+        <div className="h-[220px] w-full flex items-center justify-center">
+          <canvas ref={canvasRef} className="w-full h-full" />
         </div>
       </div>
     </>
