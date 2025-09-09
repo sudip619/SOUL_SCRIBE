@@ -10,15 +10,15 @@ serve(async (req) => {
     { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
   )
 
+  // Clone the request immediately so we can safely read the body
+  // even if subsequent library calls access the request stream.
+  const clonedReq = req.clone();
+  const { message, mood } = await clonedReq.json()
+
   const { data: { user } } = await supabaseClient.auth.getUser()
   if (!user) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } })
   }
-
-  // Clone the request so we can safely read the body even if other
-  // libraries (like supabase-js) access the request stream first.
-  const clonedReq = req.clone();
-  const { message, mood } = await clonedReq.json()
 
   try {
     const { data: profile, error: profileError } = await supabaseClient
