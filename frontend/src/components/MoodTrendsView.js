@@ -315,7 +315,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         <>
           <div className="mb-12">
             <h3 className="text-xl font-semibold text-center mb-4">Daily Average: Wellbeing & Energy</h3>
-            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface flex justify-start items-center pl-6">
+            <div className="chart-wrapper w-full overflow-x-auto p-4 rounded-lg shadow-inner panel-surface flex justify-start items-center">
               <canvas ref={chartRef} className="w-full max-w-[1100px] h-[400px]"></canvas>
             </div>
           </div>
