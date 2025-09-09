@@ -68,10 +68,10 @@ serve(async (req) => {
     })
 
     const reply = chatCompletion.choices[0].message.content
-    return new Response(JSON.stringify({ reply }), { headers: { 'Content-Type': 'application/json' } })
+    return new Response(JSON.stringify({ reply }), { headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
 
   } catch (error) {
     console.error('Error:', error)
-    return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json' } })
+    return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' } })
   }
 })
