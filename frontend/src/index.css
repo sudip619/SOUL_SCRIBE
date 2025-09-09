@@ -875,7 +875,7 @@ body[class*="theme-"] .select-like {
   width: 100%;
   padding-left: 88px; /* reserve space for collapsed sidebar so content never shifts */
 }
-.app-content { flex: 1; display: flex; justify-content: center; }
+.app-content { flex: 1; display: flex; justify-content: flex-start; }
 .sidebar {
   position: fixed;
   left: 24px;
