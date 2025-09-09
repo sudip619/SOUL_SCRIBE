@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { supabase } from '../supabaseClient';
 
