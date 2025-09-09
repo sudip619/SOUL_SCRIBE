@@ -34,18 +34,45 @@ function ChatView({ showAlert }) {
     setUserInput('');
 
     try {
-      // We get the last mood from your app's state. 
+      // We get the last mood from your app's state.
       // This assumes you have a way to know the last clicked mood.
       // For now, let's just pass a default.
       const lastMood = 'neutral'; // Replace with real state later
 
-      const { data, error } = await supabase.functions.invoke('chat', {
-        body: { message: userMessage, mood: lastMood },
-      });
+      // First attempt: Supabase Edge Function
+      try {
+        const { data, error } = await supabase.functions.invoke('chat', {
+          body: JSON.stringify({ message: userMessage, mood: lastMood }),
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-      if (error) throw error;
+        if (error) throw error;
 
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.reply }]);
+        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.reply }]);
+      } catch (fnErr) {
+        // If invoking the Edge Function fails (network/CORS/deployment issues),
+        // fall back to the backend REST API if available.
+        console.warn('Supabase function invoke failed, attempting REST fallback:', fnErr.message || fnErr);
+
+        const apiBase = process.env.REACT_APP_API_BASE_URL || '';
+        if (!apiBase) throw fnErr;
+
+        const resp = await fetch(`${apiBase.replace(/\/$/, '')}/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: userMessage, mood: lastMood }),
+        });
+
+        if (!resp.ok) {
+          const text = await resp.text();
+          const err = new Error(`REST fallback failed: ${resp.status} ${resp.statusText} - ${text}`);
+          throw err;
+        }
+
+        const json = await resp.json();
+        // Expecting { reply: '...' } shape from the REST API
+        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: json.reply || json.data || 'No reply' }]);
+      }
 
     } catch (error) {
       console.error('Error sending message:', error);

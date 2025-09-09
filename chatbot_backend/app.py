@@ -23,6 +23,7 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 db = SQLAlchemy(app)
 CORS(app)  # Enable CORS globally
 
+
 # --- Initialize Groq Client ---
 try:
     groq_api_key = os.environ.get("GROQ_API_KEY")
@@ -32,6 +33,7 @@ try:
 except ValueError as e:
     print(f"CRITICAL ERROR initializing Groq client: {e}")
     groq = None
+
 
 # --- Database Models ---
 class User(db.Model):
@@ -66,6 +68,14 @@ def before_request_func():
         }
         return Response(status=204, headers=headers)
 
+
+    # Handle authentication (non-OPTIONS requests only)
+    g.current_user = None
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return
+
+
     # For API routes, handle authentication
     if request.path.startswith('/api/'):
         g.current_user = None
@@ -83,10 +93,22 @@ def before_request_func():
                 print("CRITICAL ERROR: SUPABASE_JWT_SECRET is not set on the server!")
                 return
 
+
+        # Fetch or create user
+        user = db.session.get(User, user_id)
+        if not user:
+            print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
+            user = User(id=user_id, username=f"user_{user_id[:8]}")
+            db.session.add(user)
+            db.session.commit()
+
+        g.current_user = user
+
             payload = jwt.decode(token_value, jwt_secret, algorithms=["HS256"])
             user_id = payload.get('sub')
             if not user_id:
                 return
+
 
             # Fetch or create user
             user = db.session.get(User, user_id)
@@ -96,10 +118,13 @@ def before_request_func():
                 db.session.add(user)
                 db.session.commit()
 
+
+
             g.current_user = user
 
         except Exception as e:
             print(f"JWT Authentication Error: {e}")
+
 
 # --- API Endpoints ---
 @app.route('/api/profile', methods=['GET'])
@@ -165,6 +190,11 @@ def chat():
     if not user_message or not current_mood:
         return jsonify({'message': 'Message and mood are required.'}), 400
     
+
+    # Placeholder for AI API call (Groq, DeepSeek, OpenAI, etc.)
+    bot_reply = f"The AI received your message: '{user_message_content}'"
+    return jsonify({'reply': bot_reply}), 200
+
     try:
         # --- Build the context for the AI ---
         # 1. Get profile data
