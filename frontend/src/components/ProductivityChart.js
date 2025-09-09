@@ -65,12 +65,9 @@ export default function ProductivityChart({ logs, onOpenGraph }) {
         const prepared = prepareProductivityData(logs);
         render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
     }
-    return () => {
-      if (chartInstance.current) chartInstance.current.destroy();
-    };
+    const inst = chartInstance.current;
+    return () => { if (inst) inst.destroy(); };
   }, [logs, render]);
-
-  const inst = chartInstance.current;
 
   return (
     <>
