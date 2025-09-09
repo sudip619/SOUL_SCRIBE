@@ -326,11 +326,17 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
             </div>
           </div>
 
-          {/* Summary cards: productivity, resilience, volatility */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ProductivityChart onOpenGraph={onOpenGraph} />
-            <ResilienceScore onOpenGraph={onOpenGraph} />
-            <EmotionalVolatility onOpenGraph={onOpenGraph} />
+          {/* Summary charts stacked vertically */}
+          <div className="mt-8 space-y-8">
+            <div className="mb-8">
+              <ProductivityChart onOpenGraph={onOpenGraph} />
+            </div>
+            <div className="mb-8">
+              <ResilienceScore onOpenGraph={onOpenGraph} />
+            </div>
+            <div className="mb-8">
+              <EmotionalVolatility onOpenGraph={onOpenGraph} />
+            </div>
           </div>
         </>
       )}
