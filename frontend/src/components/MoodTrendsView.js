@@ -176,7 +176,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           }
         },
         plugins: {
-          legend: { display: true, position: 'top', align: 'start', labels: { color: '#F0F0F0', padding: 20 } },
+          legend: { display: true, position: 'top', align: 'center', labels: { color: '#F0F0F0', padding: 20 } },
           tooltip: {
             callbacks: {
               label: function (context) {
@@ -234,7 +234,7 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           }
         },
         plugins: {
-          legend: { display: true, position: 'top', align: 'start', labels: { color: '#F0F0F0', padding: 10, boxWidth: 20 } },
+          legend: { display: true, position: 'top', align: 'center', labels: { color: '#F0F0F0', padding: 10, boxWidth: 20 } },
           tooltip: {
             mode: 'index',
             intersect: false,
