@@ -42,7 +42,8 @@ function ChatView({ showAlert }) {
       // First attempt: Supabase Edge Function
       try {
         const { data, error } = await supabase.functions.invoke('chat', {
-          body: { message: userMessage, mood: lastMood },
+          body: JSON.stringify({ message: userMessage, mood: lastMood }),
+          headers: { 'Content-Type': 'application/json' },
         });
 
         if (error) throw error;
