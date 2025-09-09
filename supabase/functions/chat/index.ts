@@ -4,16 +4,17 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import Groq from 'https://esm.sh/groq-sdk@0.3.3'
 
 serve(async (req) => {
+  // Clone the request immediately so we can safely read the body
+  // and access headers without risking the body stream being consumed.
+  const clonedReq = req.clone();
+  const { message, mood } = await clonedReq.json()
+  const authHeader = clonedReq.headers.get('Authorization') || '';
+
   const supabaseClient = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-    { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+    { global: { headers: { Authorization: authHeader } } }
   )
-
-  // Clone the request immediately so we can safely read the body
-  // even if subsequent library calls access the request stream.
-  const clonedReq = req.clone();
-  const { message, mood } = await clonedReq.json()
 
   const { data: { user } } = await supabaseClient.auth.getUser()
   if (!user) {
