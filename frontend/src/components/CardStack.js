@@ -14,13 +14,9 @@ function CardStack({ showAlert }) {
     const moodName = title.toLowerCase();
     applyTheme(moodName);
     try {
-      const response = await makeAuthenticatedRequest('/mood', 'POST', { mood: moodName });
-      const data = await response.json();
-      if (response.ok) {
-        if (showAlert) showAlert(data.message || `Your mood "${moodName}" has been logged!`, true);
-      } else {
-        if (showAlert) showAlert(data.message || 'Failed to log mood. Please try again.', false);
-      }
+      const { data, error } = await supabase.from('mood_logs').insert({ mood_name: moodName });
+      if (error) throw error;
+      if (showAlert) showAlert(`Your mood "${moodName}" has been logged!`, true);
     } catch (err) {
       if (showAlert) showAlert('Network error or server unavailable during mood logging.', false);
     }
