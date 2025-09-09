@@ -2,28 +2,23 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import { Chart, registerables } from 'chart.js';
-// Removed unused component imports
-// import ProductivityChart from './ProductivityChart';
-// import EmotionalVolatility from './EmotionalVolatility';
-// import ResilienceScore from './ResilienceScore';
 
 // Register all necessary Chart.js components once outside the component
 Chart.register(...registerables);
 
 const moodDimensions = {
-  'happy':       { wellbeing: 9, energy: 8, color: '#4CAF50', category: 'positive-high' },
-  'energized':   { wellbeing: 8, energy: 9, color: '#00BCD4', category: 'positive-high' },
-  'calm':        { wellbeing: 8, energy: 4, color: '#8BC34A', category: 'calm-neutral' },
-  'neutral':     { wellbeing: 5, energy: 5, color: '#607D8B', category: 'calm-neutral' },
-  'frustrated':  { wellbeing: 3, energy: 6, color: '#FFC107', category: 'negative-activated' },
-  'anxious':     { wellbeing: 3, energy: 7, color: '#FF5722', category: 'negative-activated' },
-  'sad':         { wellbeing: 2, energy: 3, color: '#673AB7', category: 'low-energy-sad' },
-  'overwhelmed': { wellbeing: 2, energy: 4, color: '#795548', category: 'overwhelmed' },
-  'angry':       { wellbeing: 1, energy: 8, color: '#F44336', category: 'negative-activated' },
-  'tired':       { wellbeing: 1, energy: 1, color: '#9E9E9E', category: 'low-energy-sad' }
+  'happy':       { wellbeing: 9, energy: 8, color: '#4CAF50' },
+  'energized':   { wellbeing: 8, energy: 9, color: '#00BCD4' },
+  'calm':        { wellbeing: 8, energy: 4, color: '#8BC34A' },
+  'neutral':     { wellbeing: 5, energy: 5, color: '#607D8B' },
+  'frustrated':  { wellbeing: 3, energy: 6, color: '#FFC107' },
+  'anxious':     { wellbeing: 3, energy: 7, color: '#FF5722' },
+  'sad':         { wellbeing: 2, energy: 3, color: '#673AB7' },
+  'overwhelmed': { wellbeing: 2, energy: 4, color: '#795548' },
+  'angry':       { wellbeing: 1, energy: 8, color: '#F44336' },
+  'tired':       { wellbeing: 1, energy: 1, color: '#9E9E9E' }
 };
 
-// This function remains the same and works with the new data structure
 const prepareChartData = (logs) => {
   const labels = [];
   const wellbeingDataPoints = [];
@@ -56,7 +51,6 @@ const prepareChartData = (logs) => {
   return { labels, wellbeingDataPoints, energyDataPoints };
 };
 
-// This function also remains the same
 const prepareStackedBarData = (logs) => {
   const labels = [];
   const dailyMoodCounts = {};
@@ -90,15 +84,13 @@ const prepareStackedBarData = (logs) => {
   return { labels, datasets };
 };
 
-
-function MoodTrendsView({ showAlert, onOpenGraph }) {
+function MoodTrendsView({ showAlert }) {
   const chartRef = useRef(null);
   const stackedBarChartRef = useRef(null);
   const myMoodChartInstance = useRef(null);
   const myStackedBarChartInstance = useRef(null);
   const [moodLogs, setMoodLogs] = useState([]);
 
-  // Chart rendering functions remain the same
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
     if (!canvasElement) return null;
     const ctx = canvasElement.getContext('2d');
@@ -274,32 +266,32 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
     return newChartInstance;
   }, []);
 
-  // --- MODIFIED useEffect HOOK ---
   useEffect(() => {
     const loadMoodTrends = async () => {
       try {
         const { data, error } = await supabase
           .from('mood_logs')
-          .select('mood_name, timestamp'); // Fetching directly from the timestamp column
+          .select('mood_name, timestamp')
+          .order('timestamp', { ascending: true });
 
         if (error) throw error;
 
-        if (data.length === 0) {
-          showAlert('No mood logs yet. Log some moods to see your trends!', false);
+        if (!data || data.length === 0) {
           setMoodLogs([]);
-        } else {
-          setMoodLogs(data);
+          return;
         }
+        
+        setMoodLogs(data);
+
       } catch (error) {
         console.error('Error loading mood trends:', error);
-        showAlert('Network error or failed to load mood trends.', false);
+        showAlert(error.message || 'Failed to load mood trends.', false);
       }
     };
+
     loadMoodTrends();
   }, [showAlert]);
 
-  // This separate useEffect handles chart rendering whenever moodLogs data changes.
-  // This is a better practice than rendering inside the data fetching function.
   useEffect(() => {
     if (moodLogs.length > 0) {
       const lineChartData = prepareChartData(moodLogs);
@@ -309,7 +301,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
       myStackedBarChartInstance.current = renderStackedBarChart(stackedBarChartRef.current, myStackedBarChartInstance, stackedBarChartData.labels, stackedBarChartData.datasets);
     }
     
-    // Cleanup function to destroy charts when the component unmounts
     return () => {
       if (myMoodChartInstance.current) {
         myMoodChartInstance.current.destroy();
@@ -329,11 +320,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
       ) : (
         <>
-          {/* These components are for other pages and should not be here */}
-          {/* <ProductivityChart onOpenGraph={onOpenGraph} /> */}
-          {/* <EmotionalVolatility onOpenGraph={onOpenGraph} /> */}
-          {/* <ResilienceScore onOpenGraph={onOpenGraph} /> */}
-
           <h3 className="text-xl font-semibold text-center mt-8 mb-4">Daily Average: Wellbeing & Energy</h3>
           <div
             id="moodChartWrapper"
@@ -356,3 +342,4 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
 }
 
 export default MoodTrendsView;
+
