@@ -217,6 +217,48 @@ def chat():
         return jsonify({'error': 'An internal error occurred.'}), 500
 
 
+@app.route('/api/generate', methods=['POST'])
+def generate():
+    # Public AI proxy: accepts { messages: Message[], mood?: string } and returns { reply }
+    if not groq:
+        return jsonify({"error": "Groq AI client is not configured on the server."}), 500
+
+    try:
+        data = request.get_json(silent=True) or {}
+        incoming_messages = data.get('messages') or []
+        mood = (data.get('mood') or 'neutral').strip().lower()
+
+        # Ensure messages are a list of { role, content }
+        safe_messages = []
+        for m in incoming_messages[-10:]:  # limit context
+            role = str(m.get('role', '')).strip().lower()
+            content = str(m.get('content', '')).strip()
+            if role in ('user', 'assistant') and content:
+                safe_messages.append({ 'role': role, 'content': content })
+
+        system_prompt = (
+            f"You are SoulScribe, an empathetic AI companion. The current mood is '{mood}'. "
+            f"Be concise, supportive, and practical. Avoid medical claims."
+        )
+
+        llm_messages = [{ 'role': 'system', 'content': system_prompt }] + safe_messages
+
+        completion = groq.chat.completions.create(
+            model='llama3-8b-8192',
+            messages=llm_messages,
+        )
+
+        reply = (completion.choices[0].message.content if completion and completion.choices else '').strip()
+        if not reply:
+            return jsonify({ 'error': 'No reply generated' }), 500
+
+        return jsonify({ 'reply': reply }), 200
+
+    except Exception as e:
+        # Return raw-ish error for easier debugging, mirroring the described behavior
+        return jsonify({ 'error': str(e) }), 500
+
+
 # --- Server Start ---
 if __name__ == '__main__':
     with app.app_context():
