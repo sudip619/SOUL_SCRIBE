@@ -75,31 +75,31 @@ def before_request_func():
         }
         return Response(status=204, headers=headers)
 
-
-    # Handle authentication (non-OPTIONS requests only)
+    # Default: unauthenticated unless proven otherwise
     g.current_user = None
+
+    # Only enforce auth on API routes
+    if not request.path.startswith('/api/'):
+        return
+
     auth_header = request.headers.get('Authorization')
     if not auth_header:
         return
 
-
-    # For API routes, handle authentication
-    if request.path.startswith('/api/'):
-        g.current_user = None
-        auth_header = request.headers.get('Authorization')
-        if not auth_header:
+    try:
+        token_type, token_value = auth_header.split(' ', 1)
+        if token_type.lower() != 'bearer':
             return
 
-        try:
-            token_type, token_value = auth_header.split(' ', 1)
-            if token_type.lower() != 'bearer':
-                return
+        jwt_secret = os.getenv('SUPABASE_JWT_SECRET')
+        if not jwt_secret:
+            print("CRITICAL ERROR: SUPABASE_JWT_SECRET is not set on the server!")
+            return
 
-            jwt_secret = os.getenv('SUPABASE_JWT_SECRET')
-            if not jwt_secret:
-                print("CRITICAL ERROR: SUPABASE_JWT_SECRET is not set on the server!")
-                return
-
+        payload = jwt.decode(token_value, jwt_secret, algorithms=["HS256"])
+        user_id = payload.get('sub')
+        if not user_id:
+            return
 
         # Fetch or create user
         user = db.session.get(User, user_id)
@@ -111,26 +111,9 @@ def before_request_func():
 
         g.current_user = user
 
-            payload = jwt.decode(token_value, jwt_secret, algorithms=["HS256"])
-            user_id = payload.get('sub')
-            if not user_id:
-                return
-
-
-            # Fetch or create user
-            user = db.session.get(User, user_id)
-            if not user:
-                print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
-                user = User(id=user_id, username=f"user_{user_id[:8]}")
-                db.session.add(user)
-                db.session.commit()
-
-
-
-            g.current_user = user
-
-        except Exception as e:
-            print(f"JWT Authentication Error: {e}")
+    except Exception as e:
+        print(f"JWT Authentication Error: {e}")
+        return
 
 
 # --- API Endpoints ---
@@ -196,11 +179,6 @@ def chat():
 
     if not user_message or not current_mood:
         return jsonify({'message': 'Message and mood are required.'}), 400
-    
-
-    # Placeholder for AI API call (Groq, DeepSeek, OpenAI, etc.)
-    bot_reply = f"The AI received your message: '{user_message_content}'"
-    return jsonify({'reply': bot_reply}), 200
 
     try:
         # --- Build the context for the AI ---
@@ -216,7 +194,11 @@ def chat():
         mood_summary = ', '.join([log.mood_name for log in recent_moods]) or 'No recent moods'
 
         # 3. Create the system prompt
-        system_prompt = f"You are SoulScribe, an empathetic AI companion. The user is currently feeling '{current_mood}'. Their preferred coping mechanism is '{coping_mechanism}'. Their recent moods are: {mood_summary}. Tailor your response to be supportive and relevant."
+        system_prompt = (
+            f"You are SoulScribe, an empathetic AI companion. The user is currently feeling '{current_mood}'. "
+            f"Their preferred coping mechanism is '{coping_mechanism}'. Their recent moods are: {mood_summary}. "
+            f"Tailor your response to be supportive and relevant."
+        )
 
         # --- Call the Groq API ---
         chat_completion = groq.chat.completions.create(
