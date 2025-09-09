@@ -146,9 +146,9 @@ function AuthForm({ onLoginSuccess, showAlert }) {
             </button>
           </form>
           <div className="auth-toggle-link">
-            <a href="#" onClick={(e) => { e.preventDefault(); setIsRegistering(!isRegistering); }}>
+            <button type="button" className="auth-toggle-button" onClick={() => setIsRegistering(!isRegistering)}>
               {isRegistering ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-            </a>
+            </button>
           </div>
         </div>
       </div>
