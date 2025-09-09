@@ -70,14 +70,16 @@ export default function ResilienceScore({ windowSize = 7, onOpenGraph }) {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await res.json();
-        if (res.ok) {
-          setLogs(data);
-          const prepared = prepareResilienceData(data, windowSize);
-          render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
-        }
-      } catch (e) {}
+        const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
+        if (error) throw error;
+        const logsData = data || [];
+        setLogs(logsData);
+        const prepared = prepareResilienceData(logsData, windowSize);
+        render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to load mood logs', e);
+      }
     };
     load();
     return () => { if (chartInstance.current) chartInstance.current.destroy(); };
