@@ -1,6 +1,6 @@
 // frontend/src/components/MoodSelector.js
 import React from 'react';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 import { useTheme } from '../context/ThemeContext'; // 1. IMPORT THE THEME HOOK
 import { supabase } from '../supabaseClient';
 

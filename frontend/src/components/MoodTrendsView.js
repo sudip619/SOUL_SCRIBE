@@ -1,11 +1,11 @@
 // frontend/src/components/MoodTrendsView.js
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { supabase } from '../supabaseClient';
 import { Chart, registerables } from 'chart.js';
-
-import { makeAuthenticatedRequest } from '../services/api';
-import ProductivityChart from './ProductivityChart';
-import EmotionalVolatility from './EmotionalVolatility';
-import ResilienceScore from './ResilienceScore';
+// Removed unused component imports
+// import ProductivityChart from './ProductivityChart';
+// import EmotionalVolatility from './EmotionalVolatility';
+// import ResilienceScore from './ResilienceScore';
 
 // Register all necessary Chart.js components once outside the component
 Chart.register(...registerables);
@@ -23,6 +23,7 @@ const moodDimensions = {
   'tired':       { wellbeing: 1, energy: 1, color: '#9E9E9E', category: 'low-energy-sad' }
 };
 
+// This function remains the same and works with the new data structure
 const prepareChartData = (logs) => {
   const labels = [];
   const wellbeingDataPoints = [];
@@ -55,6 +56,7 @@ const prepareChartData = (logs) => {
   return { labels, wellbeingDataPoints, energyDataPoints };
 };
 
+// This function also remains the same
 const prepareStackedBarData = (logs) => {
   const labels = [];
   const dailyMoodCounts = {};
@@ -92,12 +94,11 @@ const prepareStackedBarData = (logs) => {
 function MoodTrendsView({ showAlert, onOpenGraph }) {
   const chartRef = useRef(null);
   const stackedBarChartRef = useRef(null);
-
   const myMoodChartInstance = useRef(null);
   const myStackedBarChartInstance = useRef(null);
-
   const [moodLogs, setMoodLogs] = useState([]);
 
+  // Chart rendering functions remain the same
   const renderChart = useCallback((canvasElement, chartRefObject, labels, wellbeingDataPoints, energyDataPoints) => {
     if (!canvasElement) return null;
     const ctx = canvasElement.getContext('2d');
@@ -273,20 +274,21 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
     return newChartInstance;
   }, []);
 
+  // --- MODIFIED useEffect HOOK ---
   useEffect(() => {
     const loadMoodTrends = async () => {
       try {
-        const response = await makeAuthenticatedRequest('/mood/history', 'GET');
-        const data = await response.json();
-        if (response.ok) {
-          if (data.length === 0) {
-            showAlert('No mood logs yet. Log some moods to see your trends!', false);
-            setMoodLogs([]);
-            return;
-          }
-          setMoodLogs(data);
+        const { data, error } = await supabase
+          .from('mood_logs')
+          .select('mood_name, timestamp'); // Fetching directly from the timestamp column
+
+        if (error) throw error;
+
+        if (data.length === 0) {
+          showAlert('No mood logs yet. Log some moods to see your trends!', false);
+          setMoodLogs([]);
         } else {
-          showAlert(data.message || 'Failed to load mood trends.', false);
+          setMoodLogs(data);
         }
       } catch (error) {
         console.error('Error loading mood trends:', error);
@@ -296,23 +298,29 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
     loadMoodTrends();
   }, [showAlert]);
 
+  // This separate useEffect handles chart rendering whenever moodLogs data changes.
+  // This is a better practice than rendering inside the data fetching function.
   useEffect(() => {
     if (moodLogs.length > 0) {
       const lineChartData = prepareChartData(moodLogs);
       myMoodChartInstance.current = renderChart(chartRef.current, myMoodChartInstance, lineChartData.labels, lineChartData.wellbeingDataPoints, lineChartData.energyDataPoints);
+
       const stackedBarChartData = prepareStackedBarData(moodLogs);
       myStackedBarChartInstance.current = renderStackedBarChart(stackedBarChartRef.current, myStackedBarChartInstance, stackedBarChartData.labels, stackedBarChartData.datasets);
     }
+    
+    // Cleanup function to destroy charts when the component unmounts
     return () => {
-      if (myMoodChartInstance.current) { myMoodChartInstance.current.destroy(); myMoodChartInstance.current = null; }
-      if (myStackedBarChartInstance.current) { myStackedBarChartInstance.current.destroy(); myStackedBarChartInstance.current = null; }
+      if (myMoodChartInstance.current) {
+        myMoodChartInstance.current.destroy();
+        myMoodChartInstance.current = null;
+      }
+      if (myStackedBarChartInstance.current) {
+        myStackedBarChartInstance.current.destroy();
+        myStackedBarChartInstance.current = null;
+      }
     };
   }, [moodLogs, renderChart, renderStackedBarChart]);
-
-
-
-
-  const textMuted = "#888888";
 
   return (
     <div className="w-full glass-panel p-8">
@@ -321,9 +329,10 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
         <p className="text-center text-dark-text-light mb-4">No mood logs yet. Log some moods in the chat view to see your trends!</p>
       ) : (
         <>
-          <ProductivityChart onOpenGraph={onOpenGraph} />
-          <EmotionalVolatility onOpenGraph={onOpenGraph} />
-          <ResilienceScore onOpenGraph={onOpenGraph} />
+          {/* These components are for other pages and should not be here */}
+          {/* <ProductivityChart onOpenGraph={onOpenGraph} /> */}
+          {/* <EmotionalVolatility onOpenGraph={onOpenGraph} /> */}
+          {/* <ResilienceScore onOpenGraph={onOpenGraph} /> */}
 
           <h3 className="text-xl font-semibold text-center mt-8 mb-4">Daily Average: Wellbeing & Energy</h3>
           <div
@@ -342,7 +351,6 @@ function MoodTrendsView({ showAlert, onOpenGraph }) {
           </div>
         </>
       )}
-
     </div>
   );
 }

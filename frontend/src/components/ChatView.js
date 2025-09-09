@@ -1,6 +1,6 @@
 // frontend/src/components/ChatView.js
 import React, { useState, useEffect, useRef } from 'react';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient'; 
 import MoodSelector from './MoodSelector';
 import CardStack from './CardStack';
 import { useTheme } from '../context/ThemeContext';
@@ -34,20 +34,22 @@ function ChatView({ showAlert }) {
     setUserInput('');
 
     try {
-      const response = await makeAuthenticatedRequest('/chat', 'POST', { message: userMessage });
-      const data = await response.json();
+      // We get the last mood from your app's state. 
+      // This assumes you have a way to know the last clicked mood.
+      // For now, let's just pass a default.
+      const lastMood = 'neutral'; // Replace with real state later
 
-      if (response.ok) {
-        const botReply = data.reply;
-        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: botReply }]);
-      } else {
-        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Error: ${data.message || 'Failed to get AI response.'}` }]);
-        showAlert(data.message || 'Failed to get AI response.', false);
-      }
-    } catch (error)      {
-      console.error('Error sending message to AI:', error);
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Network Error: ${error.message}` }]);
-      showAlert('Network error or failed to get AI response.', false);
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: { message: userMessage, mood: lastMood },
+      });
+
+      if (error) throw error;
+
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.reply }]);
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Error: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
