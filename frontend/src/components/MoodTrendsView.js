@@ -72,7 +72,7 @@ const prepareStackedBarData = (logs) => {
 };
 
 
-function MoodTrendsView({ showAlert }) {
+function MoodTrendsView({ showAlert, onOpenGraph }) {
   const [moodLogs, setMoodLogs] = useState([]);
   const chartRef = useRef(null);
   const stackedBarChartRef = useRef(null);
