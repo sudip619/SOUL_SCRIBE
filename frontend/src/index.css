@@ -5,55 +5,78 @@
 @tailwind utilities;
 
 /* --- THEME DEFINITIONS --- */
-/* This is the new default theme for the login page */
+/* Expressive Neo theme (aesthetic neon + glass) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 :root {
-  --bg-primary: #041021;      /* Solid dark blue */
-  --bg-secondary: #0B1A31;    /* Slightly lighter for cards */
-  --text-primary: #b9ecfd;     /* Light blue text */
-  --text-secondary: #829AB1;   /* Muted secondary text */
-  --accent-primary: #38b6ff;   /* Bright blue accent */
-  --accent-secondary: #3194cc; /* Deeper blue highlight */
-  --border-color: rgba(56, 182, 255, 0.2);
+  --bg-primary: #0a1a1f;
+  --bg-secondary: #070F12;
+  --text-primary: #e7fffb;
+  --text-secondary: #a5c6c8;
+  --accent-primary: #22d3ee; /* sky cyan */
+  --accent-secondary: #60a5fa; /* sky blue */
+  --border-color: rgba(34, 211, 238, 0.25);
 }
 
 .theme-bright {
-  --bg-primary: #2A3B49;
-  --bg-secondary: #3E5A6F;
-  --text-primary: #F0F5F9;
-  --text-secondary: #A9B4C2;
-  --accent-primary: #F39C12;
-  --accent-secondary: #E67E22;
-  --border-color: rgba(243, 156, 18, 0.2);
+  --bg-primary: #0b0820;
+  --bg-secondary: #121032;
+  --text-primary: #f3ecff;
+  --text-secondary: #bfb4ea;
+  --accent-primary: #c084fc; /* bright lavender */
+  --accent-secondary: #34d399; /* mint */
+  --border-color: rgba(192, 132, 252, 0.3);
 }
 
 .theme-calm {
-  --bg-primary: #34495E;
-  --bg-secondary: #4A6572;
-  --text-primary: #ECF0F1;
-  --text-secondary: #B0BEC5;
-  --accent-primary: #5D9CEC;
-  --accent-secondary: #9B59B6;
-  --border-color: rgba(93, 156, 236, 0.2);
+  --bg-primary: #0a0b12;
+  --bg-secondary: #111423;
+  --text-primary: #e8f0ff;
+  --text-secondary: #9aa6c7;
+  --accent-primary: #7c3aed; /* neon purple */
+  --accent-secondary: #06b6d4; /* cyan */
+  --border-color: rgba(124, 58, 237, 0.25);
 }
 
 .theme-muted {
-  --bg-primary: #2C3E50;
-  --bg-secondary: #34495E;
-  --text-primary: #BDC3C7;
-  --text-secondary: #7F8C8D;
-  --accent-primary: #8E44AD;
-  --accent-secondary: #2980B9;
-  --border-color: rgba(142, 68, 173, 0.2);
+  --bg-primary: #0d1418;
+  --bg-secondary: #0d1216;
+  --text-primary: #e0f2f1;
+  --text-secondary: #94a3b8;
+  --accent-primary: #5b6b78; /* cool slate */
+  --accent-secondary: #374956; /* deeper slate */
+  --border-color: rgba(91, 107, 120, 0.28);
 }
 
 .theme-grounding {
-  --bg-primary: #2F4F4F;
-  --bg-secondary: #3E606F;
-  --text-primary: #CED4DA;
-  --text-secondary: #868E96;
-  --accent-primary: #D9534F;
-  --accent-secondary: #B8860B;
-  --border-color: rgba(217, 83, 79, 0.2);
+  --bg-primary: #0f1a12;
+  --bg-secondary: #0f2319;
+  --text-primary: #e8ffe8;
+  --text-secondary: #b7d7c0;
+  --accent-primary: #34d399; /* emerald */
+  --accent-secondary: #f59e0b; /* amber */
+  --border-color: rgba(52, 211, 153, 0.25);
+}
+
+/* Neutral theme based on provided gradient (#f2f2f2 left, #ada996 right) */
+.theme-neutral {
+  --bg-primary: #000000; /* neutral black */
+  --bg-secondary: #0a0a0a; /* near-black */
+  --text-primary: #f2f2f2; /* neutral light */
+  --text-secondary: #c7c7c7; /* neutral gray */
+  --accent-primary: #ada996; /* sand */
+  --accent-secondary: #f2f2f2; /* light */
+  --border-color: rgba(173, 169, 150, 0.30);
+}
+
+/* Angry/Annoyed theme: derived strictly from #1f0000 and #3d001e */
+.theme-angry {
+  --bg-primary: #140208;
+  --bg-secondary: #1c0410;
+  --text-primary: #ffe4ea;
+  --text-secondary: #ff9bb6;
+  --accent-primary: #ff447a;
+  --accent-secondary: #ff6b6b;
+  --border-color: rgba(255, 68, 122, 0.28);
 }
 
 
@@ -61,14 +84,18 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   /* MODIFIED: The default background is now the solid dark blue for the login page */
   body {
     color: var(--text-primary);
-    background-color: #041021; 
-    @apply font-sans;
+    background-color: #0a0b12;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+    overflow-x: hidden;
   }
+  /* Apply broader transitions only during theme swap */
+  body.theme-smooth-transition * { transition: background-color .6s ease, color .6s ease, border-color .6s ease, box-shadow .6s ease, filter .6s ease; }
   h1, h2, h3, h4, h5, h6 {
     color: var(--text-primary);
   }
@@ -80,12 +107,145 @@
 
 /* --- NEW STYLES for post-login background and auth page layout --- */
 
-/* This class will be toggled on the body AFTER login to activate the gradient */
+/* Use the same animated gradient for all moods by default when a theme is active */
+body.theme-bright,
+body.theme-calm,
+body.theme-muted,
+body.theme-grounding,
+body.theme-neutral,
 body.animated-gradient-bg {
   background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
   background-size: 400% 400%;
   animation: gradientBG 25s ease infinite;
+  background-attachment: fixed;
 }
+
+/* Angry: blob-like magenta/purple glow on dark, matching provided reference */
+body.theme-angry {
+  /* Exact gradient per provided code using CSS variables */
+  animation: none !important;
+  --color1: #3d001e; /* Top-right magenta */
+  --color2: #1f0000; /* Bottom-left purple */
+  --bg-color: #000000; /* Deep black */
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Sidebar icons in angry theme: shades of #FF447A */
+body.theme-angry .sidebar-item .sidebar-icon { color: #FF6E95; }
+body.theme-angry .sidebar-item.is-active .sidebar-icon,
+body.theme-angry .sidebar-item:hover .sidebar-icon { color: #FF447A; filter: drop-shadow(0 0 8px rgba(255,68,122,0.16)); }
+body.theme-angry .sidebar-item.disabled .sidebar-icon { color: #CC3566; opacity: 0.9; }
+
+/* Happy: same radial-gradient layout as angry, with given colors */
+body.theme-bright {
+  animation: none !important;
+  --color1: #c29905;
+  --color2: #574319;
+  --bg-color: #000000;
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Happy (separate): use the dedicated CSS variables defined in .theme-happy for radial accents */
+body.theme-happy {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #ffd7bd);
+  --color2: var(--radial-accent-color2, #fbc1e8);
+  --bg-color: var(--radial-bg-color, #c7f4ff);
+  background: var(--bg-color) !important;
+  /* Aesthetic layered radial glows: soft peach, light pink, and sky wash */
+  background-image: radial-gradient(circle at 85% 15%, rgba(255,215,189,0.95) 0px, rgba(255,215,189,0.12) 30%, transparent 50%), radial-gradient(circle at 15% 85%, rgba(251,193,232,0.9) 0px, rgba(251,193,232,0.08) 35%, transparent 60%), radial-gradient(circle at 50% 50%, rgba(199,244,255,0.9) 0px, rgba(199,244,255,0.06) 40%, transparent 70%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Calm theme overrides: darker send/reset buttons and darker emotion card gradient */
+body.theme-calm .card-stack-item,
+body.theme-calm .emotion-card-stack .emotion-card {
+  /* Dark gradient using calm theme's accent and background colors */
+  background: linear-gradient(163deg,
+    color-mix(in srgb, var(--accent-primary, #7c3aed) 30%, black 40%),
+    color-mix(in srgb, var(--bg-secondary, #111423) 70%, black 25%));
+  border: 1px solid color-mix(in srgb, var(--bg-secondary, #111423) 40%, black 25%);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+body.theme-calm .emotion-card .card-title { color: var(--text-primary); }
+body.theme-calm .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-calm .card-vertical { color: color-mix(in srgb, var(--accent-primary, #7c3aed) 30%, white); }
+
+body.theme-calm .send-fly-button {
+  background: var(--send-button-bg, #080b1b);
+  border-color: color-mix(in srgb, var(--send-button-bg, #080b1b) 30%, transparent);
+  color: white;
+}
+body.theme-calm .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+body.theme-calm .reset-theme-button,
+body.theme-calm .reset-theme-button svg {
+  background: #080b1b;
+  border-color: color-mix(in srgb, #080b1b 30%, transparent);
+  color: white;
+}
+body.theme-calm .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+/* Sad: same radial-gradient layout as angry, with specified colors */
+body.theme-muted {
+  animation: none !important;
+  --color1: #465d5d;
+  --color2: #465d5d;
+  --bg-color: #000000;
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+
+  /* Emotion cards and key elements aligned to sad gradient */
+  .card-stack-item,
+  .card-stack-item.emotion-angry {
+    background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%);
+    border-color: var(--border-color);
+  }
+  .send-fly-button { background: var(--color1); }
+  .nav-button { color: var(--color1); outline-color: var(--color1); }
+  .nav-button:hover::before { background-color: var(--color1); }
+  .chat-input-card { background-image: linear-gradient(163deg, var(--color1) 0%, var(--color2) 100%); }
+  .c-button--gooey { border-color: var(--color1); }
+  .c-button--gooey .c-button__blobs div { background-color: var(--color1); }
+}
+
+/* Neutral: dark theme matching calm, with accents swapped and mostly black bg */
+body.theme-neutral {
+  animation: none !important;
+  --color1: #ada996; /* right/top light accent */
+  --color2: #f2f2f2; /* left/bottom light accent */
+  --bg-color: #000000;
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Mood chips */
+body.theme-neutral .mood-chip { background: color-mix(in srgb, var(--bg-secondary) 85%, black); border: 1px solid color-mix(in srgb, var(--accent-primary) 22%, transparent); }
+body.theme-neutral .mood-chip:hover { background: color-mix(in srgb, var(--bg-secondary) 92%, black); }
+
+/* Card stack (darker accents) */
+body.theme-neutral .card-stack-item { background-image: linear-gradient(163deg, color-mix(in srgb, var(--accent-primary) 70%, black) 0%, color-mix(in srgb, var(--accent-secondary) 70%, black) 100%); border-color: color-mix(in srgb, var(--accent-primary) 25%, transparent); }
+
+/* Buttons */
+body.theme-neutral .send-fly-button { background: color-mix(in srgb, var(--accent-primary) 85%, black); }
+body.theme-neutral .nav-button { color: var(--accent-primary); outline-color: var(--accent-primary); }
+body.theme-neutral .nav-button:hover::before { background-color: var(--accent-primary); }
+
+/* Sidebar hover */
+body.theme-neutral .sidebar-item:hover, body.theme-neutral .sidebar-item.is-active { background: rgba(173, 169, 150, 0.12); }
+
 @keyframes gradientBG {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -93,38 +253,21 @@ body.animated-gradient-bg {
 }
 
 /* Styles for the new two-column auth page layout */
+.auth-page-wrapper { width: 100%; }
 .auth-page-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 17rem;
   width: 100%;
+}
+.auth-page-container.auth-only { justify-content: flex-start; padding-left: 4rem; transform: none; }
+
+/* Ensure small screens remain centered */
+@media (max-width: 720px) {
+  .auth-page-container.auth-only { justify-content: center; padding-left: 0; }
 }
 
-/* Animated Logo Placeholder Card */
-.logo-card {
-  width: 480px;
-  height: 480px;
-  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  border-radius: 20px;
-  transition: all .3s;
-}
-.logo-card-inner {
-  width: 100%;
-  height: 100%;
-  background-color: #0B1A31;
-  border-radius: 20px;
-  transition: all .2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--text-primary);
-  padding: 2rem;
-}
-.logo-card-inner:hover { transform: scale(0.98); }
-.logo-card:hover { box-shadow: 0px 0px 30px 1px var(--accent-primary); }
+
 
 
 /* --- ALL YOUR EXISTING ANIMATION STYLES --- */
@@ -133,7 +276,7 @@ body.animated-gradient-bg {
   font-size: smaller;
   border: none;
   font-weight: bold;
-  letter-spacing: 3px;  
+  letter-spacing: 3px;
   text-transform: uppercase;
   cursor: pointer;
   position: relative;
@@ -142,6 +285,25 @@ body.animated-gradient-bg {
   color: var(--accent-primary);
   outline: 2px solid var(--accent-primary);
 }
+
+/* Reset Theme button (wider + aesthetic) */
+.reset-theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .9rem 1.5rem;
+  min-width: 240px;
+  color: var(--text-primary);
+  background: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+}
+.reset-theme-button:hover { transform: translateY(-2px) scale(1.02); filter: brightness(1.05); box-shadow: 0 16px 36px rgba(0,0,0,.45); }
+.reset-theme-button:active { transform: translateY(0) scale(.98); }
+.reset-theme-button svg { width: 18px; height: 18px; fill: currentColor; }
 .nav-button:hover {
   color: white;
   outline-color: var(--accent-secondary);
@@ -264,7 +426,8 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .send-fly-button {
   font-family: inherit;
   font-size: 18px;
-  background: var(--accent-primary);
+  /* Use per-theme send button background when available, fall back to accent */
+  background: var(--send-button-bg, var(--accent-primary));
   color: white;
   padding: 0.7em 1em;
   padding-left: 0.9em;
@@ -276,11 +439,105 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   transition: all 0.2s;
   cursor: pointer;
 }
+
+/* Make native selects match the per-theme send button color (fill and text)
+   Applies site-wide for any active theme. Options styling remains native. */
+
+/* Per-theme send button background variables (used by selects and buttons) */
+body.theme-calm { --send-button-bg: #080b1b; }
+body.theme-neutral { --send-button-bg: #242324; }
+body.theme-frustrated { --send-button-bg: #1d1f2f; }
+body.theme-tired { --send-button-bg: #404D4A; }
+body.theme-anxious { --send-button-bg: #0a1417; }
+body.theme-bright { --send-button-bg: var(--accent-primary); }
+body.theme-muted { --send-button-bg: var(--accent-primary); }
+body.theme-introspective { --send-button-bg: var(--accent-primary); }
+body.theme-angry { --send-button-bg: color-mix(in srgb, var(--accent-primary, #FF447A) 50%, black); }
+
+body[class*="theme-"] select,
+body[class*="theme-"] .select-like {
+  background: var(--send-button-bg, var(--accent-primary));
+  color: white;
+  border: 1px solid color-mix(in srgb, var(--send-button-bg, var(--accent-primary)) 30%, transparent);
+}
+
+/* Target the ProfileView main concern select specifically to ensure contrast */
+.profile-main-concern,
+#main-concern {
+  /* Use a solid translucent background as a reliable fallback for iframe contexts
+     where backdrop-filter may not be supported. Slightly darker than the page bg. */
+  background: linear-gradient(135deg,
+    rgba(7,15,18,0.72) 0%,
+    rgba(7,15,18,0.82) 100%) !important;
+  /* Fallback plain color */
+  background-color: rgba(7,15,18,0.82) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+  /* keep a subtle hint of blur if available but don't rely on it */
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  padding: .75rem 2.25rem .75rem .75rem; /* room for custom arrow */
+  border-radius: .6rem;
+  box-shadow: 0 8px 24px rgba(2,6,10,0.45); /* subtle depth */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* Custom arrow using SVG data URI to ensure consistent display across contexts */
+.profile-main-concern {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23A5C6C8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center, right 12px center;
+}
+
+/* Hide native dropdown arrow in IE/Edge */
+.profile-main-concern::-ms-expand { display: none; }
+
+/* Style the options (best-effort; some browsers limit custom styling) */
+.profile-main-concern option,
+#main-concern option {
+  color: var(--text-primary, #fff) !important;
+  background-color: rgba(6,10,12,0.98) !important;
+}
+
+/* Ensure focus/hover states match auth inputs */
+.profile-main-concern:focus,
+#main-concern:focus {
+  outline: none;
+  box-shadow: 0 0 0 .12vw rgba(34,211,238,0.12);
+  border-color: rgba(34,211,238,0.45) !important;
+}
+
+/* Match the sidebar hover effect for the profile dropdown */
+.profile-main-concern:hover,
+.profile-main-concern:focus,
+#main-concern:hover,
+#main-concern:focus {
+  background: var(--sidebar-hover-bg) !important;
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border) !important;
+  color: var(--text-primary) !important;
+  transform: translateX(2px);
+}
 .send-fly-button span {
   display: block;
   margin-left: 0.3em;
   transition: all 0.3s ease-in-out;
 }
+
+/* Specific style to center Save Preferences text (profile page) */
+.save-preferences-button {
+  width: 100%;
+  justify-content: center; /* center text and any inline content */
+}
+.save-preferences-button span { margin-left: 0; }
+/* Prevent large translate on hover for this specific button */
+.save-preferences-button:hover span { transform: none; }
+.save-preferences-button:hover svg { transform: none; }
 .send-fly-button svg {
   display: block;
   transform-origin: center center;
@@ -352,42 +609,22 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   color: var(--accent-primary);
 }
 .auth-form-container {
-  width: 350px;
-  border-radius: 0.75rem;
-  background-color: #0B1A31;
+  width: 380px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.25);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
   padding: 2rem;
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
-}
-.auth-title {
-  text-align: center;
-  font-size: 1.5rem;
-  line-height: 2rem;
-  font-weight: 700;
-  color: var(--accent-primary);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .auth-form {
   margin-top: 1.5rem;
 }
-.auth-input-card {
-  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  
-  border-radius: 1rem;
-  transition: all .3s;
-  margin-top: 1rem;
-}
-.auth-input-card:hover {
-  box-shadow: 0px 0px 30px 1px var(--accent-primary);
-}
-.auth-input-card2 {
-  background-color: #0B1A31;
-  border-radius: 1rem;
-  transition: all .2s;
-  padding: 3px;
-}
-.auth-input-card2:hover {
-  transform: scale(0.98);
-}
+.auth-input-card { background: transparent; border-radius: 1rem; transition: all .3s; margin-top: 1rem; box-shadow: none; }
+.auth-input-card:hover { box-shadow: none; }
+.auth-input-card2 { background-color: transparent; border-radius: 1rem; transition: all .2s; padding: 3px; }
+.auth-input-card2:hover { transform: scale(0.98); background-color: rgba(255,255,255,0.06); }
 .auth-input-group {
   position: relative;
 }
@@ -395,12 +632,13 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   width: 100%;
   border: solid 1.5px var(--text-secondary);
   border-radius: 0.8rem;
-  background: none;
+  background: rgba(255,255,255,0.02);
   padding: 1rem;
   font-size: 1rem;
   color: var(--text-primary);
-  transition: border 150ms cubic-bezier(0.4,0,0.2,1), box-shadow .4s;
+  transition: border 150ms cubic-bezier(0.4,0,0.2,1), box-shadow .4s, background-color .25s ease;
 }
+.auth-input-field:hover { background-color: rgba(255,255,255,0.06); }
 .auth-input-label {
   position: absolute;
   left: 15px;
@@ -425,7 +663,7 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
 .auth-submit-button {
   display: block;
   width: 100%;
-  background-color: var(--accent-primary);
+  background-color: color-mix(in srgb, var(--accent-primary) 60%, transparent);
   padding: 0.75rem;
   text-align: center;
   color: white;
@@ -517,15 +755,26 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   position: fixed;
   inset: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #0B1A31;
+  background: transparent;
   z-index: 100;
 }
+.loading-header { display: flex; align-items: center; justify-content: center; gap: 2.5rem; }
 .loading-svg {
-  width: 80%;
-  max-width: 400px;
+  width: clamp(280px, 48vw, 640px);
+  max-width: 640px;
   height: auto;
+  display: block;
+  margin: 0; /* spacing handled by header gap */
+}
+.pl { order: 2; }
+.pl { width: 3.2rem; height: 3.2rem; }
+
+@media (max-width: 640px) {
+  .loading-header { flex-direction: column; gap: 1.25rem; }
+  .pl { order: 2; }
 }
 .loading-text {
   font-family: 'Poppins', sans-serif;
@@ -616,4 +865,934 @@ input[type="checkbox"]:checked + label .animated-check svg polyline {
   58% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -225; }
   78% { stroke-dasharray: 40 400; stroke-width: 30; stroke-dashoffset: -395; }
   86%, to { stroke-dasharray: 0 440; stroke-width: 20; stroke-dashoffset: -440; }
+}
+
+/* App shell with animated sidebar */
+.app-shell {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  padding-left: 88px; /* reserve space for collapsed sidebar so content never shifts */
+}
+.app-content { flex: 1; display: flex; justify-content: center; }
+.sidebar {
+  position: fixed;
+  left: 24px;
+  top: 96px; /* sits below header */
+  height: calc(100vh - 128px);
+  width: 64px;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
+      color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 28%, transparent);
+  border-radius: 16px;
+  background-clip: padding-box;
+  overflow: hidden;
+  will-change: width, transform;
+  transition: width .45s ease, box-shadow .45s ease, transform .45s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 6px 24px rgba(0,0,0,0.35);
+  z-index: 50;
+}
+.sidebar.is-open { width: 244px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 12px 28px rgba(0,0,0,0.45); }
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04) 45%, rgba(255,255,255,0.02) 70%, rgba(255,255,255,0));
+}
+.sidebar.play-bounce { animation: sidebar-bounce .6s ease-out 1; }
+.sidebar-inner { display: flex; flex-direction: column; padding: .75rem; gap: .5rem; height: 100%; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none; position: relative; }
+.sidebar-inner::-webkit-scrollbar { width: 0; height: 0; }
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: .6rem .75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background .3s ease, transform .3s ease;
+}
+.sidebar-item:hover, .sidebar-item.is-active { background: rgba(56, 182, 255, 0.12); transform: translateX(2px); }
+body.theme-angry .sidebar-item:hover, body.theme-angry .sidebar-item.is-active { background: #180202; box-shadow: inset 0 0 0 1px #2a0000; }
+body.theme-bright .sidebar-item:hover, body.theme-bright .sidebar-item.is-active { background: #221802; box-shadow: inset 0 0 0 1px #3a2b04; }
+body.theme-muted .sidebar-item:hover, body.theme-muted .sidebar-item.is-active { background: #151a23; }
+.sidebar-icon { display: inline-flex; color: color-mix(in srgb, var(--accent-primary) 45%, white); transition: color .25s ease; }
+/* Ensure all SVGs inside icons inherit themed color */
+.sidebar-icon svg { color: currentColor; fill: currentColor; stroke: currentColor; }
+.sidebar-item:hover .sidebar-icon, .sidebar-item.is-active .sidebar-icon { color: color-mix(in srgb, var(--accent-primary) 30%, white); }
+.sidebar-label { opacity: 0; transform: translateX(-6px); transition: opacity .35s ease, transform .35s ease; white-space: nowrap; }
+.sidebar.is-open .sidebar-label { opacity: 1; transform: translateX(0); }
+
+@keyframes sidebar-bounce {
+  0% { transform: translateX(0) scaleX(1); }
+  60% { transform: translateX(3px) scaleX(1.03); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+
+/* Expanding Card Stack (below chat) */
+.card-stack-section {
+  width: 100%;
+  padding: 4rem 2rem 6rem;
+  overflow: hidden;
+}
+.card-stack-rows { display: block; }
+.card-stack-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.card-stack-item {
+  position: relative;
+  height: 420px;
+  border-radius: 20px;
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  flex-grow: .4;
+  flex-basis: 0;
+  transition: flex-grow .45s ease;
+}
+/* Angry card uses same palette as others */
+.card-stack-item.emotion-angry {
+  background-image: linear-gradient(163deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  border-color: var(--border-color);
+}
+.card-stack-row:hover .card-stack-item:not(:hover) { flex-grow: .3; }
+.card-stack-item:hover {
+  flex-grow: 5.5;
+}
+.card-stack-item.is-clickable { cursor: pointer; }
+.card-vertical {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  color: rgba(255,255,255,.9);
+  font-weight: 700;
+  letter-spacing: .5px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+.card-index { opacity: .9; font-size: 1.2rem; }
+.card-name { opacity: .9; font-size: 1rem; }
+
+.card-details {
+  position: absolute;
+  inset: 0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .35s ease .1s, transform .35s ease .1s;
+  color: var(--text-primary);
+}
+.card-stack-item:hover .card-details {
+  opacity: 1;
+  transform: translateY(0);
+}
+.card-stack-item:hover .card-vertical { opacity: 0; }
+
+.card-details-title { font-size: 1.25rem; font-weight: 800; margin-bottom: .5rem; color: #fff; }
+.card-details-text { color: #e6f7ff; line-height: 1.6; }
+
+@media (max-width: 1024px) {
+  .card-stack-item { height: 360px; }
+  .card-stack-item:hover { flex-grow: 4; }
+}
+@media (max-width: 640px) {
+  .card-stack-row { gap: .6rem; }
+  .card-stack-item { height: 300px; }
+  .card-stack-item:hover { flex-grow: 3; }
+  .card-details-title { font-size: 1.1rem; }
+}
+
+/* ============================================= */
+/* ==      Theme: Happy (theme-bright)        == */
+/* ============================================= */
+
+/* You can apply this class to your main app container 
+  or body tag to activate the "Happy" theme. 
+  e.g., <body class="theme-happy"> 
+*/
+.theme-happy {
+  /* -- CSS Variables for the Happy Theme -- */
+  /* A deep, dark plum background to make the light colors pop */
+  --bg-primary: #2a2128;
+  --bg-secondary: #3c323a;
+
+  /* Soft, warm off-white and beige for text */
+  --text-primary: #f5f0f3;
+  --text-secondary: #DEC4A1; /* Dun */
+
+  /* Peach Yellow and Lilac for bright, cheerful accents */
+  --accent-primary: #EDCF8E;   /* Peach Yellow */
+  --accent-secondary: #C28CAE;  /* Lilac */
+
+  /* Semi-transparent border based on the Peach Yellow accent */
+  --border-color: rgba(237, 207, 142, 0.3);
+
+  /* -- Radial Accent Variables for a warm, rosy background glow -- */
+  /* Using the magenta and beige from your palette */
+  --radial-accent-color1: #BA7BA1; /* Sky magenta */
+  --radial-accent-color2: #D0ABA0; /* Pale Dogwood */
+  --radial-bg-color: #1a1418;
+}
+
+/* ============================================= */
+/* ==      Theme: Introspective (theme-introspective) == */
+/* ============================================= */
+
+/* You can apply this class to your main app container or body tag to activate the "Introspective" theme. */
+.theme-introspective {
+  /* -- CSS Variables for the Introspective Theme -- */
+  /* Deep, dark purples for a moody, focused background */
+  --bg-primary: #291832;   /* Darkest Purple */
+  --bg-secondary: #5b2c68;  /* Deep Violet */
+
+  /* Muted, darker text colors for a softer, less stark feel */
+  --text-primary: #a19aa8;   /* Muted Lavender-Gray */
+  --text-secondary: #75576c; /* Desaturated Purple */
+
+  /* Contrasting pale mint and soft pink for accents */
+  --accent-primary: #DAFFEF;   /* Pale Mint Green */
+  --accent-secondary: #e5b8d9;  /* Soft Contrasting Pink */
+
+  /* Semi-transparent border based on the pale mint accent */
+  --border-color: rgba(218, 255, 239, 0.25);
+
+  /* -- Radial Accent Variables for Background Effects -- */
+  /* Deep pinks and violets for a subtle, moody glow */
+  --radial-accent-color1: #7b475d; /* Muted Magenta */
+  --radial-accent-color2: #53043a; /* Deepest Magenta/Wine */
+  --radial-bg-color: #000000;
+}
+
+/* body radial background for introspective theme */
+body.theme-introspective {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #7b475d);
+  --color2: var(--radial-accent-color2, #53043a);
+  --bg-color: var(--radial-bg-color, #000000);
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* --------------------------------------------- */
+/* Overwhelmed-specific color overrides (2f1933) */
+/* Apply darker shades to cards, sidebar and chat under the introspective theme */
+.theme-introspective {
+  /* darker shades based on #2f1933 */
+  --overw-primary: #2f1933; /* base */
+  --overw-dark1: #27132a;   /* darker */
+  --overw-dark2: #1d0b1a;   /* darkest */
+}
+
+/* Emotion cards (card stack and emotion-card component) */
+.theme-introspective .card-stack-item,
+.theme-introspective .emotion-card-stack .emotion-card {
+  /* Darker gradient for overwhelmed: use the darker shades to deepen the card surface */
+  background: linear-gradient(180deg, var(--overw-dark1) 0%, var(--overw-dark2) 100%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 22%, transparent);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.theme-introspective .card-details-title { color: var(--text-primary); }
+.theme-introspective .card-details-text { color: var(--text-secondary); }
+.theme-introspective .card-vertical { color: color-mix(in srgb, var(--overw-primary) 65%, white); }
+
+/* Sidebar and mood chips */
+.theme-introspective .sidebar {
+  /* Translucent sidebar for Introspective theme */
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--overw-dark1) 55%, transparent) 0%,
+    color-mix(in srgb, var(--overw-primary) 35%, transparent) 100%);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 20%, transparent);
+}
+.theme-introspective .sidebar-item {
+  color: var(--text-primary);
+}
+.theme-introspective .sidebar-item:hover,
+.theme-introspective .sidebar-item.is-active {
+  background-color: color-mix(in srgb, var(--overw-dark2) 65%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--overw-primary) 20%, transparent);
+}
+.theme-introspective .mood-chip {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--overw-primary) 85%, black) 0%, color-mix(in srgb, var(--overw-dark1) 85%, black) 100%);
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 22%, transparent);
+  color: var(--text-primary);
+}
+.theme-introspective .mood-chip img { opacity: 0.95; filter: grayscale(20%) brightness(.9); }
+
+/* Chat composer and input */
+.theme-introspective .composer { background: linear-gradient(180deg, color-mix(in srgb, var(--overw-dark1) 60%, transparent), color-mix(in srgb, var(--overw-dark2) 65%, transparent)); border-top: 1px solid color-mix(in srgb, var(--overw-primary) 12%, transparent); }
+.theme-introspective .chat-input-card { background-image: linear-gradient(163deg, var(--overw-primary) 0%, var(--overw-dark1) 100%); border: 1px solid color-mix(in srgb, var(--overw-primary) 25%, transparent); }
+.theme-introspective .chat-input-card2 { background-color: rgba(0,0,0,0.18); }
+.theme-introspective .chat-input-field {
+  border: solid 1.5px color-mix(in srgb, var(--overw-dark2) 45%, black);
+  color: var(--text-primary);
+  background: transparent;
+}
+.theme-introspective .chat-input-field:focus { border: 1.5px solid color-mix(in srgb, var(--overw-primary) 40%, transparent); box-shadow: 0 0 0 .15vw color-mix(in srgb, var(--overw-primary) 10%, transparent); }
+
+/* Make the main glass panels and chat surfaces more translucent for the Introspective/Overwhelmed mood */
+.theme-introspective .glass-panel {
+  background: linear-gradient(180deg, rgba(47,25,51,0.14), rgba(29,11,26,0.08));
+  border: 1px solid rgba(47,25,51,0.18);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: 0 10px 30px rgba(15,8,20,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* Composer and input area translucency */
+.theme-introspective .composer {
+  background: rgba(47,25,51,0.12);
+  border-top: 1px solid rgba(47,25,51,0.10);
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+}
+.theme-introspective .chat-input-card {
+  background: rgba(47,25,51,0.10);
+  border: 1px solid rgba(47,25,51,0.14);
+  box-shadow: 0 8px 20px rgba(15,8,20,0.35);
+}
+.theme-introspective .chat-input-card2 { background-color: rgba(0,0,0,0.12); }
+.theme-introspective .chat-input-field {
+  border: solid 1.5px color-mix(in srgb, var(--overw-dark2) 45%, black);
+  color: var(--text-primary);
+  background: transparent;
+}
+
+/* Message bubbles: slightly translucent with soft borders */
+.theme-introspective .bubble,
+.theme-introspective .bubble-bot {
+  background: linear-gradient(180deg, rgba(39,19,42,0.80), rgba(29,11,26,0.72));
+  color: var(--text-primary);
+  border: 1px solid rgba(47,25,51,0.18);
+}
+.theme-introspective .bubble-user { background: linear-gradient(180deg, rgba(47,25,51,0.85), rgba(39,19,42,0.78)); color: var(--text-primary); }
+
+/* Send button */
+.theme-introspective .send-fly-button {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black);
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent);
+  color: white;
+}
+.theme-introspective .send-fly-button:hover { filter: brightness(1.05); transform: translateY(-1px); }
+
+/* Reset Theme button for Introspective/Overwhelmed: match send button */
+body.theme-introspective .reset-theme-button,
+body.theme-introspective .reset-theme-button svg {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black);
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent);
+  color: white;
+}
+body.theme-introspective .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+/* Slightly reduce panel shadows to emphasize translucency */
+
+/* Overwhelmed: force chat input box opaque and match send/reset button color */
+body.theme-introspective .chat-input-card,
+body.theme-introspective .chat-input-card2 {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black) !important;
+  border: 1px solid color-mix(in srgb, var(--overw-primary) 40%, transparent) !important;
+  box-shadow: 0 8px 20px rgba(15,8,20,0.35) !important;
+}
+body.theme-introspective .chat-input-field {
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+}
+body.theme-introspective .chat-input-label { color: color-mix(in srgb, var(--text-secondary) 70%, white 30%); }
+
+/* Ensure reset button matches send button */
+body.theme-introspective .reset-theme-button,
+body.theme-introspective .reset-theme-button svg {
+  background: color-mix(in srgb, var(--overw-primary) 85%, black) !important;
+  border-color: color-mix(in srgb, var(--overw-primary) 40%, transparent) !important;
+  color: white !important;
+}
+.theme-introspective .panel-surface { background: linear-gradient(180deg, rgba(47,25,51,0.06), rgba(29,11,26,0.04)); border: 1px solid rgba(47,25,51,0.10); }
+
+/* Ensure inputs and smaller UI elements remain legible */
+.theme-introspective .card-details, .theme-introspective .auth-form-container, .theme-introspective .auth-input-field { color: var(--text-primary); }
+
+/* ============================================= */
+/* ==      Theme: Frustrated (theme-frustrated) == */
+/* ============================================= */
+
+/* Apply this class to body or main app container to activate the Frustrated/Anxious theme */
+.theme-frustrated {
+  /* Frustrated theme - Indigo focused */
+  --bg-primary: #1c1e45;
+  --bg-secondary: #1e1f2e;
+  --text-primary: #8086ac;
+  --text-secondary: #666c93;
+  --accent-primary: #757cff;
+  --accent-secondary: #638aca;
+  --border-color: rgba(117,124,255,0.25);
+  --radial-accent-color1: #797edc;
+  --radial-accent-color2: #1c1e45;
+  --radial-bg-color: #000000;
+}
+
+/* body radial background for frustrated theme */
+body.theme-frustrated {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #797edc);
+  --color2: var(--radial-accent-color2, #1c1e45);
+  --bg-color: var(--radial-bg-color, #000000);
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* ============================================= */
+/* ==           Sidebar Component             == */
+
+/* ============================================= */
+
+.sidebar {
+  /* Base translucent sidebar used across themes */
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--bg-secondary) 45%, transparent) 0%,
+    color-mix(in srgb, var(--bg-primary) 35%, transparent) 100%);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #f58f00) 25%, transparent);
+  border-radius: 16px;
+  background-clip: padding-box;
+}
+
+.sidebar-item {
+  color: var(--text-primary, #fff5e1);
+  background-color: transparent;
+}
+
+/* Hover state for sidebar items in the "Happy" theme */
+/* Uses a darker, richer shade of the background colors */
+.theme-happy .sidebar-item:hover {
+  background-color: rgba(255, 223, 153, 0.1); /* Faint glow from --ffdf99 */
+  box-shadow: inset 0 0 0 1px rgba(251, 193, 232, 0.2); /* Faint pink inset */
+}
+
+/* Happy sidebar icon color */
+.theme-happy .sidebar-item .sidebar-icon { color: #ffd7bd; }
+
+/* ============================================= */
+/* ==  Frustrated/Anxious theme overrides      == */
+/* ============================================= */
+body.theme-frustrated .sidebar {
+  /* Even more transparent sidebar for Frustrated theme */
+  background-color: rgba(25,26,38,0.12); /* increased transparency */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border-color, rgba(117,124,255,0.25)) 28%, transparent);
+}
+body.theme-frustrated .sidebar-item { color: var(--text-primary); }
+body.theme-frustrated .sidebar-item .sidebar-icon { color: #b0b3f2; }
+body.theme-frustrated .sidebar-item:hover { background-color: rgba(30,31,46,0.5); }
+
+/* Emotion cards & buttons */
+body.theme-frustrated .emotion-card-stack .emotion-card,
+body.theme-frustrated .card-stack-item {
+  /* Frustrated theme emotion cards: gradient from #302851 to #140F26 */
+  background: linear-gradient(180deg, #302851 0%, #140F26 100%);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+body.theme-frustrated .send-fly-button,
+body.theme-frustrated .reset-theme-button {
+  background: var(--send-button-bg, #1d1f2f);
+  border: 1px solid var(--border-color);
+  color: white;
+}
+body.theme-frustrated .emotion-card .card-title { color: var(--text-primary); }
+body.theme-frustrated .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-frustrated .emotion-card .vertical-index { color: var(--accent-secondary); opacity: 0.9; }
+
+/* Chat */
+body.theme-frustrated .chat-interface { background-color: rgba(30,31,46,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-color); }
+
+
+/* ============================================= */
+/* ==  Theme overrides: Happy & Neutral        == */
+/* ============================================= */
+
+/* Happy: emotion cards, send and reset buttons use the provided warm palette */
+body.theme-happy .card-stack-item,
+body.theme-happy .emotion-card-stack .emotion-card {
+  background: linear-gradient(to bottom, #3D303A, #857A8B);
+  border: 1px solid var(--border-color, rgba(237, 207, 142, 0.3));
+  color: #ffffff;
+}
+body.theme-happy .emotion-card .card-title { color: #ffffff; }
+body.theme-happy .emotion-card .card-text { color: #ffffff; }
+body.theme-happy .card-vertical { color: #ffffff; opacity: 0.95; }
+/* Ensure index/name variants inherit white before hover */
+body.theme-happy .card-vertical .card-index, body.theme-happy .card-vertical .card-name { color: #ffffff; }
+
+body.theme-happy .send-fly-button,
+body.theme-happy .reset-theme-button,
+body.theme-happy .reset-theme-button svg {
+  background: var(--send-button-bg, #3D303A);
+  border-color: color-mix(in srgb, var(--send-button-bg, #3D303A) 30%, transparent);
+  color: white;
+}
+body.theme-happy .reset-theme-button:hover,
+body.theme-happy .send-fly-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+/* Happy chat interface (translucent) */
+body.theme-happy .chat-interface {
+  background-color: rgba(44,30,23,0.8); /* #2c1e17 at 80% opacity */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Neutral: darker emotion cards and send button derived from neutral accents */
+body.theme-neutral .card-stack-item,
+body.theme-neutral .emotion-card-stack .emotion-card {
+  /* Use solid darker neutral base for cards */
+  background: linear-gradient(180deg, #242324 0%, color-mix(in srgb, #242324 85%, black 15%));
+  border: 1px solid color-mix(in srgb, #242324 30%, transparent);
+  color: var(--text-primary);
+}
+body.theme-neutral .emotion-card .card-title { color: var(--text-primary); }
+body.theme-neutral .emotion-card .card-text { color: var(--text-secondary); }
+body.theme-neutral .card-vertical { color: color-mix(in srgb, #242324 65%, white); }
+body.theme-neutral .send-fly-button {
+  background: var(--send-button-bg, #242324);
+  border-color: color-mix(in srgb, var(--send-button-bg, #242324) 30%, transparent);
+  color: white;
+}
+
+/* Reset theme button in Neutral mood */
+body.theme-neutral .reset-theme-button,
+body.theme-neutral .reset-theme-button svg {
+  background: #242324;
+  border-color: color-mix(in srgb, #242324 30%, transparent);
+  color: white;
+}
+body.theme-neutral .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+/* ============================================= */
+/* ==         Theme: Tired (theme-tired)     == */
+/* ============================================= */
+
+/* You can apply this class to your main app container or body tag to activate this theme. */
+.theme-tired {
+  /* -- CSS Variables for the Tired Theme -- */
+  --bg-primary: #1E1E1E;
+  --bg-secondary: #333333;
+  --text-primary: #D4D4D4;
+  --text-secondary: #888888;
+  --accent-primary: #8A9A5B;
+  --accent-secondary: #888888;
+  --border-color: rgba(138,154,91,0.3);
+  --radial-accent-color1: #333333;
+  --radial-accent-color2: #1E1E1E;
+  --radial-bg-color: #000000;
+}
+
+body.theme-tired {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #333333);
+  --color2: var(--radial-accent-color2, #1E1E1E);
+  --bg-color: var(--radial-bg-color, #000000);
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Sidebar */
+body.theme-tired .sidebar {
+  /* Translucent sidebar with hints of #404D4A and #202616 */
+  background: linear-gradient(180deg, rgba(64,77,74,0.06), rgba(32,38,22,0.04));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, #404D4A 12%, transparent);
+}
+body.theme-tired .sidebar-item { color: var(--text-primary, #D4D4D4); }
+body.theme-tired .sidebar-item .sidebar-icon { color: #677156; }
+body.theme-tired .sidebar-item:hover { background-color: rgba(32,38,22,0.12); box-shadow: inset 0 0 0 1px rgba(64,77,74,0.12); }
+
+/* Emotion cards */
+body.theme-tired .emotion-card-stack .emotion-card,
+body.theme-tired .card-stack-item {
+  /* Dark gradient using #232a28 and #424d4a */
+  background: linear-gradient(180deg, #232a28 0%, #424d4a 100%);
+  border: 1px solid var(--border-color, rgba(138,154,91,0.3));
+  color: var(--text-primary);
+}
+body.theme-tired .emotion-card .card-title { color: var(--accent-primary, #8A9A5B); }
+body.theme-tired .emotion-card .card-text { color: var(--text-primary, #D4D4D4); }
+body.theme-tired .emotion-card .vertical-index { color: var(--text-secondary, #888888); opacity: 0.9; }
+
+/* Send and Reset buttons for Tired mood */
+body.theme-tired .send-fly-button,
+body.theme-tired .reset-theme-button {
+  background: var(--send-button-bg, #404D4A);
+  border-color: color-mix(in srgb, var(--send-button-bg, #404D4A) 30%, transparent);
+  color: white;
+}
+body.theme-tired .reset-theme-button svg { fill: white; }
+
+/* Chat interface */
+body.theme-tired .chat-interface {
+  /* Translucent chat surface with hints of #404D4A and #202616 */
+  background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.06));
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border: 1px solid color-mix(in srgb, #404D4A 18%, transparent);
+}
+
+/* Tired: composer and input match the chat surface color (hints of the two colors) */
+body.theme-tired .composer { background: linear-gradient(180deg, rgba(64,77,74,0.10), rgba(32,38,22,0.06)); border-top: 1px solid color-mix(in srgb, #404D4A 12%, transparent); }
+body.theme-tired .chat-input-card { background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.08)); border: 1px solid color-mix(in srgb, #404D4A 20%, transparent); box-shadow: 0 8px 20px rgba(0,0,0,0.35); }
+body.theme-tired .chat-input-card2 { background: linear-gradient(180deg, rgba(64,77,74,0.12), rgba(32,38,22,0.08)); }
+
+/* Message bubbles adopt darker/lighter tones of #232a28 */
+body.theme-tired .bubble,
+body.theme-tired .bubble-bot {
+  background: linear-gradient(180deg, color-mix(in srgb, #232a28 85%, black 15%), color-mix(in srgb, #232a28 70%, black 30%));
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, #232a28 18%, transparent);
+}
+body.theme-tired .bubble-user { background: linear-gradient(180deg, color-mix(in srgb, #232a28 60%, black 40%), color-mix(in srgb, #232a28 40%, black 60%)); color: white; }
+
+/* ============================================= */
+/* ==           Theme: Anxious                == */
+/* ============================================= */
+
+/* You can apply this class to your main app container
+  or body tag to activate this theme.
+  e.g., <body class="theme-anxious">
+*/
+.theme-anxious {
+  /* -- CSS Variables for the Anxious Theme -- */
+  /* Deep, near-black greens and teals for a tense background */
+  --bg-primary: #0a0f0d;    /* Near-black Green */
+  --bg-secondary: #09151A;   /* Dark Teal/Blue-Green (updated) */
+
+  /* Muted, dark text colors for a serious, focused tone */
+  --text-primary: #8db1a4;   /* Muted Green-Gray */
+  --text-secondary: #7D938A; /* Darker Green-Gray */
+
+  /* Sharp, contrasting greens for accents */
+  --accent-primary: #28623a;   /* Strong Green */
+  --accent-secondary: #006C67;  /* Sharp Teal */
+
+  /* Semi-transparent border based on the primary green accent */
+  --border-color: rgba(40, 98, 58, 0.3);
+
+  /* -- Radial Accent Variables for Background Effects -- */
+  /* Dark, moody greens for a subtle, focused glow */
+  --radial-accent-color1: #2d4f4a;   /* Muted Dark Teal */
+  --radial-accent-color2: #0f2027;   /* Dark Teal */
+  --radial-bg-color: #000000;
+}
+
+/* ============================================= */
+/* ==           Sidebar Component             == */
+/* ============================================= */
+
+.sidebar {
+  /* Base gradient using the dark green/teal backgrounds */
+  background: linear-gradient(to bottom, var(--bg-secondary, #0f2027), var(--bg-primary, #0a0f0d));
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #28623a) 25%, transparent);
+}
+
+.sidebar-item {
+  color: var(--text-primary, #8db1a4);
+}
+
+/* Specific styling for icons within the sidebar */
+.sidebar-item .sidebar-icon {
+  color: #7D938A; /* As requested */
+}
+
+/* Hover state for sidebar items in this theme */
+.theme-anxious .sidebar-item:hover {
+  background-color: #0c1a16;
+  box-shadow: inset 0 0 0 1px #233430;
+}
+
+/* --- Unified hover/active variables and translucent surfaces --- */
+:root {
+  /* sensible defaults: use accent colors where available */
+  --sidebar-hover-bg: color-mix(in srgb, var(--accent-primary, #ffffff) 12%, transparent);
+  --sidebar-hover-border: color-mix(in srgb, var(--accent-secondary, #ffffff) 18%, transparent);
+}
+
+/* Use same hover/active effect as sidebar for selects (profile main concern) */
+.sidebar-item:hover, .sidebar-item.is-active {
+  background: var(--sidebar-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border);
+  transform: translateX(2px);
+}
+
+/* Make selects match the sidebar hover/selection effect across themes */
+body[class*="theme-"] select,
+#main-concern,
+body[class*="theme-"] .select-like {
+  transition: all .18s ease;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text-secondary, rgba(255,255,255,0.12)) 30%, transparent);
+  border-radius: 8px;
+  padding: .65rem .75rem;
+}
+
+/* Custom dropdown menu that mirrors sidebar styling */
+.profile-dropdown { position: relative; }
+.profile-dropdown-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-top: .5rem;
+  z-index: 60;
+  padding: .4rem;
+  border-radius: 12px;
+  /* Less translucent: use stronger, more opaque layered background */
+  background: linear-gradient(to bottom, rgba(7,15,18,0.92) 0%, rgba(12,18,22,0.98) 100%);
+  backdrop-filter: blur(8px) saturate(110%);
+  -webkit-backdrop-filter: blur(8px) saturate(110%);
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 14px 50px rgba(2,6,10,0.6);
+  max-height: 260px;
+  overflow: auto;
+}
+.profile-dropdown-menu .sidebar-item { padding: .6rem .8rem; border-radius: 8px; margin-bottom: .35rem; }
+.profile-dropdown-menu .sidebar-item:last-child { margin-bottom: 0; }
+.profile-dropdown-menu .sidebar-item:hover { transform: none; }
+
+body[class*="theme-"] select:hover,
+body[class*="theme-"] select:focus,
+#main-concern:hover,
+#main-concern:focus,
+body[class*="theme-"] .select-like:hover,
+body[class*="theme-"] .select-like:focus {
+  background: var(--sidebar-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--sidebar-hover-border);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Ensure options readable when rendered by browsers that support styling */
+body[class*="theme-"] select option { color: var(--text-primary); background: transparent; }
+
+/* Make sidebar and chat interface more translucent across themes */
+.sidebar {
+  /* Use a more translucent layered background derived from theme variables */
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--bg-secondary, #000000) 40%, transparent),
+    color-mix(in srgb, var(--bg-primary, #000000) 35%, transparent)
+  );
+  backdrop-filter: blur(18px) saturate(120%);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #000000) 10%, transparent);
+}
+
+.chat-interface {
+  /* stronger translucency */
+  background-color: color-mix(in srgb, var(--bg-primary, #000000) 40%, transparent);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid color-mix(in srgb, var(--border-color, rgba(255,255,255,0.06)) 18%, transparent);
+}
+
+
+/* ============================================= */
+/* ==           Theme: Energized              == */
+/* ============================================= */
+
+/* You can apply this class to your main app container or body tag to activate this theme. */
+.theme-energized {
+  /* -- CSS Variables for the Energized Theme (Updated by user) -- */
+  /* Using the requested browns and background tones */
+  --bg-primary: #755E4D;
+  --bg-secondary: #322501;
+
+  /* Primary and secondary text for high contrast on dark backgrounds */
+  --text-primary: #FEFAE0;
+  --text-secondary: #F4F4D5;
+
+  /* Accent colors (bright and readable) */
+  --accent-primary: #F9DC5C;
+  --accent-secondary: #FFE8A8;
+
+  /* Semi-transparent border based on the primary yellow accent */
+  --border-color: rgba(249, 220, 92, 0.3);
+
+  /* -- Radial Accent Variables -- */
+  --radial-accent-color1: #EDA268;
+  --radial-accent-color2: #DBE1BC;
+  --radial-bg-color: #180D01;
+}
+
+body.theme-energized {
+  animation: none !important;
+  --color1: var(--radial-accent-color1, #EDA268);
+  /* per-theme send button background */
+  --send-button-bg: #302700;
+  --color2: var(--radial-accent-color2, #DBE1BC);
+  --bg-color: var(--radial-bg-color, #180D01);
+  background: var(--bg-color) !important;
+  background-image: radial-gradient(at 90% 10%, var(--color1) 0px, transparent 55%), radial-gradient(at 10% 90%, var(--color2) 0px, transparent 55%) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* Sidebar for Energized */
+body.theme-energized .sidebar {
+  background: linear-gradient(to bottom, var(--bg-secondary, #322501), var(--bg-primary, #755E4D));
+  border: 1px solid color-mix(in srgb, var(--accent-primary, #F9DC5C) 15%, transparent);
+}
+body.theme-energized .sidebar-item { color: var(--text-primary, #FEFAE0); }
+body.theme-energized .sidebar-item .sidebar-icon { color: var(--accent-secondary, #FFE8A8); }
+body.theme-energized .sidebar-item:hover { background-color: rgba(249, 220, 92, 0.1); box-shadow: inset 0 0 0 1px rgba(204, 213, 174, 0.2); }
+
+/* Emotion cards & buttons */
+body.theme-energized .emotion-card-stack .emotion-card,
+body.theme-energized .card-stack-item {
+  background: linear-gradient(to bottom, var(--bg-secondary, #322501), var(--bg-primary, #755E4D));
+  border: 1px solid var(--border-color, rgba(249, 220, 92, 0.3));
+  color: var(--text-primary);
+}
+body.theme-energized .emotion-card .card-title { color: var(--text-primary, #FEFAE0); }
+body.theme-energized .emotion-card .card-text { color: var(--text-secondary, #F4F4D5); }
+body.theme-energized .emotion-card .vertical-index { color: var(--accent-primary, #F9DC5C); opacity: 0.95; }
+body.theme-energized .send-fly-button,
+body.theme-energized .reset-theme-button,
+body.theme-energized .reset-theme-button svg {
+  background: var(--send-button-bg, #302700);
+  color: white;
+  border-color: color-mix(in srgb, var(--send-button-bg, #302700) 30%, transparent);
+}
+
+/* Chat interface */
+body.theme-energized .chat-interface { background-color: rgba(117,94,77,0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* ============================================= */
+/* ==        Emotion Cards Component          == */
+/* ============================================= */
+
+/* Anxious-specific overrides: emotion card gradient and buttons */
+body.theme-anxious .emotion-card-stack .emotion-card,
+body.theme-anxious .card-stack-item {
+  background: linear-gradient(180deg, #0A1417 0%, #0A282B 100%);
+  border: 1px solid color-mix(in srgb, #0A1417 25%, transparent);
+  color: var(--text-primary);
+}
+body.theme-anxious .send-fly-button,
+body.theme-anxious .reset-theme-button,
+body.theme-anxious .reset-theme-button svg {
+  background: var(--send-button-bg, #0a1417);
+  border-color: color-mix(in srgb, var(--send-button-bg, #0a1417) 30%, transparent);
+  color: white;
+}
+body.theme-anxious .send-fly-button:hover,
+body.theme-anxious .reset-theme-button:hover { filter: brightness(1.03); transform: translateY(-1px); }
+
+.emotion-card-stack .emotion-card {
+  /* Background using a gradient of the theme's darkest shades */
+  background: linear-gradient(to bottom, #2d4f4a, #0f2027);
+  border: 1px solid var(--border-color, rgba(40, 98, 58, 0.3));
+}
+
+.emotion-card .card-title {
+  color: var(--text-primary, #8db1a4);
+}
+
+.emotion-card .card-text {
+  color: var(--text-secondary, #7D938A);
+}
+
+.emotion-card .vertical-index {
+  color: var(--accent-primary, #28623a);
+  opacity: 0.9;
+}
+
+
+/* ============================================= */
+/* ==          Chat Interface                 == */
+/* ============================================= */
+
+.chat-interface {
+  /* Translucent background as requested */
+  /* Uses the primary background color with 80% opacity */
+  background-color: rgba(10, 15, 13, 0.8); /* #0a0f0d at 80% opacity */
+
+  /* Optional: Add a backdrop filter for a frosted glass effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+}
+/* ============================================= */
+
+.emotion-card-stack .emotion-card {
+  /* Background using a gradient of deep, dark, warm browns,
+     as requested for a darker shade of the background hues. */
+  background: linear-gradient(to bottom, #4d330f, #3a2b04);
+  
+  border: 1px solid var(--border-color, rgba(245, 143, 0, 0.3));
+}
+
+.emotion-card .card-title {
+  color: #ffffff;
+}
+
+.emotion-card .card-text {
+  color: var(--text-primary, #fff5e1);
+}
+
+.emotion-card .vertical-index {
+  color: rgba(255, 245, 225, 0.9); /* Warm semi-transparent white */
+}
+
+/* Theme color editor styles */
+.theme-color-editor {
+  margin-top: 1rem;
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  max-width: 720px;
+}
+.theme-color-editor .section-subtitle { margin: 0 0 .5rem 0; color: var(--text-primary); }
+.theme-color-editor .muted { color: color-mix(in srgb, var(--text-primary) 50%, black 50%); font-size: .9rem; }
+.theme-color-editor .color-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .5rem; }
+.theme-color-editor .color-label { min-width: 160px; font-weight: 600; color: var(--text-primary); }
+.theme-color-editor .color-input { width: 44px; height: 34px; border: none; background: transparent; cursor: pointer; }
+.theme-color-editor .color-swatch { width: 32px; height: 32px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.12); }
+.theme-color-editor .color-hex { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace; padding: 6px 8px; border-radius: 8px; background: rgba(255,255,255,0.02); color: var(--text-primary); }
+
+/* Static login theme: applied to auth page and remains after logout */
+.theme-login {
+  --bg-primary: #0a0b12;
+  --bg-secondary: #0a0b12;
+  --text-primary: #e7fffb;
+  --text-secondary: #a5c6c8;
+  background: var(--bg-primary) !important;
+  background-image: none !important;
 }

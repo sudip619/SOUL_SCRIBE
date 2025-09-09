@@ -1,13 +1,16 @@
 // frontend/src/components/ChatView.js
 import React, { useState, useEffect, useRef } from 'react';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient'; 
 import MoodSelector from './MoodSelector';
+import CardStack from './CardStack';
+import { useTheme } from '../context/ThemeContext';
 
 function ChatView({ showAlert }) {
   const [messages, setMessages] = useState([]);
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const { applyTheme, resetTheme } = useTheme();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -31,20 +34,22 @@ function ChatView({ showAlert }) {
     setUserInput('');
 
     try {
-      const response = await makeAuthenticatedRequest('/chat', 'POST', { message: userMessage });
-      const data = await response.json();
+      // We get the last mood from your app's state. 
+      // This assumes you have a way to know the last clicked mood.
+      // For now, let's just pass a default.
+      const lastMood = 'neutral'; // Replace with real state later
 
-      if (response.ok) {
-        const botReply = data.reply;
-        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: botReply }]);
-      } else {
-        setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Error: ${data.message || 'Failed to get AI response.'}` }]);
-        showAlert(data.message || 'Failed to get AI response.', false);
-      }
-    } catch (error)      {
-      console.error('Error sending message to AI:', error);
-      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Network Error: ${error.message}` }]);
-      showAlert('Network error or failed to get AI response.', false);
+      const { data, error } = await supabase.functions.invoke('chat', {
+        body: { message: userMessage, mood: lastMood },
+      });
+
+      if (error) throw error;
+
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: data.reply }]);
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setMessages((prevMessages) => [...prevMessages, { role: 'assistant', content: `Error: ${error.message}` }]);
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +62,8 @@ function ChatView({ showAlert }) {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-md rounded-lg shadow-xl border border-border-color h-[600px] overflow-hidden">
+    <div className="w-full flex flex-col items-center gap-8">
+    <div className="flex flex-col w-full max-w-6xl rounded-lg h-[640px] overflow-hidden glass-panel">
       <div className="flex-grow-[4] p-4 overflow-y-auto space-y-4 text-dark-text-light" style={{ minHeight: '0' }}>
         {messages.map((msg, index) => (
           <div
@@ -65,11 +71,7 @@ function ChatView({ showAlert }) {
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg shadow-md break-words
-                         ${msg.role === 'user'
-                            ? 'bg-accent-teal text-white rounded-br-none'
-                            : 'bg-dark-bg-primary text-dark-text-light rounded-bl-none'
-                          }`}
+              className={`bubble break-words ${msg.role === 'user' ? 'bubble-user' : 'bubble-bot'}`}
             >
               {msg.content}
             </div>
@@ -77,16 +79,16 @@ function ChatView({ showAlert }) {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[80%] p-3 rounded-lg shadow-md bg-dark-bg-primary text-dark-text-light rounded-bl-none">
+            <div className="bubble bubble-bot">
               <span className="inline-block animate-pulse">Typing...</span>
             </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex flex-col flex-grow-[1] bg-dark-bg-primary border-t border-dark-bg-secondary">
+      <div className="flex flex-col flex-grow-[1] bg-dark-bg-primary/20 border-t border-dark-bg-secondary/30">
         {/* --- MODIFIED INPUT AREA --- */}
-        <div className="flex p-4 items-center gap-x-2">
+        <div className="composer p-4 items-center gap-x-2">
           
           {/* This entire block replaces your old <input /> */}
           <div className="chat-input-card">
@@ -141,6 +143,17 @@ function ChatView({ showAlert }) {
             <MoodSelector showAlert={showAlert} />
         </div>
       </div>
+    </div>
+
+    <section className="card-stack-section" data-aos="fade-up" data-aos-duration="1000">
+      <CardStack showAlert={showAlert} />
+      <div className="flex justify-center mt-4">
+        <button onClick={() => resetTheme()} className="reset-theme-button">
+          <svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7z"/></svg>
+          Reset Theme
+        </button>
+      </div>
+    </section>
     </div>
   );
 }

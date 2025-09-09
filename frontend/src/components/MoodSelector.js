@@ -1,6 +1,6 @@
 // frontend/src/components/MoodSelector.js
 import React from 'react';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 import { useTheme } from '../context/ThemeContext'; // 1. IMPORT THE THEME HOOK
 
 function MoodSelector({ showAlert }) {
@@ -19,56 +19,51 @@ function MoodSelector({ showAlert }) {
     { name: 'tired', icon: 'images/mood_icons/tired.png', title: 'Tired / Exhausted' },
   ];
 
+// In MoodSelector.js
   const logSelectedMood = async (moodName, event) => {
-    // 3. CALL applyTheme TO CHANGE THE UI INSTANTLY
-    applyTheme(moodName);
-
-    console.log('Selected mood:', moodName);
+    applyTheme(moodName); // This is your theme-switching logic, it stays.
     try {
-      const response = await makeAuthenticatedRequest('/mood', 'POST', { mood: moodName });
-      const data = await response.json();
+      // 1. Insert a new row into the 'mood_logs' table.
+      const { error } = await supabase
+        .from('mood_logs')
+        .insert({ mood_name: moodName }); 
+      
+      // NOTE: We don't need to provide user_id!
+      // The database is configured to automatically use the logged-in user's ID
+      // as the default value for the user_id column.
 
-      if (response.ok) {
-        showAlert(data.message || `Your mood "${moodName}" has been logged!`, true);
-        const clickedButton = event.target.closest('button'); // Ensure we target the button itself
-        if (clickedButton) {
-          clickedButton.classList.add('scale-110', 'shadow-2xl');
-          setTimeout(() => {
-            clickedButton.classList.remove('scale-110', 'shadow-2xl');
-          }, 500);
-        }
-      } else {
-        showAlert(data.message || 'Failed to log mood. Please try again.', false);
+      if (error) throw error;
+      
+      showAlert(`Your mood "${moodName}" has been logged!`, true);
+
+      // Your UI animation logic can stay exactly the same.
+      const clickedButton = event.target.closest('button');
+      if (clickedButton) {
+        clickedButton.classList.add('scale-110', 'shadow-2xl');
+        setTimeout(() => {
+          clickedButton.classList.remove('scale-110', 'shadow-2xl');
+        }, 500);
       }
+
     } catch (error) {
-      console.error('Error logging mood:', error);
-      showAlert('Network error or server unavailable during mood logging.', false);
+      showAlert('Error logging mood: ' + error.message, false);
     }
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-x-2 gap-y-1 px-1 py-0.5 w-full">
+    <div className="mood-row w-full">
       {moods.map((mood) => (
-        // In MoodSelector.js
-
-      <button
-        key={mood.name}
-        onClick={(e) => logSelectedMood(mood.name, e)}
-        // MODIFIED: Added transform and hover classes for the "pop" effect
-        className="group relative flex flex-col items-center justify-center p-1.5 rounded-md
-                   bg-dark-bg-secondary text-dark-text-lighter hover:bg-accent-teal hover:text-white
-                   shadow-sm hover:shadow-md focus:outline-none focus:ring-1 focus:ring-accent-pink
-                   transform transition-all duration-300 ease-out hover:scale-110 hover:-translate-y-2 hover:shadow-2xl" // <-- ADDED THESE
-        title={mood.title}
-      >
-        <img
-          src={mood.icon}
-          alt={mood.name}
-          className="w-8 h-8 object-contain pointer-events-none"
-        />
-      </button>
+        <button
+          key={mood.name}
+          onClick={(e) => logSelectedMood(mood.name, e)}
+          className="mood-chip"
+          title={mood.title}
+        >
+          <img src={mood.icon} alt={mood.name} className="object-contain" />
+          <span className="label capitalize hidden sm:inline">{mood.name}</span>
+        </button>
       ))}
-    </div>  
+    </div>
   );
 }
 

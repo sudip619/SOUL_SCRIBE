@@ -6,43 +6,67 @@ const ThemeContext = createContext();
 // Updated mapping based on our defined groups
 const moodToTheme = {
   // Bright Theme
-  'happy': 'theme-bright',
-  'energized': 'theme-bright',
+  'happy': 'theme-happy',
+  'energized': 'theme-energized',
   // Calm Theme
   'calm': 'theme-calm',
-  'neutral': 'theme-calm',
+  'neutral': 'theme-neutral',
   // Muted Theme
   'sad': 'theme-muted',
-  'tired': 'theme-muted',
+  'tired': 'theme-tired',
   // Grounding Theme
-  'anxious': 'theme-grounding',
-  'frustrated': 'theme-grounding',
-  'overwhelmed': 'theme-grounding',
-  'angry': 'theme-grounding',
+  'anxious': 'theme-anxious',
+  'frustrated': 'theme-frustrated',
+  'overwhelmed': 'theme-introspective',
+  'angry': 'theme-angry',
+  'annoyed': 'theme-angry',
+};
+
+const removeAllThemes = () => {
+  document.body.classList.remove(
+    'theme-bright',
+    'theme-happy',
+    'theme-introspective',
+    'theme-frustrated',
+    'theme-tired',
+    'theme-anxious',
+    'theme-energized',
+    'theme-calm',
+    'theme-muted',
+    'theme-grounding',
+    'theme-angry',
+    'theme-neutral'
+  );
+};
+
+const withSmoothTransition = (cb) => {
+  document.body.classList.add('theme-smooth-transition');
+  try { cb(); } finally {
+    setTimeout(() => document.body.classList.remove('theme-smooth-transition'), 700);
+  }
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('theme-calm'); // Start with the calm theme
+  const [theme, setTheme] = useState(''); // Start with default landing palette
 
   const applyTheme = (mood) => {
-    const newTheme = moodToTheme[mood] || 'theme-calm'; // Default to calm theme
-    
-    // Updated list to include all our theme classes
-    document.body.classList.remove(
-      'theme-bright',
-      'theme-calm',
-      'theme-muted',
-      'theme-grounding'
-    );
-    
-    // Add the new theme class
-    document.body.classList.add(newTheme);
-    
-    setTheme(newTheme);
+    const newTheme = moodToTheme[mood] || '';
+    withSmoothTransition(() => {
+      removeAllThemes();
+      if (newTheme) document.body.classList.add(newTheme);
+      setTheme(newTheme);
+    });
+  };
+
+  const resetTheme = () => {
+    withSmoothTransition(() => {
+      removeAllThemes();
+      setTheme('');
+    });
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, applyTheme }}>
+    <ThemeContext.Provider value={{ theme, applyTheme, resetTheme }}>
       {children}
     </ThemeContext.Provider>
   );
