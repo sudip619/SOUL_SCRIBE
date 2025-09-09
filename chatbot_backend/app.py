@@ -7,7 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import jwt
-from groq import Groq # <-- IMPORT GROQ
+try:
+    from groq import Groq  # type: ignore
+except Exception:
+    Groq = None
 
 # --- Load environment variables ---
 load_dotenv()
@@ -25,14 +28,18 @@ CORS(app)  # Enable CORS globally
 
 
 # --- Initialize Groq Client ---
-try:
-    groq_api_key = os.environ.get("GROQ_API_KEY")
-    if not groq_api_key:
-        raise ValueError("GROQ_API_KEY is missing in environment variables.")
-    groq = Groq(api_key=groq_api_key)
-except ValueError as e:
-    print(f"CRITICAL ERROR initializing Groq client: {e}")
+if Groq is None:
+    print("Groq SDK not installed; Groq client will be disabled.")
     groq = None
+else:
+    try:
+        groq_api_key = os.environ.get("GROQ_API_KEY")
+        if not groq_api_key:
+            raise ValueError("GROQ_API_KEY is missing in environment variables.")
+        groq = Groq(api_key=groq_api_key)
+    except Exception as e:
+        print(f"CRITICAL ERROR initializing Groq client: {e}")
+        groq = None
 
 
 # --- Database Models ---
