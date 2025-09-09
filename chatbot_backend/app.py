@@ -1,32 +1,30 @@
 import os
 import json
-from flask import Flask, request, jsonify, g, Response # IMPORT 'Response'
+from flask import Flask, request, jsonify, g, Response
 from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-import requests
-import time
 import jwt
 
-# Load environment variables from .env file
+# --- Load environment variables ---
 load_dotenv()
 
 app = Flask(__name__)
 
-# --- CONFIGURATION ---
+# --- Configuration ---
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-# --- INITIALIZE EXTENSIONS ---
+# --- Initialize extensions ---
 db = SQLAlchemy(app)
-CORS(app)
+CORS(app)  # Enable CORS globally
 
-# --- DATABASE MODELS (Corrected for Supabase) ---
+# --- Database Models ---
 class User(db.Model):
-    id = db.Column(db.String(36), primary_key=True) # For Supabase UUIDs
+    id = db.Column(db.String(36), primary_key=True)  # Supabase UUID
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(512), nullable=True)
     profile_data = db.Column(db.Text, default='{}')
@@ -45,12 +43,10 @@ class MoodLog(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user = db.relationship('User', backref=db.backref('mood_logs', lazy=True))
 
-# --- MODIFIED: AUTHENTICATION & PREFLIGHT HANDLING ---
+# --- Authentication & Preflight Handling ---
 @app.before_request
 def before_request_func():
-    # --- THIS IS THE FIX for the PREFLIGHT/CORS ERROR ---
-    # This block checks if the incoming request is a preflight OPTIONS request
-    # and sends back a successful response immediately.
+    # Handle CORS preflight request
     if request.method == 'OPTIONS':
         headers = {
             'Access-Control-Allow-Origin': '*',
@@ -58,9 +54,8 @@ def before_request_func():
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         }
         return Response(status=204, headers=headers)
-    # ----------------------------------------------------
 
-    # The original authentication logic now runs for all non-OPTIONS requests
+    # Handle authentication (non-OPTIONS requests only)
     g.current_user = None
     auth_header = request.headers.get('Authorization')
     if not auth_header:
@@ -81,21 +76,20 @@ def before_request_func():
         if not user_id:
             return
 
+        # Fetch or create user
         user = db.session.get(User, user_id)
         if not user:
             print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
             user = User(id=user_id, username=f"user_{user_id[:8]}")
             db.session.add(user)
             db.session.commit()
-        
+
         g.current_user = user
 
     except Exception as e:
         print(f"JWT Authentication Error: {e}")
 
-# --- API ENDPOINTS ---
-# All your endpoints below this line remain the same and will now work correctly.
-
+# --- API Endpoints ---
 @app.route('/api/profile', methods=['GET'])
 def get_user_profile():
     if not g.current_user:
@@ -153,14 +147,9 @@ def chat():
     if not user_message_content:
         return jsonify({'message': 'Message content is required.'}), 400
     
-    AI_API_KEY = os.getenv('DEEPSEEK_API_KEY') # Or GROQ_API_KEY, etc.
-    if not AI_API_KEY:
-        return jsonify({'message': 'AI API key not configured on server.'}), 500
-
-    # (Your context gathering and AI call logic goes here...)
+    # Placeholder for AI API call (Groq, DeepSeek, OpenAI, etc.)
     bot_reply = f"The AI received your message: '{user_message_content}'"
     return jsonify({'reply': bot_reply}), 200
-
 
 # --- Server Start ---
 if __name__ == '__main__':
