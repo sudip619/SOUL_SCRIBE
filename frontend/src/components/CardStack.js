@@ -42,7 +42,7 @@ function CardStack({ showAlert }) {
     const name = moodName.toLowerCase();
     applyTheme(name);
     try {
-      const { data, error } = await supabase.from('mood_logs').insert({ mood_name: name });
+      const { error } = await supabase.from('mood_logs').insert({ mood_name: name });
       if (error) throw error;
       if (showAlert) showAlert(`Your mood "${name}" has been logged!`, true);
     } catch (err) {

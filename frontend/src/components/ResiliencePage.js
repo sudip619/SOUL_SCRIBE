@@ -7,7 +7,6 @@ Chart.register(...registerables);
 export default function ResiliencePage(){
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
-  const [logs, setLogs] = useState([]);
   const [insight, setInsight] = useState(null);
 
   useEffect(()=>{
@@ -16,7 +15,6 @@ export default function ResiliencePage(){
         const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
         if (error) throw error;
         const logsData = data || [];
-        setLogs(logsData);
         const prepared = prepareResilienceData(logsData);
         if (canvasRef.current) {
           const ctx = canvasRef.current.getContext('2d');
@@ -33,7 +31,8 @@ export default function ResiliencePage(){
       }
     };
     load();
-    return () => { if (chartRef.current) chartRef.current.destroy(); };
+    const inst = chartRef.current;
+    return () => { if (inst) inst.destroy(); };
   },[]);
 
   const advice = (p) => {

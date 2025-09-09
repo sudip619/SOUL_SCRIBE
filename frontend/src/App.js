@@ -30,7 +30,6 @@ const AppContent = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUsername, setCurrentUsername] = useState(null);
-  const [currentUserId, setCurrentUserId] = useState(null);
   const [currentView, setCurrentView] = useState('auth');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [pendingAuth, setPendingAuth] = useState(null);
@@ -76,7 +75,6 @@ const AppContent = () => {
     if (token && username && userId) {
       setIsLoggedIn(true);
       setCurrentUsername(username);
-      setCurrentUserId(userId);
       setCurrentView('home');
     } else {
       setIsLoggedIn(false);
@@ -93,7 +91,6 @@ const AppContent = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setCurrentUsername(null);
-    setCurrentUserId(null);
     localStorage.removeItem('authToken');
     localStorage.removeItem('username');
     localStorage.removeItem('userId');
@@ -163,7 +160,6 @@ const AppContent = () => {
           }
           setIsLoggedIn(true);
           setCurrentUsername(pa.username);
-          setCurrentUserId(pa.userId);
           setCurrentView('home');
           showAlert(`Welcome back, ${pa.username}!`, true);
           setIsAuthenticating(false);

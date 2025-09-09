@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { supabase } from '../supabaseClient';
 
@@ -35,7 +35,6 @@ export function prepareVolatilityData(logs) {
 export default function EmotionalVolatility({ onOpenGraph }) {
   const canvasRef = useRef(null);
   const chartInstance = useRef(null);
-  const [logs, setLogs] = useState([]);
   const wrapperRef = useRef(null);
 
   const render = useCallback((canvas, instanceRef, labels, data) => {
@@ -68,7 +67,6 @@ export default function EmotionalVolatility({ onOpenGraph }) {
         const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
         if (error) throw error;
         const logsData = data || [];
-        setLogs(logsData);
         const prepared = prepareVolatilityData(logsData);
         render(canvasRef.current, chartInstance, prepared.labels, prepared.values);
       } catch (e) {
@@ -77,9 +75,8 @@ export default function EmotionalVolatility({ onOpenGraph }) {
       }
     };
     load();
-    return () => {
-      if (chartInstance.current) chartInstance.current.destroy();
-    };
+    const inst = chartInstance.current;
+    return () => { if (inst) inst.destroy(); };
   }, [render]);
 
   return (

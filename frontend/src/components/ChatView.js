@@ -10,7 +10,7 @@ function ChatView({ showAlert }) {
   const [userInput, setUserInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-  const { applyTheme, resetTheme } = useTheme();
+  const { resetTheme } = useTheme();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -22,7 +22,7 @@ function ChatView({ showAlert }) {
           { role: 'assistant', content: "Hello! I'm your AI Therapist. How can I help you today?" }
         ]);
     }
-  }, []);
+  }, [messages.length]);
 
 
   const sendMessage = async () => {

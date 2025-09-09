@@ -7,7 +7,6 @@ Chart.register(...registerables);
 export default function ProductivityPage() {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
-  const [logs, setLogs] = useState([]);
   const [insights, setInsights] = useState(null);
 
   useEffect(() => {
@@ -16,7 +15,6 @@ export default function ProductivityPage() {
         const { data, error } = await supabase.from('mood_logs').select('*').order('timestamp', { ascending: true });
         if (error) throw error;
         const logsData = data || [];
-        setLogs(logsData);
         const prepared = prepareProductivityData(logsData);
 
         // render chart
@@ -44,7 +42,8 @@ export default function ProductivityPage() {
       }
     };
     load();
-    return () => { if (chartRef.current) chartRef.current.destroy(); };
+    const inst = chartRef.current;
+    return () => { if (inst) inst.destroy(); };
   }, []);
 
   const adviceForScore = (s) => {
