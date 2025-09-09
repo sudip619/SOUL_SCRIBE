@@ -35,7 +35,7 @@ function CardStack({ showAlert }) {
           onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onCardClick(title); }}
         >
           <div className="card-vertical">
-            <span className="card-index">{String(i + 1).padStart(2, '0')}</span>
+            <span className="card-index">{String(i + 2).padStart(2, '0')}</span>
             <span className="card-name">{title}</span>
           </div>
           <div className="card-details">
