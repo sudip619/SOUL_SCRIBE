@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Chart, registerables } from 'chart.js';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient';
 import { prepareResilienceData } from './ResilienceScore';
 Chart.register(...registerables);
 
