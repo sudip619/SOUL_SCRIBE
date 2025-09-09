@@ -1,6 +1,6 @@
 import os
 import json
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify, g, Response # IMPORT 'Response'
 from flask_cors import CORS
 from dotenv import load_dotenv
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,7 +28,6 @@ CORS(app)
 class User(db.Model):
     id = db.Column(db.String(36), primary_key=True) # For Supabase UUIDs
     username = db.Column(db.String(80), unique=True, nullable=False)
-    # password_hash is not used for Supabase login but is kept for model completeness
     password_hash = db.Column(db.String(512), nullable=True)
     profile_data = db.Column(db.Text, default='{}')
     date_joined = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -46,9 +45,22 @@ class MoodLog(db.Model):
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user = db.relationship('User', backref=db.backref('mood_logs', lazy=True))
 
-# --- SUPABASE JWT AUTHENTICATION HELPER ---
+# --- MODIFIED: AUTHENTICATION & PREFLIGHT HANDLING ---
 @app.before_request
-def get_current_user():
+def before_request_func():
+    # --- THIS IS THE FIX for the PREFLIGHT/CORS ERROR ---
+    # This block checks if the incoming request is a preflight OPTIONS request
+    # and sends back a successful response immediately.
+    if request.method == 'OPTIONS':
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        }
+        return Response(status=204, headers=headers)
+    # ----------------------------------------------------
+
+    # The original authentication logic now runs for all non-OPTIONS requests
     g.current_user = None
     auth_header = request.headers.get('Authorization')
     if not auth_header:
@@ -72,7 +84,7 @@ def get_current_user():
         user = db.session.get(User, user_id)
         if not user:
             print(f"First-time API call from Supabase user {user_id}. Creating local profile.")
-            user = User(id=user_id, username=f"user_{user_id[:8]}") # Placeholder username
+            user = User(id=user_id, username=f"user_{user_id[:8]}")
             db.session.add(user)
             db.session.commit()
         
@@ -81,7 +93,8 @@ def get_current_user():
     except Exception as e:
         print(f"JWT Authentication Error: {e}")
 
-# --- RESTORED API ENDPOINTS ---
+# --- API ENDPOINTS ---
+# All your endpoints below this line remain the same and will now work correctly.
 
 @app.route('/api/profile', methods=['GET'])
 def get_user_profile():
@@ -145,7 +158,6 @@ def chat():
         return jsonify({'message': 'AI API key not configured on server.'}), 500
 
     # (Your context gathering and AI call logic goes here...)
-    # This is a placeholder response:
     bot_reply = f"The AI received your message: '{user_message_content}'"
     return jsonify({'reply': bot_reply}), 200
 
