@@ -1,8 +1,9 @@
 // frontend/src/components/ProfileView.js
 import React, { useState, useEffect, useRef } from 'react';
-import { makeAuthenticatedRequest } from '../services/api';
+import { supabase } from '../supabaseClient'; // Correct: Supabase client is imported
 
 // Small accessible dropdown that uses sidebar-like styling for options
+// This component does not need any changes.
 function Dropdown({ id, value, onChange, options = [] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -59,21 +60,26 @@ function ProfileView({ username, showAlert }) {
   const [copingStrategies, setCopingStrategies] = useState([]);
 
   useEffect(() => {
+    // This function is now correctly using Supabase
     const loadUserProfile = async () => {
       try {
-        const response = await makeAuthenticatedRequest('/profile', 'GET');
-        const data = await response.json();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("No user logged in");
 
-        if (response.ok) {
-          const profileData = data.profile_data || {};
-          setMainConcern(profileData.main_concern || '');
-          setCopingStrategies(profileData.coping_strategies || []);
-        } else {
-          showAlert(data.message || 'Failed to load profile.', false);
+        const { data, error } = await supabase
+          .from('profiles')
+          .select(`username, profile_data`)
+          .eq('id', user.id)
+          .single();
+
+        if (error) throw error;
+        
+        if (data && data.profile_data) {
+          setMainConcern(data.profile_data.main_concern || '');
+          setCopingStrategies(data.profile_data.coping_strategies || []);
         }
       } catch (error) {
-        console.error('Error loading profile:', error);
-        showAlert('Network error or failed to load profile.', false);
+        showAlert('Error loading profile: ' + error.message, false);
       }
     };
 
@@ -89,26 +95,32 @@ function ProfileView({ username, showAlert }) {
     );
   };
 
+  // --- THIS IS THE UPDATED FUNCTION ---
+  // Replaced the old `makeAuthenticatedRequest` with a direct Supabase call.
   const handleSavePreferences = async (event) => {
     event.preventDefault();
-
-    const preferencesToSave = {
-      main_concern: mainConcern,
-      coping_strategies: copingStrategies,
-    };
-
     try {
-      const response = await makeAuthenticatedRequest('/profile', 'POST', { profile_data: preferencesToSave });
-      const data = await response.json();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user logged in");
+      
+      const updates = {
+        id: user.id, // The primary key to identify the row to update
+        profile_data: {
+          main_concern: mainConcern,
+          coping_strategies: copingStrategies,
+        },
+        // Supabase can automatically update a 'updated_at' column
+        // if you have one configured in your table policies.
+      };
 
-      if (response.ok) {
-        showAlert('Profile preferences saved successfully!', true);
-      } else {
-        showAlert(data.message || 'Failed to save profile preferences.', false);
-      }
+      // Upsert will create the row if it doesn't exist, or update it if it does.
+      const { error } = await supabase.from('profiles').upsert(updates);
+
+      if (error) throw error; // If Supabase returns an error, show it
+
+      showAlert('Profile saved successfully!', true);
     } catch (error) {
-      console.error('Error saving profile:', error);
-      showAlert('Network error or failed to save profile.', false);
+      showAlert('Error saving profile: ' + error.message, false);
     }
   };
 
@@ -121,8 +133,6 @@ function ProfileView({ username, showAlert }) {
       <form onSubmit={handleSavePreferences} className="flex flex-col gap-6">
         <div>
           <label className="block text-dark-text-light text-lg font-medium mb-2">My primary concern is:</label>
-
-          {/* Custom dropdown matching sidebar styling */}
           <Dropdown
             id="main-concern"
             value={mainConcern}
@@ -142,8 +152,6 @@ function ProfileView({ username, showAlert }) {
         <div>
           <label className="block text-dark-text-light text-lg font-medium mb-3">I prefer coping strategies like:</label>
           <div id="coping-strategies" className="space-y-3">
-            
-            {/* --- MODIFIED BLOCK FOR ANIMATED CHECKBOXES --- */}
             {[
               { value: 'mindfulness', label: 'Mindfulness' },
               { value: 'breathing', label: 'Breathing Exercises' },
@@ -151,7 +159,6 @@ function ProfileView({ username, showAlert }) {
               { value: 'distraction', label: 'Distraction Techniques' },
             ].map((strategy) => (
               <div key={strategy.value} className="flex items-center">
-                {/* The actual checkbox is now hidden, but still controls the state */}
                 <input
                   type="checkbox"
                   id={strategy.value}
@@ -159,9 +166,8 @@ function ProfileView({ username, showAlert }) {
                   value={strategy.value}
                   checked={copingStrategies.includes(strategy.value)}
                   onChange={handleCopingStrategyChange}
-                  className="absolute opacity-0 h-0 w-0" // Hides the default checkbox
+                  className="absolute opacity-0 h-0 w-0"
                 />
-                {/* This label is the visible, clickable element */}
                 <label htmlFor={strategy.value} className="flex items-center cursor-pointer">
                   <span className="animated-check">
                     <svg width="20px" height="20px" viewBox="0 0 18 18">
@@ -173,8 +179,6 @@ function ProfileView({ username, showAlert }) {
                 </label>
               </div>
             ))}
-            {/* --- END OF MODIFIED BLOCK --- */}
-
           </div>
         </div>
 
