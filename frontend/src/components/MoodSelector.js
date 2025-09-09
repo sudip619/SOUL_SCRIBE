@@ -2,6 +2,7 @@
 import React from 'react';
 import { makeAuthenticatedRequest } from '../services/api';
 import { useTheme } from '../context/ThemeContext'; // 1. IMPORT THE THEME HOOK
+import { supabase } from '../supabaseClient';
 
 function MoodSelector({ showAlert }) {
   const { applyTheme } = useTheme(); // 2. GET THE applyTheme FUNCTION
