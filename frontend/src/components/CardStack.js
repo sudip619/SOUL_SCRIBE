@@ -3,7 +3,7 @@ import { supabase } from '../supabaseClient';
 import { useTheme } from '../context/ThemeContext';
 
 const EMOTIONS = [
-  { name: 'happy', title: 'Happy', description: 'Celebrate what went well and try brief gratitude prompts to extend the uplift.' },
+  { name: 'happy', title: 'Happy', description: '<p1>Celebrate what went</p1> <p2>well and try brief gratitude prompts to extend the uplift.</p2>' },
   { name: 'calm', title: 'Calm', description: 'Deepen calm with breathing, grounding, and gentle presence practices.' },
   { name: 'energized', title: 'Energized', description: 'Use focused work sprints, movement breaks, or short tasks to harness momentum.' },
   { name: 'neutral', title: 'Neutral', description: 'Light check-ins, planning, or low-effort reflection are good uses of this state.' },
